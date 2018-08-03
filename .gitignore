@@ -1,0 +1,14 @@
+bin
+etc
+include
+lib
+man
+result
+share
+*.swp
+*.ipynb
+*.py[co]
+*.sqlite
+__pycache__
+.ipynb_checkpoints
+pip-selfcheck.json
