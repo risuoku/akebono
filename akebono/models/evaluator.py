@@ -92,6 +92,13 @@ def _get_evaluated_result(y_pred, y_pred_proba, y_test, pos_index, metrics):
     raise Exception('unexpected process.')
 
 
+def _sklearn_cross_val_iter2train_test_iter(X, y, cross_val_iter, cross_val_iter_kwargs):
+    for train_index, test_index in cross_val_iter(**cross_val_iter_kwargs).split(X.index):
+        X_train, X_test = X.iloc[train_index], X.iloc[test_index]
+        y_train, y_test = y.iloc[train_index], y.iloc[test_index]
+        yield X_train, X_test, y_train, y_test
+
+
 def evaluate(model,
     X, y,
     fit_kwargs,
@@ -116,23 +123,28 @@ def evaluate(model,
             train_test_split_func = load_object_by_str(train_test_split_func)
     
     result = {'metrics': []}
+    train_test_iterator = None
 
     # not CV mode
     if cross_val_iterator is None:
-        X_train, X_test, y_train, y_test = \
-            train_test_split_func(X, y, **train_test_split_func_kwargs)
+        train_test_iterator = [train_test_split_func(X, y, **train_test_split_func_kwargs)]
+        result['cv'] = False
+    # CV mode
+    else:
+        train_test_iterator = _sklearn_cross_val_iter2train_test_iter(X, y, cross_val_iterator, cross_val_iterator_kwargs)
+        result['cv'] = True
 
+    for X_train, X_test, y_train, y_test in train_test_iterator:
+        one_result = []
         model, y_pred, y_pred_proba = _fit_and_predict(X_train, X_test, y_train, model, fit_kwargs)
         if metrics == 'all':
             if model_type == 'binary_classifier':
                 for m in _binary_classifier_metrics:
-                    result['metrics'].append(_get_evaluated_result(y_pred, y_pred_proba, y_test, pos_index, m))
+                    one_result.append(_get_evaluated_result(y_pred, y_pred_proba, y_test, pos_index, m))
             else:
                 raise Exception('not supported.')
         else:
             raise Exception('not supported.')
-    # CV mode
-    else:
-        raise Exception('not supported.')
+        result['metrics'].append(one_result)
 
     return result
