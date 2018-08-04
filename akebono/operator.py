@@ -2,7 +2,6 @@ import akebono.features as features
 from akebono.logging import getLogger
 import akebono.dataset.bigquery as bq
 from akebono.models import get as get_model
-from akebono.evaluator import evaluate
 from akebono.utils import load_object_by_str
 import os
 
@@ -38,7 +37,7 @@ def train(
         
         if params.get('evaluate_enabled') is True:
             logger.debug('evaluate start.')
-            rep = evaluate(fX, y, model, fit_kwargs, **evaluate_kwargs)
+            rep = model.evaluate(fX, y, fit_kwargs, **evaluate_kwargs)
             print(rep)
             logger.debug('evaluate end.')
         if params.get('save_enabled') is True:

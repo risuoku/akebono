@@ -12,3 +12,4 @@ share
 __pycache__
 .ipynb_checkpoints
 pip-selfcheck.json
+_workspace
