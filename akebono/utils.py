@@ -1,4 +1,5 @@
 import os
+import sys
 import hashlib
 import subprocess
 import shlex
@@ -15,11 +16,16 @@ from . import settings
 
 logger = getLogger(__name__)
 
+self = sys.modules[__name__]
+_bkt = None
+
 
 def _get_gcs_bucket(bucket_name):
-    from google.cloud import storage as gstorage
-    _c = gstorage.Client()
-    return _c.get_bucket(bucket_name)
+    if self._bkt is None:
+        from google.cloud import storage as gstorage
+        _c = gstorage.Client()
+        self._bkt = _c.get_bucket(bucket_name)
+    return self._bkt
 
 
 def to_pickle(filepath, obj):
@@ -56,29 +62,46 @@ def from_pickle(filepath):
 def remove_directory(dirpath):
     if settings.storage_type == 'local':
         shutil.rmtree(dirpath)
+    elif settings.storage_type == 'gcs':
+        bkt = _get_gcs_bucket(settings.storage_option['bucket_name'])
+        blob_list = [blob for blob in bkt.list_blobs() if re.search(dirpath, blob.name) is not None]
+        bkt.delete_blobs(blob_list)
     else:
-        raise Exception('not supported')
+        raise ValueError('invalid storage_type')
 
 
 def rename_directory(src, dst):
     if settings.storage_type == 'local':
         shutil.move(src, dst)
+    elif settings.storage_type == 'gcs':
+        bkt = _get_gcs_bucket(settings.storage_option['bucket_name'])
+        blob_list = [blob for blob in bkt.list_blobs() if re.search(src, blob.name) is not None]
+        for blob in blob_list:
+            bkt.rename_blob(blob, re.sub(src, dst, blob.name))
     else:
-        raise Exception('not supported')
+        raise ValueError('invalid storage_type')
 
 
 def isdir(dirpath):
     if settings.storage_type == 'local':
         return os.path.isdir(dirpath)
+    elif settings.storage_type == 'gcs':
+        bkt = _get_gcs_bucket(settings.storage_option['bucket_name'])
+        target_blob = bkt.get_blob(dirpath)
+        return target_blob is not None
     else:
-        raise Exception('not supported')
+        raise ValueError('invalid storage_type')
 
 
 def list_directory(dirpath):
     if settings.storage_type == 'local':
         return [os.path.join(dirpath, f) for f in os.listdir(dirpath)]
+    elif settings.storage_type == 'gcs':
+        bkt = _get_gcs_bucket(settings.storage_option['bucket_name'])
+        blob_list = [blob for blob in bkt.list_blobs() if re.search(dirpath, blob.name) is not None]
+        return [blob.name for blob in blob_list if not blob.name == dirpath]
     else:
-        raise Exception('not supported')
+        raise ValueError('invalid storage_type')
 
 
 def cache_located_at(filepath):
