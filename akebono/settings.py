@@ -21,14 +21,10 @@ _valid_attributes = [
 def _update_associated_attrs():
     _storage_project_root_dir = os.path.join(storage_root_dir, project_name)
     self.cache_dir = os.path.join(_storage_project_root_dir, 'cache')
-    self.models_dir = os.path.join(_storage_project_root_dir, 'models')
-    self.tmp_dir = os.path.join(_storage_project_root_dir, 'tmp')
     self.operation_results_dir = os.path.join(_storage_project_root_dir, 'operation_results')
     if storage_type == 'local' and storage_auto_create_dir:
         os.makedirs(_storage_project_root_dir, exist_ok=True)
         os.makedirs(cache_dir, exist_ok=True)
-        os.makedirs(models_dir, exist_ok=True)
-        os.makedirs(tmp_dir, exist_ok=True)
         os.makedirs(operation_results_dir, exist_ok=True)
     
     

@@ -1,6 +1,7 @@
 import akebono.features as features
 from akebono.logging import getLogger
 from akebono.io.dataset import load_dataset
+from akebono.io.operation.dumper import dump_operation_result
 from akebono.models import get_model
 from akebono.utils import load_object_by_str
 import os
@@ -9,13 +10,14 @@ import os
 logger = getLogger(__name__)
 
 
-def train(operation_index,
+def train(operation_index, scenario_tag,
     dataset_config=None,
     model_config=None,
     feature_func='identify@akebono.features',
     feature_kwargs={},
-    save_enabled=False,
-    evaluate_enabled=False
+    evaluate_enabled=False,
+    fit_model_enabled=False,
+    dump_result_enabled=False
     ):
         if model_config is None:
             raise ValueError('model_config must be set.')
@@ -29,6 +31,9 @@ def train(operation_index,
             'model_config': model_config,
             'feature_func': feature_func,
             'feature_kwargs': feature_kwargs,
+            'evaluate_enabled': evaluate_enabled,
+            'fit_model_enabled': fit_model_enabled,
+            'dump_result_enabled': dump_result_enabled
         }
 
         dataset = load_dataset(dataset_config)
@@ -46,12 +51,15 @@ def train(operation_index,
         if evaluate_enabled:
             logger.debug('evaluate start.')
             rep = model.evaluate(fX, y)
-            print(rep)
-            logger.debug('evaluate end.')
-        if save_enabled:
-            logger.info('save model start.')
+            logger.debug('evaluate done.')
+            ret['evaluate_result'] = rep
+        if fit_model_enabled:
             logger.info('fit start.')
             model.fit(fX, y)
             logger.info('fit done.')
-            model.dump(dataset_config['name'])
-            logger.info('save model done.')
+            ret['fit_model'] = model
+        if dump_result_enabled:
+            logger.info('dump_operation_result start.')
+            dump_operation_result(operation_index, scenario_tag, ret)
+            logger.info('dump_operation_result done.')
+        print(ret)

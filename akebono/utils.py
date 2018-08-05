@@ -2,6 +2,7 @@ import os
 import hashlib
 import subprocess
 import shlex
+import shutil
 import pickle
 import pandas as pd
 import importlib
@@ -50,6 +51,27 @@ def from_pickle(filepath):
         return pickle.loads(obj.download_as_string())
     else:
         raise ValueError('invalid storage_type')
+
+
+def remove_directory(dirpath):
+    if settings.storage_type == 'local':
+        shutil.rmtree(dirpath)
+    else:
+        raise Exception('not supported')
+
+
+def rename_directory(src, dst):
+    if settings.storage_type == 'local':
+        shutil.move(src, dst)
+    else:
+        raise Exception('not supported')
+
+
+def isdir(dirpath):
+    if settings.storage_type == 'local':
+        return os.path.isdir(dirpath)
+    else:
+        raise Exception('not supported')
 
 
 def cache_located_at(filepath):
