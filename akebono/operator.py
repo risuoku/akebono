@@ -1,6 +1,6 @@
 import akebono.features as features
 from akebono.logging import getLogger
-import akebono.dataset.bigquery as bq
+import akebono.io.dataset.bigquery as bq
 from akebono.models import get as get_model
 from akebono.utils import load_object_by_str
 import os

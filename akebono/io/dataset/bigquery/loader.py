@@ -1,6 +1,6 @@
 from .client import Client as BqClient
 import akebono.settings as settings
-from akebono.dataset.model import Dataset
+from akebono.io.dataset.model import Dataset
 from akebono.utils import (
     Param,
     cache_located_at,
@@ -25,7 +25,7 @@ def render_sql(bqdataname, param):
 
 def load(bqdataname,
          target_column='target', param={},
-         preprocess_func='identify@akebono.dataset.bigquery.preprocessors',
+         preprocess_func='identify@akebono.io.dataset.preprocessors',
          preprocess_func_kwargs={},
          cache_enabled=True,
     ):

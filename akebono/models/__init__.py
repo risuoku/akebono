@@ -1,15 +1,10 @@
-#from lightgbm import LGBMClassifier
-from sklearn.linear_model import LogisticRegression
 from akebono.logging import getLogger
-from sklearn.ensemble import RandomForestClassifier
 from .base import WrappedModel
 from .exporter import export_sklearn_model
 import os
 
 logger = getLogger(__name__)
 
-
-    
 
 class WrappedLGBMClassifier(WrappedModel):
     def base_init_finished(self):
@@ -21,6 +16,7 @@ class WrappedLGBMClassifier(WrappedModel):
         return self
     
     def reset(self):
+        from lightgbm import LGBMClassifier
         self._value = LGBMClassifier(**self._init_kwargs)
     
     def predict(self, X):
@@ -42,6 +38,7 @@ class WrappedRandomForestClassifier(WrappedModel):
         return self
     
     def reset(self):
+        from sklearn.ensemble import RandomForestClassifier
         self._value = RandomForestClassifier(**self._init_kwargs)
     
     def predict(self, X):
@@ -52,7 +49,7 @@ class WrappedRandomForestClassifier(WrappedModel):
      
     export = export_sklearn_model
 
-            
+
 class WrappedLogisticRegression(WrappedModel):
     def base_init_finished(self):
         if not self._is_rebuild:
@@ -63,6 +60,7 @@ class WrappedLogisticRegression(WrappedModel):
         return self
     
     def reset(self):
+        from sklearn.linear_model import LogisticRegression
         self._value = LogisticRegression(**self._init_kwargs)
     
     def predict(self, X):
