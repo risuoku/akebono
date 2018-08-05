@@ -2,6 +2,7 @@ from akebono.logging import getLogger
 from .base import WrappedModel
 from akebono.io.operation.dumper import dump_sklearn_model
 import os
+import copy
 
 logger = getLogger(__name__)
 
@@ -11,8 +12,8 @@ class WrappedLGBMClassifier(WrappedModel):
         if not self._is_rebuild:
             self.reset()
     
-    def fit(self, X, y, fit_kwargs):
-        self._value.fit(X, y, **fit_kwargs)
+    def fit(self, X, y):
+        self._value.fit(X, y, **self._fit_kwargs)
         return self
     
     def reset(self):
@@ -33,8 +34,8 @@ class WrappedRandomForestClassifier(WrappedModel):
         if not self._is_rebuild:
             self.reset()
     
-    def fit(self, X, y, fit_kwargs):
-        self._value.fit(X, y, **fit_kwargs)
+    def fit(self, X, y):
+        self._value.fit(X, y, **self._fit_kwargs)
         return self
     
     def reset(self):
@@ -55,8 +56,8 @@ class WrappedLogisticRegression(WrappedModel):
         if not self._is_rebuild:
             self.reset()
     
-    def fit(self, X, y, fit_kwargs):
-        self._value.fit(X, y, **fit_kwargs)
+    def fit(self, X, y):
+        self._value.fit(X, y, **self._fit_kwargs)
         return self
     
     def reset(self):
@@ -72,12 +73,20 @@ class WrappedLogisticRegression(WrappedModel):
     dump = dump_sklearn_model
     
 
-def get(kind, is_rebuild=False, init_kwargs={}):
-    if kind == 'lgbm_classifier':
-        return WrappedLGBMClassifier(is_rebuild, init_kwargs)
-    elif kind == 'logistic_regression':
-        return WrappedLogisticRegression(is_rebuild, init_kwargs)
-    elif kind == 'random_forest_classifier':
-        return WrappedRandomForestClassifier(is_rebuild, init_kwargs)
+def get_model(model_config):
+    if not isinstance(model_config, dict):
+        raise TypeError('model_config must be dict.')
+    mcc = copy.copy(model_config)
+    if 'name' not in mcc:
+        raise Exception('name must be set in model_config.')
+    model_name = mcc.pop('name')
+    mcc['is_rebuild'] = False
+
+    if model_name == 'lgbm_classifier':
+        return WrappedLGBMClassifier(**mcc)
+    elif model_name == 'logistic_regression':
+        return WrappedLogisticRegression(**mcc)
+    elif model_name == 'random_forest_classifier':
+        return WrappedRandomForestClassifier(**mcc)
     else:
-        raise Exception('{} does not found.'.format(kind))
+        raise Exception('{} does not found.'.format(model_name))

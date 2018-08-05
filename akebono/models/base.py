@@ -4,8 +4,10 @@ from .evaluator import evaluate
 class WrappedModel:
     model_type = None
 
-    def __init__(self, is_rebuild, init_kwargs):
+    def __init__(self, is_rebuild=False, init_kwargs={}, fit_kwargs={}, evaluate_kwargs={}):
         self._init_kwargs = init_kwargs
+        self._fit_kwargs = fit_kwargs
+        self._evaluate_kwargs = evaluate_kwargs
         self._is_rebuild = is_rebuild
         self._value = None
         self.base_init_finished()
@@ -13,7 +15,7 @@ class WrappedModel:
     def base_init_finished(self):
         pass
     
-    def fit(self, X, y, fit_kwargs):
+    def fit(self, X, y):
         raise NotImplementedError()
     
     def reset(self):
@@ -43,4 +45,5 @@ class WrappedModel:
     def value(self):
         return self._value
 
-    evaluate = evaluate
+    def evaluate(self, X, y):
+        return evaluate(self, X, y, **self._evaluate_kwargs)

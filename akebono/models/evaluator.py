@@ -48,9 +48,9 @@ def _validate_metrics(o):
         raise Exception('invalid predict_type')
 
 
-def _fit_and_predict(X_train, X_test, y_train, model, fit_kwargs):
+def _fit_and_predict(X_train, X_test, y_train, model):
     model.reset()
-    model.fit(X_train, y_train, fit_kwargs)
+    model.fit(X_train, y_train)
     y_pred = y_pred_proba = None
 
     if hasattr(model, 'predict'):
@@ -101,7 +101,6 @@ def _sklearn_cross_val_iter2train_test_iter(X, y, cross_val_iter, cross_val_iter
 
 def evaluate(model,
     X, y,
-    fit_kwargs,
     train_test_split_func='train_test_split@sklearn.model_selection',
     train_test_split_func_kwargs={},
     cross_val_iterator=None,
@@ -136,7 +135,7 @@ def evaluate(model,
 
     for X_train, X_test, y_train, y_test in train_test_iterator:
         one_result = []
-        model, y_pred, y_pred_proba = _fit_and_predict(X_train, X_test, y_train, model, fit_kwargs)
+        model, y_pred, y_pred_proba = _fit_and_predict(X_train, X_test, y_train, model)
         if metrics == 'all':
             if model_type == 'binary_classifier':
                 for m in _binary_classifier_metrics:
