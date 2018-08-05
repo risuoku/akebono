@@ -1,6 +1,6 @@
 from akebono.logging import getLogger
 from .base import WrappedModel
-from .exporter import export_sklearn_model
+from akebono.io.operation.dumper import dump_sklearn_model
 import os
 
 logger = getLogger(__name__)
@@ -25,7 +25,7 @@ class WrappedLGBMClassifier(WrappedModel):
     def predict_proba(self, X):
         return self._value.predict_proba(X)
      
-    export = export_sklearn_model
+    dump = dump_sklearn_model
     
 
 class WrappedRandomForestClassifier(WrappedModel):
@@ -47,7 +47,7 @@ class WrappedRandomForestClassifier(WrappedModel):
     def predict_proba(self, X):
         return self._value.predict_proba(X)
      
-    export = export_sklearn_model
+    dump = dump_sklearn_model
 
 
 class WrappedLogisticRegression(WrappedModel):
@@ -69,7 +69,7 @@ class WrappedLogisticRegression(WrappedModel):
     def predict_proba(self, X):
         return self._value.predict_proba(X)
      
-    export = export_sklearn_model
+    dump = dump_sklearn_model
     
 
 def get(kind, is_rebuild=False, init_kwargs={}):

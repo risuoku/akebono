@@ -19,7 +19,7 @@ class WrappedModel:
     def reset(self):
         raise NotImplementedError()
     
-    def export(self, name):
+    def dump(self, name):
         raise NotImplementedError()
     
     def rebuild(self):

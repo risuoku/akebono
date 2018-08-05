@@ -12,10 +12,10 @@ if __name__ == '__main__':
     mod_config = importlib.import_module(ns.config)
     settings.load(mod_config)
     
-    for op in settings.operations:
+    for idx, op in enumerate(settings.operations):
         opc = copy.copy(op)
         if 'kind' in opc:
             op_kind = opc.pop('kind')
             op_func = getattr(operator, op_kind, None)
             if op_func is not None:
-                op_func(**opc)
+                op_func(idx, **opc)
