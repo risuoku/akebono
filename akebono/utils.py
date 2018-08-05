@@ -74,6 +74,13 @@ def isdir(dirpath):
         raise Exception('not supported')
 
 
+def list_directory(dirpath):
+    if settings.storage_type == 'local':
+        return [os.path.join(dirpath, f) for f in os.listdir(dirpath)]
+    else:
+        raise Exception('not supported')
+
+
 def cache_located_at(filepath):
     def _func(f):
         def __func(*args, **kwargs):

@@ -52,14 +52,13 @@ def train(operation_index, scenario_tag,
             logger.debug('evaluate start.')
             rep = model.evaluate(fX, y)
             logger.debug('evaluate done.')
-            ret['evaluate_result'] = rep
+            ret['evaluate'] = rep
         if fit_model_enabled:
             logger.info('fit start.')
             model.fit(fX, y)
             logger.info('fit done.')
-            ret['fit_model'] = model
+            ret['model'] = model
         if dump_result_enabled:
             logger.info('dump_operation_result start.')
-            dump_operation_result(operation_index, scenario_tag, ret)
+            dump_operation_result('train', operation_index, scenario_tag, ret)
             logger.info('dump_operation_result done.')
-        print(ret)

@@ -14,12 +14,12 @@ def dump_sklearn_model(obj, dirpath, model_name):
         obj.value)
 
 
-def dump_operation_result(operation_index, scenario_tag, result):
-    model = result.get('fit_model')
+def dump_operation_result(operation_type, operation_index, scenario_tag, result):
+    model = result.get('model')
     if model is not None:
-        result.pop('fit_model')
-    model_name = 'model_{}'.format(operation_index)
-    result_name = 'result_{}'.format(operation_index)
+        result.pop('model')
+    model_name = '{}_model_{}'.format(operation_type, operation_index)
+    result_name = '{}_result_{}'.format(operation_type, operation_index)
     tag_list = ['latest']
     if scenario_tag is not None:
         tag_list.append(scenario_tag)
