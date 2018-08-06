@@ -42,4 +42,4 @@ def load(bqdataname,
     if cache_enabled:
         _func = cache_located_at(os.path.join(settings.cache_dir, fname))(_func)
 
-    return Dataset(_func(), target_column=target_column)
+    return Dataset(_func(), target_column)

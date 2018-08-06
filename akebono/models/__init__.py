@@ -2,6 +2,8 @@ from akebono.logging import getLogger
 from .base import WrappedModel
 from .sklearn import get_wrapped_sklearn_model
 from akebono.io.operation.dumper import dump_sklearn_model
+from akebono.io.operation.loader import load_sklearn_model
+import akebono.settings as settings
 import os
 import re
 import copy
@@ -11,8 +13,7 @@ logger = getLogger(__name__)
 
 class WrappedLGBMClassifier(WrappedModel):
     def base_init_finished(self):
-        if not self._is_rebuild:
-            self.reset()
+        self.reset()
     
     def fit(self, X, y):
         self._value.fit(X, y, **self._fit_kwargs)
@@ -29,6 +30,7 @@ class WrappedLGBMClassifier(WrappedModel):
         return self._value.predict_proba(X)
      
     dump = dump_sklearn_model
+    load = load_sklearn_model
     
 
 def get_model(model_config):
@@ -38,11 +40,26 @@ def get_model(model_config):
     if 'name' not in mcc:
         raise Exception('name must be set in model_config.')
     model_name = mcc.pop('name')
-    mcc['is_rebuild'] = False
+    is_rebuild = mcc.pop('is_rebuild')
+    scenario_tag = mcc.pop('scenario_tag', None)
+    operation_index = mcc.pop('operation_index', None)
 
+    model = None
     if re.search('^Sklearn.+$', model_name) is not None:
-        return get_wrapped_sklearn_model(model_name)(**mcc)
+        model = get_wrapped_sklearn_model(model_name)(**mcc)
     elif model_name == 'LGBMClassifier':
-        return WrappedLGBMClassifier(**mcc)
+        model = WrappedLGBMClassifier(**mcc)
     else:
         raise Exception('{} does not found.'.format(model_name))
+
+    if model is None:
+        raise Exception('unexpedted.')
+
+    if is_rebuild:
+        if scenario_tag is None or operation_index is None:
+            raise Exception('invalid state.')
+        dirpath = os.path.join(settings.operation_results_dir, scenario_tag)
+        mname = 'train_model_{}'.format(operation_index)
+        model.load(dirpath, mname)
+    logger.debug('get_model done in {} mode.'.format('predict' if is_rebuild else 'train'))
+    return model

@@ -2,7 +2,7 @@ import pandas as pd
 
 
 class Dataset:
-    def __init__(self, value, target_column=None):
+    def __init__(self, value, target_column):
         if not isinstance(value, pd.DataFrame):
             raise TypeError('value must be pandas.DataFrame')
         self._value = value

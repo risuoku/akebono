@@ -2,6 +2,7 @@ import re
 
 from .base import WrappedModel
 from akebono.io.operation.dumper import dump_sklearn_model
+from akebono.io.operation.loader import load_sklearn_model
 from akebono.utils import load_object_by_str
 from akebono.logging import getLogger
 
@@ -36,8 +37,7 @@ def _generate_reset_func(cls):
 
 
 def _base_init_finished(model):
-    if not model._is_rebuild:
-        model.reset()
+    model.reset()
 
 
 def get_wrapped_sklearn_model(model_cls_str):
@@ -52,6 +52,7 @@ def get_wrapped_sklearn_model(model_cls_str):
         'fit': _fit,
         'reset': _generate_reset_func(model_cls),
         'dump': dump_sklearn_model,
+        'load': load_sklearn_model,
         'base_init_finished': _base_init_finished,
     }
 

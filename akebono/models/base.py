@@ -4,11 +4,10 @@ from .evaluator import evaluate
 class WrappedModel:
     model_type = None
 
-    def __init__(self, is_rebuild=False, init_kwargs={}, fit_kwargs={}, evaluate_kwargs={}):
+    def __init__(self, init_kwargs={}, fit_kwargs={}, evaluate_kwargs={}):
         self._init_kwargs = init_kwargs
         self._fit_kwargs = fit_kwargs
         self._evaluate_kwargs = evaluate_kwargs
-        self._is_rebuild = is_rebuild
         self._value = None
         self.base_init_finished()
     
@@ -21,12 +20,11 @@ class WrappedModel:
     def reset(self):
         raise NotImplementedError()
     
-    def dump(self, name):
+    def dump(self, dirpath, name):
         raise NotImplementedError()
-    
-    def rebuild(self):
-        if not self._is_rebuild:
-            raise Exception('rebuild flag is False')
+
+    def load(self, dirpath, name):
+        raise NotImplementedError()
 
     def set_model_type(self, y=None, model_type=None):
         if (y is None and model_type is None) or (y is not None and model_type is not None):
