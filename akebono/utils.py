@@ -33,13 +33,14 @@ def pd_to_csv(df, path, **kwargs):
         df.to_csv(path, **kwargs)
     elif settings.storage_type == 'gcs':
         try:
-            df.to_csv(path, **kwargs)
-            with open(path, 'r') as f:
+            tmppath = './tmp.csv'
+            df.to_csv(tmppath, **kwargs)
+            with open(tmppath, 'r') as f:
                 bkt = _get_gcs_bucket(settings.storage_option['bucket_name'])
-                bkt.blob(filepath, chunk_size=1048576000).upload_from_file(f, content_type='text/csv')
+                bkt.blob(path, chunk_size=1048576000).upload_from_file(f, content_type='text/csv')
         finally:
-            if os.path.isfile(path):
-                os.remove(path)
+            if os.path.isfile(tmppath):
+                os.remove(tmppath)
     else:
         raise ValueError('invalid storage_type')
 

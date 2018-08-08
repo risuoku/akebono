@@ -20,7 +20,7 @@ def load_train_results(scenario_tag='latest', index_list='all'):
     file_paths = list_directory(dirpath)
     result_paths = [
         fp for fp in file_paths
-        if re.search('.+/train_result_[0-9]+\.pkl$', fp) is not None
+        if re.search('.+/train_result_meta_[0-9]+\.pkl$', fp) is not None
     ]
     results = [
         from_pickle(rp)

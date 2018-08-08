@@ -1,32 +1,43 @@
-import argparse
-import datetime
-import importlib
+import sys
+import re
 import copy
-import akebono.settings as settings
-import akebono.operator as operator
-from akebono.utils import get_hash
+from akebono.logging import getLogger
+from .parser import AkebonoArgumentParser
+from . import models
+
+logger = getLogger(__name__)
+parser = AkebonoArgumentParser().build()
+
+
+def is_help(s):
+    return s in ('-h', '--help')
+
+
+def main(argv = None):
+    rawargs = sys.argv[1:]
+    if len(rawargs) == 0:
+        rawargs = ['--help']
+
+    namespace = parser.parse_args(rawargs)
+    subparsers = [(re.sub('subparser__', '', k), v) for k, v in vars(namespace).items() if re.search('^subparser__.+$', k) is not None and v is not None]
+    if len(subparsers) > 0:
+        longest, method = sorted(subparsers, key=lambda x: x[0], reverse=True)[0]
+        cmd_stack = longest.split('_')[1:]
+        cmd_stack.append(method)
+        cmd = copy.copy(models.tree)
+        for k in cmd_stack:
+            cmd = cmd[k]
+        if isinstance(cmd, dict):
+            parser.parse_args(rawargs + ['--help'])
+        try:
+            cmd.execute_all(namespace)
+            logger.debug('{} normally completed.'.format(' '.join(cmd_stack)))
+        except Exception as e:
+            logger.error(e, exc_info=True)
+            sys.exit(1)
+    else:
+        pass
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--config', default='config')
-    parser.add_argument('--scenario-tag', default=None)
-    parser.add_argument('--auto-scenario-tag-enabled', action='store_true', default=False)
-    ns = parser.parse_args()
-    mod_config = importlib.import_module(ns.config)
-    settings.load(mod_config)
-
-    # get scenario_tag
-    scenario_tag = None
-    if ns.auto_scenario_tag_enabled:
-        scenario_tag = get_hash(datetime.datetime.now().strftime('%Y%m%d%H%M%S%f'))
-    if ns.scenario_tag is not None:
-        scenario_tag = ns.scenario_tag
-    
-    for idx, op in enumerate(settings.operations):
-        opc = copy.copy(op)
-        if 'kind' in opc:
-            op_kind = opc.pop('kind')
-            op_func = getattr(operator, op_kind, None)
-            if op_func is not None:
-                op_func(idx, scenario_tag, **opc)
+    main()

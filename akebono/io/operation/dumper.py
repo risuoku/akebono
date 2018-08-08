@@ -19,8 +19,8 @@ def dump_train_result(operation_index, scenario_tag, result):
     model = result.get('model')
     if model is not None:
         result.pop('model')
-    model_name = 'train_model_{}'.format(operation_index)
-    result_name = 'train_result_{}'.format(operation_index)
+    model_name = 'train_result_model_{}'.format(operation_index)
+    result_name = 'train_result_meta_{}'.format(operation_index)
     tag_list = ['latest']
     if scenario_tag is not None:
         tag_list.append(scenario_tag)

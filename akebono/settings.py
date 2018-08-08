@@ -14,7 +14,8 @@ _valid_attributes = [
     'bq_sql_template_dir',
     'project_name',
     'project_root_dir',
-    'operations',
+    'train_operations',
+    'predict_operations',
 ]
 
 
@@ -54,7 +55,8 @@ if not _init:
     bq_sql_template_dir = '_templates/bq_sql'
     project_name = 'default'
     project_root_dir = os.getcwd()
-    operations = []
+    train_operations = []
+    predict_operations = []
     
     _update_associated_attrs()
     _init = True

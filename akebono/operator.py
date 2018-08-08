@@ -95,14 +95,12 @@ def predict(operation_index, scenario_tag,
             'result_predict_column': result_predict_column,
         }
 
-        if 'operation_index' not in dataset_config:
-            dataset_config['operation_index'] = 0
-        if 'scenario_tag' not in dataset_config:
-            dataset_config['scenario_tag'] = 'latest'
-        p_index = dataset_config['operation_index']
-        p_tag = dataset_config['scenario_tag']
+        if 'operation_index' not in model_config:
+            model_config['operation_index'] = 0
+        model_config['scenario_tag'] = scenario_tag
+        p_index = model_config['operation_index']
 
-        tr = get_train_result(scenario_tag=p_tag, operation_index=p_index)
+        tr = get_train_result(scenario_tag=scenario_tag, operation_index=p_index)
         if tr is None:
             raise Exception('target result not found.')
         ret['train_result'] = tr
@@ -132,7 +130,7 @@ def predict(operation_index, scenario_tag,
 
         if dump_result_enabled:
             logger.debug('dump_predicted_result start.')
-            dump_predicted_result(operation_index, dataset_config['scenario_tag'], dump_result_format, predict_result, ret)
+            dump_predicted_result(operation_index, scenario_tag, dump_result_format, predict_result, ret)
             logger.debug('dump_predicted_result done.')
 
         ret['predict_result'] = predict_result
