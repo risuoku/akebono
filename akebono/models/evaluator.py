@@ -61,7 +61,7 @@ def _fit_and_predict(X_train, X_test, y_train, model):
     return model, y_pred, y_pred_proba
 
 
-def _get_evaluated_result(y_pred, y_pred_proba, y_test, pos_index, metrics):
+def _get_evaluated_result(y_pred, y_pred_proba, y_test, metrics):
     _validate_metrics(metrics)
 
     if metrics['predict_type'] == 'predict':
@@ -77,9 +77,6 @@ def _get_evaluated_result(y_pred, y_pred_proba, y_test, pos_index, metrics):
             }
     else:
         if y_pred_proba is not None:
-            if pos_index is None:
-                raise Exception('pos_index must be set .. if predict_proba metric exists')
-            y_pred_proba = y_pred_proba[:, pos_index]
             return {
                 'name': metrics['name'],
                 'value': metrics['func'](y_test, y_pred_proba),
@@ -105,8 +102,7 @@ def evaluate(model,
     train_test_split_func_kwargs={},
     cross_val_iterator=None,
     cross_val_iterator_kwargs={},
-    metrics='all',
-    pos_index=None
+    metrics='all'
     ):
     if model.model_type is None:
         model.set_model_type(y=y)
@@ -139,7 +135,7 @@ def evaluate(model,
         if metrics == 'all':
             if model_type == 'binary_classifier':
                 for m in _binary_classifier_metrics:
-                    one_result.append(_get_evaluated_result(y_pred, y_pred_proba, y_test, pos_index, m))
+                    one_result.append(_get_evaluated_result(y_pred, y_pred_proba, y_test, m))
             else:
                 raise Exception('not supported.')
         else:

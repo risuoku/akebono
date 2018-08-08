@@ -28,6 +28,22 @@ def _get_gcs_bucket(bucket_name):
     return self._bkt
 
 
+def pd_to_csv(df, path, **kwargs):
+    if settings.storage_type == 'local':
+        df.to_csv(path, **kwargs)
+    elif settings.storage_type == 'gcs':
+        try:
+            df.to_csv(path, **kwargs)
+            with open(path, 'r') as f:
+                bkt = _get_gcs_bucket(settings.storage_option['bucket_name'])
+                bkt.blob(filepath, chunk_size=1048576000).upload_from_file(f, content_type='text/csv')
+        finally:
+            if os.path.isfile(path):
+                os.remove(path)
+    else:
+        raise ValueError('invalid storage_type')
+
+
 def to_pickle(filepath, obj):
     if settings.storage_type == 'local':
         with open(filepath, 'wb') as fp:

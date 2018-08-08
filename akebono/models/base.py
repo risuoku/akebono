@@ -4,11 +4,12 @@ from .evaluator import evaluate
 class WrappedModel:
     model_type = None
 
-    def __init__(self, init_kwargs={}, fit_kwargs={}, evaluate_kwargs={}):
+    def __init__(self, init_kwargs={}, fit_kwargs={}, evaluate_kwargs={}, pos_index=None):
         self._init_kwargs = init_kwargs
         self._fit_kwargs = fit_kwargs
         self._evaluate_kwargs = evaluate_kwargs
         self._value = None
+        self._pos_index = pos_index
         self.base_init_finished()
     
     def base_init_finished(self):

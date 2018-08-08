@@ -26,7 +26,9 @@ def _predict(model, X):
 
 
 def _predict_proba(model, X):
-    return model._value.predict_proba(X)
+    if model._pos_index is None:
+        raise Exception('predict_proba need pos_index')
+    return model._value.predict_proba(X)[:, model._pos_index]
 
 
 def _generate_reset_func(cls):
