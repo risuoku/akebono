@@ -7,8 +7,6 @@ def get_scenario_summary(scenario_tag, performance_sort_key):
     trs = [tr for tr in trs if tr['evaluate_enabled'] and tr['dump_result_enabled']]
     if len(trs) < 1:
         raise Exception('evaluated result not found.')
-    if len(trs) > 1 and performance_sort_key is None:
-        raise Exception('performance_sort_key must be set if result size is larger than 1.')
     if performance_sort_key is not None and performance_sort_key not in trs[0]['evaluate']['metrics'].columns:
         raise KeyError('invalid key .. valid keys: {}'.format(list(trs[0]['evaluate']['metrics'].columns)))
     all_metrics = []
