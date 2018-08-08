@@ -157,8 +157,11 @@ class Param:
         h_str = '__'.join(['{}_{}'.format(k, v) for k, v in s_items if not k in ignore_keys])
         return h_str
 
-    def get_hashed_id(self):
-        return get_hash(self.get_param_expression())
+    def get_hashed_id(self, length=None):
+        r = get_hash(self.get_param_expression())
+        if length is not None:
+            r = r[:length]
+        return r
     
     @property
     def value(self):

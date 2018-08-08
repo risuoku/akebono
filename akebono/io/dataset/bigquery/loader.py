@@ -1,6 +1,6 @@
 from .client import Client as BqClient
 import akebono.settings as settings
-from akebono.io.dataset.model import Dataset
+from akebono.dataset.model import Dataset
 from akebono.utils import (
     Param,
     cache_located_at,
@@ -23,19 +23,23 @@ def render_sql(bqdataname, param):
     return settings.get_template_env().get_template('{}.sql'.format(bqdataname)).render(**param)
 
 
-def load(bqdataname,
-         target_column='target', param={},
-         preprocess_func='identify@akebono.io.dataset.preprocessors',
-         preprocess_func_kwargs={},
-         cache_enabled=True,
+def load(
+    name=None,
+    target_column='target', io_func_kwargs={},
+    preprocess_func='identify@akebono.dataset.preprocessors',
+    preprocess_func_kwargs={},
+    cache_enabled=True,
     ):
-    _p = Param(param)
-    fname = '{}_{}.pkl'.format(bqdataname, _p.get_hashed_id())
+    if name is None:
+        raise Exception('dataset name must be specified for bigquery loader.')
+    _p_io = Param(io_func_kwargs)
+    _p2 = Param(preprocess_func_kwargs)
+    fname = '{}_{}{}.pkl'.format(name, _p_io.get_hashed_id(length=32), _p2.get_hashed_id(length=32))
 
     preprocess_func = load_object_by_str(preprocess_func)
 
     def _func():
-        sql = render_sql(bqdataname, _p.value)
+        sql = render_sql(name, _p_io.value)
         r = pd.DataFrame(load_from_sql(sql))
         return preprocess_func(r, **preprocess_func_kwargs)
 

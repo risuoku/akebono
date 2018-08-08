@@ -1,6 +1,6 @@
 import akebono.features as features
 from akebono.logging import getLogger
-from akebono.io.dataset import load_dataset
+from akebono.dataset import load_dataset
 from akebono.io.operation.dumper import (
     dump_train_result,
     dump_predicted_result,
