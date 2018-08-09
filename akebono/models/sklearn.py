@@ -10,9 +10,13 @@ from akebono.logging import getLogger
 logger = getLogger(__name__)
 
 
-_valid_models = {
+_valid_not_regressor_models = {
     'LogisticRegression': 'sklearn.linear_model',
     'RandomForestClassifier': 'sklearn.ensemble',
+}
+
+_valid_regressor_models = {
+    'LinearRegression': 'sklearn.linear_model',
 }
 
 
@@ -42,12 +46,21 @@ def _base_init_finished(model):
     model.reset()
 
 
+def _base_init_finished_reg(model):
+    model.set_model_type(model_type='regressor')
+    model.reset()
+
+
 def get_wrapped_sklearn_model(model_cls_str):
     # model_cls_str は'^Sklearn.+$' にマッチする前提
     model_cls_str = re.sub('Sklearn', '', model_cls_str)
-    model_cls_mod = _valid_models.get(model_cls_str)
-    if model_cls_mod is None:
+    model_cls_mod_notreg = _valid_not_regressor_models.get(model_cls_str)
+    model_cls_mod_reg = _valid_regressor_models.get(model_cls_str)
+    if model_cls_mod_notreg is None and model_cls_mod_reg is None:
         raise Exception('{} is invalid.'.format(model_cls_str))
+    if model_cls_mod_notreg is not None and model_cls_mod_reg is not None:
+        raise Exception('unexpected state.')
+    model_cls_mod = model_cls_mod_notreg or model_cls_mod_reg
     model_cls = load_object_by_str('{}@{}'.format(model_cls_str, model_cls_mod))
 
     cls_attrs = {
@@ -55,7 +68,7 @@ def get_wrapped_sklearn_model(model_cls_str):
         'reset': _generate_reset_func(model_cls),
         'dump': dump_sklearn_model,
         'load': load_sklearn_model,
-        'base_init_finished': _base_init_finished,
+        'base_init_finished': _base_init_finished if model_cls_mod_notreg else _base_init_finished_reg,
     }
 
     if hasattr(model_cls, 'predict'):

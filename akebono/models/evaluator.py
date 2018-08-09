@@ -39,6 +39,35 @@ _binary_classifier_metrics = [
 ]
 
 
+_regressor_metrics = [
+    {
+        'name': 'mean_absolute_error',
+        'func': skl_metrics.mean_absolute_error,
+        'predict_type': 'predict',
+    },
+    {
+        'name': 'mean_squared_error',
+        'func': skl_metrics.mean_squared_error,
+        'predict_type': 'predict',
+    },
+    {
+        'name': 'median_absolute_error',
+        'func': skl_metrics.median_absolute_error,
+        'predict_type': 'predict',
+    },
+    {
+        'name': 'r2_score',
+        'func': skl_metrics.r2_score,
+        'predict_type': 'predict',
+    },
+    {
+        'name': 'explained_variance',
+        'func': skl_metrics.explained_variance_score,
+        'predict_type': 'predict',
+    },
+]
+
+
 def _validate_metrics(o):
     if not isinstance(o, dict):
         raise TypeError('invalid type.')
@@ -133,11 +162,15 @@ def evaluate(model,
         one_result = []
         model, y_pred, y_pred_proba = _fit_and_predict(X_train, X_test, y_train, model)
         if metrics == 'all':
+            _preload_metrics = None
             if model_type == 'binary_classifier':
-                for m in _binary_classifier_metrics:
-                    one_result.append(_get_evaluated_result(y_pred, y_pred_proba, y_test, m))
+                _preload_metrics = _binary_classifier_metrics
+            elif model_type == 'regressor':
+                _preload_metrics = _regressor_metrics
             else:
                 raise Exception('not supported.')
+            for m in _preload_metrics:
+                one_result.append(_get_evaluated_result(y_pred, y_pred_proba, y_test, m))
         else:
             raise Exception('not supported.')
         result['metrics'].append(one_result)

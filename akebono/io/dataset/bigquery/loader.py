@@ -25,14 +25,14 @@ def render_sql(bqdataname, param):
 
 def load(
     name=None,
-    target_column='target', io_func_kwargs={},
+    target_column='target', origin_func_kwargs={},
     preprocess_func='identify@akebono.dataset.preprocessors',
     preprocess_func_kwargs={},
     cache_enabled=True,
     ):
     if name is None:
         raise Exception('dataset name must be specified for bigquery loader.')
-    _p_io = Param(io_func_kwargs)
+    _p_io = Param(origin_func_kwargs)
     _p2 = Param(preprocess_func_kwargs)
     fname = '{}_{}{}.pkl'.format(name, _p_io.get_hashed_id(length=32), _p2.get_hashed_id(length=32))
 
