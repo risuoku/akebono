@@ -15,12 +15,12 @@ def dump_sklearn_model(obj, dirpath, model_name):
         obj.value)
 
 
-def dump_train_result(operation_index, scenario_tag, result):
+def dump_train_result(train_id, scenario_tag, result):
     model = result.get('model')
     if model is not None:
         result.pop('model')
-    model_name = 'train_result_model_{}'.format(operation_index)
-    result_name = 'train_result_meta_{}'.format(operation_index)
+    model_name = 'train_result_model_{}'.format(train_id)
+    result_name = 'train_result_meta_{}'.format(train_id)
     tag_list = ['latest']
     if scenario_tag is not None:
         tag_list.append(scenario_tag)
@@ -40,10 +40,10 @@ def dump_train_result(operation_index, scenario_tag, result):
             remove_directory(tmpdirpath)
 
 
-def dump_predicted_result(operation_index, scenario_tag, dump_result_format, df, meta):
+def dump_predicted_result(predict_id, scenario_tag, dump_result_format, df, meta):
     dirpath = os.path.join(settings.operation_results_dir, scenario_tag)
-    fname_meta = 'predict_result_meta_{}'.format(operation_index)
-    fname = 'predict_result_{}'.format(operation_index)
+    fname_meta = 'predict_result_meta_{}'.format(predict_id)
+    fname = 'predict_result_{}'.format(predict_id)
     if dump_result_format == 'csv':
         pd_to_csv(df, os.path.join(dirpath, fname + '.csv'), index=False)
     elif dump_result_format == 'pickle':

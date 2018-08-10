@@ -15,7 +15,7 @@ def load_sklearn_model(model, dirpath, model_name):
     return model
 
 
-def load_train_results(scenario_tag='latest', index_list='all'):
+def load_train_results(scenario_tag='latest', train_ids='all'):
     dirpath = os.path.join(settings.operation_results_dir, scenario_tag)
     file_paths = list_directory(dirpath)
     result_paths = [
@@ -26,10 +26,10 @@ def load_train_results(scenario_tag='latest', index_list='all'):
         from_pickle(rp)
         for rp in result_paths
     ]
-    if not (isinstance(index_list, list) or index_list == 'all'):
-        raise ValueError('index_list must be list type or str "all"')
-    if not index_list == 'all':
-        results = [r for r in results if r['index'] in index_list]
+    if not (isinstance(train_ids, list) or train_ids == 'all'):
+        raise ValueError('train_ids must be list type or str "all"')
+    if not train_ids == 'all':
+        results = [r for r in results if r['id'] in train_ids]
 
     # convert evaluate result to pandas.DataFrame
     for idx, r in enumerate(results):
@@ -41,8 +41,8 @@ def load_train_results(scenario_tag='latest', index_list='all'):
     return results
 
 
-def get_train_result(scenario_tag='latest', operation_index=0):
-    rlist = load_train_results(scenario_tag=scenario_tag, index_list=[operation_index])
+def get_train_result(scenario_tag='latest', train_id=0):
+    rlist = load_train_results(scenario_tag=scenario_tag, train_ids=[train_id])
     if len(rlist) == 0:
         return None
     elif len(rlist) == 1:

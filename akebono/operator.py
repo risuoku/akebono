@@ -15,7 +15,7 @@ import os
 logger = getLogger(__name__)
 
 
-def train(operation_index, scenario_tag,
+def train(train_id, scenario_tag,
     dataset_config=None,
     model_config=None,
     feature_func='identify@akebono.features',
@@ -31,7 +31,7 @@ def train(operation_index, scenario_tag,
 
         ret = {
             'type': 'train',
-            'index': operation_index,
+            'id': train_id,
             'dataset_config': dataset_config,
             'model_config': model_config,
             'feature_func': feature_func,
@@ -66,13 +66,13 @@ def train(operation_index, scenario_tag,
             ret['model'] = model
         if dump_result_enabled:
             logger.info('dump_train_result start.')
-            dump_train_result(operation_index, scenario_tag, ret)
+            dump_train_result(train_id, scenario_tag, ret)
             logger.info('dump_train_result done.')
         
         return ret
 
 
-def predict(operation_index, scenario_tag,
+def predict(predict_id, scenario_tag,
     method_type='predict',
     dataset_config=None,
     model_config={},
@@ -95,12 +95,12 @@ def predict(operation_index, scenario_tag,
             'result_predict_column': result_predict_column,
         }
 
-        if 'operation_index' not in model_config:
-            model_config['operation_index'] = 0
+        if 'train_id' not in model_config:
+            model_config['train_id'] = '0'
         model_config['scenario_tag'] = scenario_tag
-        p_index = model_config['operation_index']
+        train_id = str(model_config['train_id'])
 
-        tr = get_train_result(scenario_tag=scenario_tag, operation_index=p_index)
+        tr = get_train_result(scenario_tag=scenario_tag, train_id=train_id)
         if tr is None:
             raise Exception('target result not found.')
         ret['train_result'] = tr
@@ -130,7 +130,7 @@ def predict(operation_index, scenario_tag,
 
         if dump_result_enabled:
             logger.debug('dump_predicted_result start.')
-            dump_predicted_result(operation_index, scenario_tag, dump_result_format, predict_result, ret)
+            dump_predicted_result(predict_id, scenario_tag, dump_result_format, predict_result, ret)
             logger.debug('dump_predicted_result done.')
 
         ret['predict_result'] = predict_result

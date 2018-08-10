@@ -209,3 +209,32 @@ def load_object_by_str(s, type_is=None):
 
 def get_label_by_object(obj):
     return '{}@{}'.format(obj.__name__, obj.__module__)
+
+
+# Use the system PRNG if possible
+try:
+    import random
+    random = random.SystemRandom()
+    using_sysrandom = True
+except NotImplementedError:
+    import warnings
+    warnings.warn('A secure pseudo-random number generator is not available '
+                  'on your system. Falling back to Mersenne Twister.')
+    using_sysrandom = False
+
+DEFAULT_ALLOWED_CHARS = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+def get_random_string(length=12, allowed_chars=DEFAULT_ALLOWED_CHARS):
+    """
+    implementation inspired by Django
+    """
+    if not using_sysrandom:
+        import hashlib
+        import time
+        random.seed(
+                    hashlib.sha256(
+                        ("%s%s%s" % (
+                            random.getstate(),
+                            time.time(),
+                            'aaaaa')).encode('utf-8')
+                    ).digest())
+    return ''.join(random.choice(allowed_chars) for i in range(length))

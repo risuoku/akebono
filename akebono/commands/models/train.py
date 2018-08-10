@@ -21,4 +21,4 @@ class Train(CommandBase):
             scenario_tag = namespace.scenario_tag
         
         for idx, op in enumerate(settings.train_operations):
-            operator.train(idx, scenario_tag, **op)
+            operator.train(str(idx), scenario_tag, **op)

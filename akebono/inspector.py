@@ -3,7 +3,7 @@ import pandas as pd
 
 
 def get_scenario_summary(scenario_tag, performance_sort_key):
-    trs = load_train_results(scenario_tag=scenario_tag, index_list='all')
+    trs = load_train_results(scenario_tag=scenario_tag, train_ids='all')
     trs = [tr for tr in trs if tr['evaluate_enabled'] and tr['dump_result_enabled']]
     if len(trs) < 1:
         raise Exception('evaluated result not found.')
@@ -12,7 +12,7 @@ def get_scenario_summary(scenario_tag, performance_sort_key):
     all_metrics = []
     for tr in trs:
         mr = tr['evaluate']['metrics'].mean()
-        mr['_akebono_op_index'] = tr['index']
+        mr['_akebono_train_id'] = tr['id']
         all_metrics.append(mr)
 
     concated = pd.concat(all_metrics, axis=1).T.reset_index(drop=True)

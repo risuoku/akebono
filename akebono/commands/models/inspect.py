@@ -27,11 +27,11 @@ class Inspect(CommandBase):
         for idx, row in ss.iterrows():
             print('')
             print('------------------------------')
-            op_index = row['_akebono_op_index']
-            print('operation_index: {}'.format(int(op_index)))
+            train_id = row['_akebono_train_id']
+            print('train_id: {}'.format(train_id))
             print('')
             attrs = list(row.index.copy())
-            attrs.remove('_akebono_op_index')
+            attrs.remove('_akebono_train_id')
             alen = max([len(a) for a in attrs] + [8])
             v1 = ' '.join([_get_fixed_length_str(a, alen) for a in attrs])
             v2 = ' '.join([_get_fixed_length_str('{:.5f}'.format(row[a]), alen) for a in attrs])

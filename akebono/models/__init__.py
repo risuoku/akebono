@@ -44,7 +44,7 @@ def get_model(model_config):
     model_name = mcc.pop('name')
     is_rebuild = mcc.pop('is_rebuild')
     scenario_tag = mcc.pop('scenario_tag', None)
-    operation_index = mcc.pop('operation_index', None)
+    train_id = mcc.pop('train_id', None)
 
     model = None
     if re.search('^Sklearn.+$', model_name) is not None:
@@ -58,10 +58,10 @@ def get_model(model_config):
         raise Exception('unexpedted.')
 
     if is_rebuild:
-        if scenario_tag is None or operation_index is None:
+        if scenario_tag is None or train_id is None:
             raise Exception('invalid state.')
         dirpath = os.path.join(settings.operation_results_dir, scenario_tag)
-        mname = 'train_result_model_{}'.format(operation_index)
+        mname = 'train_result_model_{}'.format(train_id)
         model.load(dirpath, mname)
     logger.debug('get_model done in {} mode.'.format('predict' if is_rebuild else 'train'))
     return model

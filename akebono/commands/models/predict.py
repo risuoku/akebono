@@ -3,7 +3,7 @@ import copy
 
 import akebono.settings as settings
 import akebono.operator as operator
-from akebono.utils import get_hash
+from akebono.utils import get_random_string
 from .base import CommandBase
 
 
@@ -13,5 +13,6 @@ class Predict(CommandBase):
         parser.add_argument('-t', '--scenario-tag', default='latest')
 
     def execute(self, namespace):
-        for idx, op in enumerate(settings.predict_operations):
-            operator.predict(idx, namespace.scenario_tag, **op)
+        for op in settings.predict_operations:
+            predict_id = get_random_string(16)
+            operator.predict(predict_id, namespace.scenario_tag, **op)
