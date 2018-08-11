@@ -7,3 +7,4 @@ google-cloud
 google-cloud-storage
 google-cloud-bigquery
 google-api-python-client
+pytest
