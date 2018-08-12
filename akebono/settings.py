@@ -24,6 +24,9 @@ def _update_associated_attrs():
     self.storage_project_root_dir = pathjoin(storage_root_dir, project_name)
     self.cache_dir = pathjoin(storage_project_root_dir, 'cache')
     self.operation_results_dir = pathjoin(storage_project_root_dir, 'operation_results')
+
+
+def init():
     if storage_type == 'local' and storage_auto_create_dir:
         os.makedirs(storage_project_root_dir, exist_ok=True)
         os.makedirs(cache_dir, exist_ok=True)
