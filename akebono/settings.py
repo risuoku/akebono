@@ -53,7 +53,7 @@ if not _init:
     storage_type = 'local'
     storage_option = {}
     storage_auto_create_dir = True
-    bq_sql_template_dir = '_templates/bq_sql'
+    bq_sql_template_dir = '_dataset/bq_sql_templates'
     project_name = 'default'
     project_root_dir = os.getcwd()
     train_operations = []

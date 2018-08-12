@@ -121,12 +121,12 @@ def predict(predict_id, scenario_tag,
         if predict_func is None:
             raise Exception('{} is not defined.'.format(method_type))
         rawresult = predict_func(fX)
-        predict_result = fX
+        predict_result = fX.copy()
         if not result_target_columns == 'all':
             if not isinstance(result_target_columns, list):
                 raise TypeError('result_target_columns must be list.')
             predict_result = fX[result_target_columns]
-        predict_result[result_predict_column] = rawresult
+        predict_result.loc[:,result_predict_column] = rawresult
 
         if dump_result_enabled:
             logger.debug('dump_predicted_result start.')
