@@ -4,9 +4,7 @@ from sklearn.model_selection import train_test_split as skl_train_test_split
 from sklearn.linear_model import (
     LinearRegression,
 )
-from akebono.dataset.generator.sklearn import (
-    make_regression as akebono_make_regression,
-)
+from akebono.dataset import get_dataset
 import pandas as pd
 import math
 
@@ -24,7 +22,16 @@ def test_model_regressor(pd_assert_equal):
             'metrics': 'all',
         }
     ]
-    ds1 = akebono_make_regression(origin_func_kwargs={'random_state': 0})
+    dataset_config = {
+        'loader_config': {
+            'func': 'make_regression@akebono.dataset.generator.sklearn',
+            'func_kwargs': {
+                'random_state': 0,
+            },
+        },
+        'target_column': 'target',
+    }
+    ds1 = get_dataset(dataset_config)
     X1, y1 = ds1.get_predictor_target()
 
     for init_kwargs in init_kwargs_settings:

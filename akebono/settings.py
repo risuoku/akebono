@@ -1,7 +1,7 @@
 import sys
 import os
+import re
 import jinja2
-from akebono.utils import pathjoin
 
 
 self = sys.modules[__name__]
@@ -31,7 +31,7 @@ def _update_associated_attrs():
     
     
 def get_template_env():
-    _bq_tpl_absdir = pathjoin(project_root_dir, bq_sql_template_dir)
+    _bq_tpl_absdir = os.path.join(project_root_dir, bq_sql_template_dir)
     return jinja2.Environment(
         loader = jinja2.FileSystemLoader(_bq_tpl_absdir, encoding='utf-8')
     )
@@ -58,6 +58,20 @@ if not _init:
     project_root_dir = os.getcwd()
     train_operations = []
     predict_operations = []
+
+
+    _pathjoin_gcs_pattern = re.compile('^(\/+)([^/].*)$')
+    def pathjoin(*args, **kwargs):
+        if self.storage_type == 'local':
+            return os.path.join(*args, **kwargs)
+        elif self.storage_type == 'gcs':
+            r = '/'.join(args)
+            reg = re.search(_pathjoin_gcs_pattern, r)
+            if reg is not None:
+                r = reg.group(2)
+            return r
+        else:
+            raise ValueError('invalid storage_type')
     
     _update_associated_attrs()
     _init = True

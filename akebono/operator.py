@@ -1,11 +1,11 @@
 import akebono.features as features
 from akebono.logging import getLogger
-from akebono.dataset import load_dataset
 from akebono.io.operation.dumper import (
     dump_train_result,
     dump_predicted_result,
 )
 from akebono.io.operation.loader import get_train_result 
+from akebono.dataset import get_dataset
 from akebono.models import get_model
 from akebono.utils import load_object_by_str
 import akebono.settings as settings
@@ -41,7 +41,7 @@ def train(train_id, scenario_tag,
             'dump_result_enabled': dump_result_enabled
         }
 
-        dataset = load_dataset(dataset_config)
+        dataset = get_dataset(dataset_config)
         
         feature_func = load_object_by_str(feature_func)
         logger.debug('load dataset start.')
@@ -105,10 +105,8 @@ def predict(predict_id, scenario_tag,
             raise Exception('target result not found.')
         ret['train_result'] = tr
 
-        if 'load_func_kwargs' not in dataset_config:
-            dataset_config['load_func_kwargs'] = {}
-        dataset_config['load_func_kwargs']['target_column'] = None # target_columnがNoneだと、predict用のDatasetが返ってくる
-        dataset = load_dataset(dataset_config)
+        dataset_config['target_column'] = None # target_columnがNoneだと、predict用のDatasetが返ってくる
+        dataset = get_dataset(dataset_config)
         feature_func = load_object_by_str(tr['feature_func'])
         X = dataset.value
         fX = feature_func(X, **tr['feature_func_kwargs'])
