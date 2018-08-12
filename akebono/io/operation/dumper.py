@@ -4,6 +4,7 @@ from akebono.utils import (
     remove_directory,
     rename_directory,
     isdir,
+    pathjoin,
 )
 import os
 import akebono.settings as settings
@@ -11,7 +12,7 @@ import akebono.settings as settings
 
 def dump_sklearn_model(obj, dirpath, model_name):
     return to_pickle(
-        os.path.join(dirpath, '{}.pkl'.format(model_name)),
+        pathjoin(dirpath, '{}.pkl'.format(model_name)),
         obj.value)
 
 
@@ -25,15 +26,15 @@ def dump_train_result(train_id, scenario_tag, result):
     if scenario_tag is not None:
         tag_list.append(scenario_tag)
     for tag in tag_list:
-        dirpath = os.path.join(settings.operation_results_dir, tag)
-        tmpdirpath = os.path.join(settings.operation_results_dir, 'tmp_' + tag)
+        dirpath = pathjoin(settings.operation_results_dir, tag)
+        tmpdirpath = pathjoin(settings.operation_results_dir, 'tmp_' + tag)
         if isdir(tmpdirpath):
             raise Exception('tmpdirpath exists .. please rename or remove {} before save.'.format(tmpdirpath))
         if isdir(dirpath):
             rename_directory(dirpath, tmpdirpath)
         if settings.storage_type == 'local':
             os.makedirs(dirpath, exist_ok=True)
-        to_pickle(os.path.join(dirpath, '{}.pkl'.format(result_name)), result) # dump result
+        to_pickle(pathjoin(dirpath, '{}.pkl'.format(result_name)), result) # dump result
         if model is not None:
             model.dump(dirpath, model_name)
         if isdir(tmpdirpath):
@@ -41,13 +42,13 @@ def dump_train_result(train_id, scenario_tag, result):
 
 
 def dump_predicted_result(predict_id, scenario_tag, dump_result_format, df, meta):
-    dirpath = os.path.join(settings.operation_results_dir, scenario_tag)
+    dirpath = pathjoin(settings.operation_results_dir, scenario_tag)
     fname_meta = 'predict_result_meta_{}'.format(predict_id)
     fname = 'predict_result_{}'.format(predict_id)
     if dump_result_format == 'csv':
-        pd_to_csv(df, os.path.join(dirpath, fname + '.csv'), index=False)
+        pd_to_csv(df, pathjoin(dirpath, fname + '.csv'), index=False)
     elif dump_result_format == 'pickle':
-        to_pickle(os.path.join(dirpath, fname + '.pkl'), df)
+        to_pickle(pathjoin(dirpath, fname + '.pkl'), df)
     else:
         raise Exception('invalid format')
-    to_pickle(os.path.join(dirpath, fname_meta + '.pkl'), meta)
+    to_pickle(pathjoin(dirpath, fname_meta + '.pkl'), meta)

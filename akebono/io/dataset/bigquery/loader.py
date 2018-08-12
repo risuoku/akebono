@@ -5,9 +5,9 @@ from akebono.utils import (
     Param,
     cache_located_at,
     load_object_by_str,
+    pathjoin,
 )
 import pandas as pd
-import os
 
 
 _bqclient = BqClient()
@@ -44,6 +44,6 @@ def load(
         return preprocess_func(r, **preprocess_func_kwargs)
 
     if cache_enabled:
-        _func = cache_located_at(os.path.join(settings.cache_dir, fname))(_func)
+        _func = cache_located_at(pathjoin(settings.cache_dir, fname))(_func)
 
     return Dataset(_func(), target_column)

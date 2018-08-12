@@ -3,20 +3,21 @@ import re
 from akebono.utils import (
     from_pickle,
     list_directory,
+    pathjoin,
 )
 import akebono.settings as settings
 import pandas as pd
 
 
 def load_sklearn_model(model, dirpath, model_name):
-    model._value = from_pickle(os.path.join(dirpath, '{}.pkl'.format(model_name)))
+    model._value = from_pickle(pathjoin(dirpath, '{}.pkl'.format(model_name)))
     if model._value is None:
         raise Exception('load {} failed.'.format(model_name))
     return model
 
 
 def load_train_results(scenario_tag='latest', train_ids='all'):
-    dirpath = os.path.join(settings.operation_results_dir, scenario_tag)
+    dirpath = pathjoin(settings.operation_results_dir, scenario_tag)
     file_paths = list_directory(dirpath)
     result_paths = [
         fp for fp in file_paths

@@ -3,8 +3,8 @@ from .base import WrappedModel
 from .sklearn import get_wrapped_sklearn_model
 from akebono.io.operation.dumper import dump_sklearn_model
 from akebono.io.operation.loader import load_sklearn_model
+from akebono.utils import pathjoin
 import akebono.settings as settings
-import os
 import re
 import copy
 
@@ -60,7 +60,7 @@ def get_model(model_config):
     if is_rebuild:
         if scenario_tag is None or train_id is None:
             raise Exception('invalid state.')
-        dirpath = os.path.join(settings.operation_results_dir, scenario_tag)
+        dirpath = pathjoin(settings.operation_results_dir, scenario_tag)
         mname = 'train_result_model_{}'.format(train_id)
         model.load(dirpath, mname)
     logger.debug('get_model done in {} mode.'.format('predict' if is_rebuild else 'train'))

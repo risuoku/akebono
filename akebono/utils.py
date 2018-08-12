@@ -28,6 +28,20 @@ def _get_gcs_bucket(bucket_name):
     return self._bkt
 
 
+_pathjoin_gcs_pattern = re.compile('^(\/+)([^/].*)$')
+def pathjoin(*args, **kwargs):
+    if settings.storage_type == 'local':
+        return os.path.join(*args, **kwargs)
+    elif settings.storage_type == 'gcs':
+        r = '/'.join(args)
+        reg = re.search(_pathjoin_gcs_pattern, r)
+        if reg is not None:
+            r = reg.group(2)
+        return r
+    else:
+        raise ValueError('invalid storage_type')
+
+
 def pd_to_csv(df, path, **kwargs):
     if settings.storage_type == 'local':
         df.to_csv(path, **kwargs)

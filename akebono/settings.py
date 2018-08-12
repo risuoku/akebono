@@ -1,6 +1,7 @@
 import sys
 import os
 import jinja2
+from akebono.utils import pathjoin
 
 
 self = sys.modules[__name__]
@@ -20,17 +21,17 @@ _valid_attributes = [
 
 
 def _update_associated_attrs():
-    _storage_project_root_dir = os.path.join(storage_root_dir, project_name)
-    self.cache_dir = os.path.join(_storage_project_root_dir, 'cache')
-    self.operation_results_dir = os.path.join(_storage_project_root_dir, 'operation_results')
+    self.storage_project_root_dir = pathjoin(storage_root_dir, project_name)
+    self.cache_dir = pathjoin(storage_project_root_dir, 'cache')
+    self.operation_results_dir = pathjoin(storage_project_root_dir, 'operation_results')
     if storage_type == 'local' and storage_auto_create_dir:
-        os.makedirs(_storage_project_root_dir, exist_ok=True)
+        os.makedirs(storage_project_root_dir, exist_ok=True)
         os.makedirs(cache_dir, exist_ok=True)
         os.makedirs(operation_results_dir, exist_ok=True)
     
     
 def get_template_env():
-    _bq_tpl_absdir = os.path.join(project_root_dir, bq_sql_template_dir)
+    _bq_tpl_absdir = pathjoin(project_root_dir, bq_sql_template_dir)
     return jinja2.Environment(
         loader = jinja2.FileSystemLoader(_bq_tpl_absdir, encoding='utf-8')
     )
