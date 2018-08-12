@@ -27,9 +27,9 @@ class WrappedLGBMClassifier(WrappedModel):
         return self._value.predict(X)
     
     def predict_proba(self, X):
-        if model._pos_index is None:
+        if self._pos_index is None:
             raise Exception('predict_proba need pos_index')
-        return model._value.predict_proba(X)[:, model._pos_index]
+        return self._value.predict_proba(X)[:, self._pos_index]
      
     dump = dump_sklearn_model
     load = load_sklearn_model
