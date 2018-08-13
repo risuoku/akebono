@@ -1,5 +1,6 @@
 import datetime
 import os
+import gc
 
 import akebono.settings as settings
 import akebono.operator as operator
@@ -45,8 +46,12 @@ class Train(CommandBase):
                     os.makedirs(dirpath, exist_ok=True)
 
             # train
+            logger.info('===== train start .. config: {} ====='.format(namespace.config))
             for idx, op in enumerate(settings.train_operations):
+                logger.info('training .. id: {}'.format(idx))
                 operator.train(str(idx), scenario_tag, **op)
+                gc.collect() # free memory
+            logger.info('===== train done =====')
             
             # cleanup
             for tag in scenario_tags:

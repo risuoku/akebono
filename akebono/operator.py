@@ -60,14 +60,14 @@ def train(train_id, scenario_tag,
             logger.debug('evaluate done.')
             ret['evaluate'] = rep
         if fit_model_enabled:
-            logger.info('fit start.')
+            logger.debug('fit start.')
             model.fit(fX, y)
-            logger.info('fit done.')
+            logger.debug('fit done.')
             ret['model'] = model
         if dump_result_enabled:
-            logger.info('dump_train_result start.')
+            logger.debug('dump_train_result start.')
             dump_train_result(train_id, scenario_tag, ret)
-            logger.info('dump_train_result done.')
+            logger.debug('dump_train_result done.')
         
         return ret
 
