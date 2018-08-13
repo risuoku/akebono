@@ -27,18 +27,9 @@ def dump_train_result(train_id, scenario_tag, result):
         tag_list.append(scenario_tag)
     for tag in tag_list:
         dirpath = pathjoin(settings.operation_results_dir, tag)
-        tmpdirpath = pathjoin(settings.operation_results_dir, 'tmp_' + tag)
-        if isdir(tmpdirpath):
-            raise Exception('tmpdirpath exists .. please rename or remove {} before save.'.format(tmpdirpath))
-        if isdir(dirpath):
-            rename_directory(dirpath, tmpdirpath)
-        if settings.storage_type == 'local':
-            os.makedirs(dirpath, exist_ok=True)
         to_pickle(pathjoin(dirpath, '{}.pkl'.format(result_name)), result) # dump result
         if model is not None:
             model.dump(dirpath, model_name)
-        if isdir(tmpdirpath):
-            remove_directory(tmpdirpath)
 
 
 def dump_predicted_result(predict_id, scenario_tag, dump_result_format, df, meta):
