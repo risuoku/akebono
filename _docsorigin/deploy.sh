@@ -17,4 +17,4 @@ fi
 ./jupyter_nbconvert_all.sh \
   && mkdocs build --clean \
   && ./build_sphinxapidocs.sh \
-  && mv site $DOCS_DIR
+  && mv site $DOCS_DIR && touch $DOCS_DIR/.nojekyll
