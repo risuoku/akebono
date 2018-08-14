@@ -34,6 +34,7 @@
   <h1>Source code for akebono.settings</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">jinja2</span>
 
 
@@ -54,13 +55,16 @@
 
 
 <span class="k">def</span> <span class="nf">_update_associated_attrs</span><span class="p">():</span>
-    <span class="n">_storage_project_root_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">storage_root_dir</span><span class="p">,</span> <span class="n">project_name</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">cache_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_storage_project_root_dir</span><span class="p">,</span> <span class="s1">&#39;cache&#39;</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">operation_results_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_storage_project_root_dir</span><span class="p">,</span> <span class="s1">&#39;operation_results&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">storage_project_root_dir</span> <span class="o">=</span> <span class="n">pathjoin</span><span class="p">(</span><span class="n">storage_root_dir</span><span class="p">,</span> <span class="n">project_name</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">cache_dir</span> <span class="o">=</span> <span class="n">pathjoin</span><span class="p">(</span><span class="n">storage_project_root_dir</span><span class="p">,</span> <span class="s1">&#39;cache&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">operation_results_dir</span> <span class="o">=</span> <span class="n">pathjoin</span><span class="p">(</span><span class="n">storage_project_root_dir</span><span class="p">,</span> <span class="s1">&#39;operation_results&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="init"><a class="viewcode-back" href="../../akebono.html#akebono.settings.init">[docs]</a><span class="k">def</span> <span class="nf">init</span><span class="p">():</span>
     <span class="k">if</span> <span class="n">storage_type</span> <span class="o">==</span> <span class="s1">&#39;local&#39;</span> <span class="ow">and</span> <span class="n">storage_auto_create_dir</span><span class="p">:</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">_storage_project_root_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">storage_project_root_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">cache_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">operation_results_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">operation_results_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
     
     
 <div class="viewcode-block" id="get_template_env"><a class="viewcode-back" href="../../akebono.html#akebono.settings.get_template_env">[docs]</a><span class="k">def</span> <span class="nf">get_template_env</span><span class="p">():</span>
@@ -86,11 +90,25 @@
     <span class="n">storage_type</span> <span class="o">=</span> <span class="s1">&#39;local&#39;</span>
     <span class="n">storage_option</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">storage_auto_create_dir</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="n">bq_sql_template_dir</span> <span class="o">=</span> <span class="s1">&#39;_templates/bq_sql&#39;</span>
+    <span class="n">bq_sql_template_dir</span> <span class="o">=</span> <span class="s1">&#39;_dataset/bq_sql_templates&#39;</span>
     <span class="n">project_name</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span>
     <span class="n">project_root_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
     <span class="n">train_operations</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">predict_operations</span> <span class="o">=</span> <span class="p">[]</span>
+
+
+    <span class="n">_pathjoin_gcs_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;^(\/+)([^/].*)$&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="pathjoin"><a class="viewcode-back" href="../../akebono.html#akebono.settings.pathjoin">[docs]</a>    <span class="k">def</span> <span class="nf">pathjoin</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">storage_type</span> <span class="o">==</span> <span class="s1">&#39;local&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">storage_type</span> <span class="o">==</span> <span class="s1">&#39;gcs&#39;</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="s1">&#39;/&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+            <span class="n">reg</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">_pathjoin_gcs_pattern</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">reg</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="n">reg</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">r</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;invalid storage_type&#39;</span><span class="p">)</span></div>
     
     <span class="n">_update_associated_attrs</span><span class="p">()</span>
     <span class="n">_init</span> <span class="o">=</span> <span class="kc">True</span>

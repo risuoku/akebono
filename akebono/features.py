@@ -18,4 +18,12 @@ def exclude_columns(df, columns=[]):
 
 
 def identify(df):
+    """
+    入力データをそのまま返す関数。
+
+    Parameters
+    ----------
+    df: pandas.DataFrame
+        データセットが持つ説明変数。
+    """
     return df

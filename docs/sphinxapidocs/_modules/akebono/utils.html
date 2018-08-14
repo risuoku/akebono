@@ -46,6 +46,7 @@
 <span class="kn">from</span> <span class="nn">akebono.logging</span> <span class="k">import</span> <span class="n">getLogger</span>
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">settings</span>
+<span class="n">pathjoin</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">pathjoin</span>
 
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -191,8 +192,11 @@
         <span class="n">h_str</span> <span class="o">=</span> <span class="s1">&#39;__&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">s_items</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">ignore_keys</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">h_str</span></div>
 
-<div class="viewcode-block" id="Param.get_hashed_id"><a class="viewcode-back" href="../../akebono.html#akebono.utils.Param.get_hashed_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_hashed_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">get_hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_param_expression</span><span class="p">())</span></div>
+<div class="viewcode-block" id="Param.get_hashed_id"><a class="viewcode-back" href="../../akebono.html#akebono.utils.Param.get_hashed_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_hashed_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">get_hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_param_expression</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">length</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">r</span><span class="p">[:</span><span class="n">length</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">r</span></div>
     
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -240,6 +244,35 @@
 
 <div class="viewcode-block" id="get_label_by_object"><a class="viewcode-back" href="../../akebono.html#akebono.utils.get_label_by_object">[docs]</a><span class="k">def</span> <span class="nf">get_label_by_object</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
     <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">@</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__module__</span><span class="p">)</span></div>
+
+
+<span class="c1"># Use the system PRNG if possible</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">random</span>
+    <span class="n">random</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">SystemRandom</span><span class="p">()</span>
+    <span class="n">using_sysrandom</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">except</span> <span class="ne">NotImplementedError</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">warnings</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;A secure pseudo-random number generator is not available &#39;</span>
+                  <span class="s1">&#39;on your system. Falling back to Mersenne Twister.&#39;</span><span class="p">)</span>
+    <span class="n">using_sysrandom</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="n">DEFAULT_ALLOWED_CHARS</span> <span class="o">=</span> <span class="s1">&#39;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789&#39;</span>
+<div class="viewcode-block" id="get_random_string"><a class="viewcode-back" href="../../akebono.html#akebono.utils.get_random_string">[docs]</a><span class="k">def</span> <span class="nf">get_random_string</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">allowed_chars</span><span class="o">=</span><span class="n">DEFAULT_ALLOWED_CHARS</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    implementation inspired by Django</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">using_sysrandom</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">hashlib</span>
+        <span class="kn">import</span> <span class="nn">time</span>
+        <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span>
+                    <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span>
+                        <span class="p">(</span><span class="s2">&quot;</span><span class="si">%s%s%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
+                            <span class="n">random</span><span class="o">.</span><span class="n">getstate</span><span class="p">(),</span>
+                            <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">(),</span>
+                            <span class="s1">&#39;aaaaa&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+                    <span class="p">)</span><span class="o">.</span><span class="n">digest</span><span class="p">())</span>
+    <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">allowed_chars</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">length</span><span class="p">))</span></div>
 </pre></div>
 
           </div>

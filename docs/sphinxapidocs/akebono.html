@@ -41,11 +41,11 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="akebono.dataset.html">akebono.dataset package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="akebono.dataset.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="akebono.dataset.html#akebono-dataset-bigquery-module">akebono.dataset.bigquery module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="akebono.dataset.html#akebono-dataset-entry-module">akebono.dataset.entry module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="akebono.dataset.html#akebono-dataset-model-module">akebono.dataset.model module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="akebono.dataset.html#akebono-dataset-preprocessors-module">akebono.dataset.preprocessors module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="akebono.dataset.html#module-contents">Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="akebono.dataset.html#module-akebono.dataset.bigquery">akebono.dataset.bigquery module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="akebono.dataset.html#module-akebono.dataset.entry">akebono.dataset.entry module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="akebono.dataset.html#module-akebono.dataset.model">akebono.dataset.model module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="akebono.dataset.html#module-akebono.dataset.preprocessors">akebono.dataset.preprocessors module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="akebono.dataset.html#module-akebono.dataset">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="akebono.models.html">akebono.models package</a><ul>
@@ -65,9 +65,19 @@
 <div class="section" id="module-akebono.features">
 <span id="akebono-features-module"></span><h2>akebono.features module<a class="headerlink" href="#module-akebono.features" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
+<dt id="akebono.features.exclude_columns">
+<code class="descclassname">akebono.features.</code><code class="descname">exclude_columns</code><span class="sig-paren">(</span><em>df</em>, <em>columns=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/features.html#exclude_columns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.features.exclude_columns" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
 <dt id="akebono.features.identify">
 <code class="descclassname">akebono.features.</code><code class="descname">identify</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/features.html#identify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.features.identify" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>入力データをそのまま返す関数。</p>
+<dl class="docutils">
+<dt>df: pandas.DataFrame</dt>
+<dd>データセットが持つ説明変数。</dd>
+</dl>
+</dd></dl>
 
 <dl class="function">
 <dt id="akebono.features.select_columns">
@@ -95,12 +105,12 @@
 <span id="akebono-operator-module"></span><h2>akebono.operator module<a class="headerlink" href="#module-akebono.operator" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="akebono.operator.predict">
-<code class="descclassname">akebono.operator.</code><code class="descname">predict</code><span class="sig-paren">(</span><em>operation_index</em>, <em>scenario_tag</em>, <em>method_type='predict'</em>, <em>dataset_config=None</em>, <em>model_config={}</em>, <em>dump_result_enabled=False</em>, <em>dump_result_format='csv'</em>, <em>result_target_columns='all'</em>, <em>result_predict_column='predicted'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/operator.html#predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.operator.predict" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">akebono.operator.</code><code class="descname">predict</code><span class="sig-paren">(</span><em>predict_id</em>, <em>scenario_tag</em>, <em>method_type='predict'</em>, <em>dataset_config=None</em>, <em>model_config={}</em>, <em>dump_result_enabled=False</em>, <em>dump_result_format='csv'</em>, <em>result_target_columns='all'</em>, <em>result_predict_column='predicted'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/operator.html#predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.operator.predict" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="akebono.operator.train">
-<code class="descclassname">akebono.operator.</code><code class="descname">train</code><span class="sig-paren">(</span><em>operation_index</em>, <em>scenario_tag</em>, <em>dataset_config=None</em>, <em>model_config=None</em>, <em>feature_func='identify&#64;akebono.features'</em>, <em>feature_func_kwargs={}</em>, <em>evaluate_enabled=False</em>, <em>fit_model_enabled=False</em>, <em>dump_result_enabled=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/operator.html#train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.operator.train" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">akebono.operator.</code><code class="descname">train</code><span class="sig-paren">(</span><em>train_id</em>, <em>scenario_tag</em>, <em>dataset_config=None</em>, <em>model_config=None</em>, <em>feature_func='identify&#64;akebono.features'</em>, <em>feature_func_kwargs={}</em>, <em>evaluate_enabled=False</em>, <em>fit_model_enabled=False</em>, <em>dump_result_enabled=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/operator.html#train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.operator.train" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -112,8 +122,18 @@
 <dd></dd></dl>
 
 <dl class="function">
+<dt id="akebono.settings.init">
+<code class="descclassname">akebono.settings.</code><code class="descname">init</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/settings.html#init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.settings.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
 <dt id="akebono.settings.load">
 <code class="descclassname">akebono.settings.</code><code class="descname">load</code><span class="sig-paren">(</span><em>config</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/settings.html#load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.settings.load" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="akebono.settings.pathjoin">
+<code class="descclassname">akebono.settings.</code><code class="descname">pathjoin</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/settings.html#pathjoin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.settings.pathjoin" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -141,7 +161,7 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="method">
 <dt id="akebono.utils.Param.get_hashed_id">
-<code class="descname">get_hashed_id</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/utils.html#Param.get_hashed_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.utils.Param.get_hashed_id" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_hashed_id</code><span class="sig-paren">(</span><em>length=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/utils.html#Param.get_hashed_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.utils.Param.get_hashed_id" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -175,6 +195,12 @@
 <dt id="akebono.utils.get_label_by_object">
 <code class="descclassname">akebono.utils.</code><code class="descname">get_label_by_object</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/utils.html#get_label_by_object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.utils.get_label_by_object" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="function">
+<dt id="akebono.utils.get_random_string">
+<code class="descclassname">akebono.utils.</code><code class="descname">get_random_string</code><span class="sig-paren">(</span><em>length=12</em>, <em>allowed_chars='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/utils.html#get_random_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.utils.get_random_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>implementation inspired by Django</p>
+</dd></dl>
 
 <dl class="function">
 <dt id="akebono.utils.get_shellcmd_result">
@@ -219,6 +245,7 @@
 </div>
 <div class="section" id="module-akebono">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-akebono" title="Permalink to this headline">¶</a></h2>
+<p>this is akebono package, and modified normally.</p>
 </div>
 </div>
 

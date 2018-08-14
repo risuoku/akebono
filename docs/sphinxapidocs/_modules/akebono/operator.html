@@ -34,12 +34,12 @@
   <h1>Source code for akebono.operator</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">akebono.features</span> <span class="k">as</span> <span class="nn">features</span>
 <span class="kn">from</span> <span class="nn">akebono.logging</span> <span class="k">import</span> <span class="n">getLogger</span>
-<span class="kn">from</span> <span class="nn">akebono.io.dataset</span> <span class="k">import</span> <span class="n">load_dataset</span>
 <span class="kn">from</span> <span class="nn">akebono.io.operation.dumper</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">dump_train_result</span><span class="p">,</span>
     <span class="n">dump_predicted_result</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">akebono.io.operation.loader</span> <span class="k">import</span> <span class="n">get_train_result</span> 
+<span class="kn">from</span> <span class="nn">akebono.dataset</span> <span class="k">import</span> <span class="n">get_dataset</span>
 <span class="kn">from</span> <span class="nn">akebono.models</span> <span class="k">import</span> <span class="n">get_model</span>
 <span class="kn">from</span> <span class="nn">akebono.utils</span> <span class="k">import</span> <span class="n">load_object_by_str</span>
 <span class="kn">import</span> <span class="nn">akebono.settings</span> <span class="k">as</span> <span class="nn">settings</span>
@@ -49,7 +49,7 @@
 <span class="n">logger</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="train"><a class="viewcode-back" href="../../akebono.html#akebono.operator.train">[docs]</a><span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="n">operation_index</span><span class="p">,</span> <span class="n">scenario_tag</span><span class="p">,</span>
+<div class="viewcode-block" id="train"><a class="viewcode-back" href="../../akebono.html#akebono.operator.train">[docs]</a><span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="n">train_id</span><span class="p">,</span> <span class="n">scenario_tag</span><span class="p">,</span>
     <span class="n">dataset_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">model_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">feature_func</span><span class="o">=</span><span class="s1">&#39;identify@akebono.features&#39;</span><span class="p">,</span>
@@ -65,7 +65,7 @@
 
         <span class="n">ret</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;train&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;index&#39;</span><span class="p">:</span> <span class="n">operation_index</span><span class="p">,</span>
+            <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="n">train_id</span><span class="p">,</span>
             <span class="s1">&#39;dataset_config&#39;</span><span class="p">:</span> <span class="n">dataset_config</span><span class="p">,</span>
             <span class="s1">&#39;model_config&#39;</span><span class="p">:</span> <span class="n">model_config</span><span class="p">,</span>
             <span class="s1">&#39;feature_func&#39;</span><span class="p">:</span> <span class="n">feature_func</span><span class="p">,</span>
@@ -75,7 +75,7 @@
             <span class="s1">&#39;dump_result_enabled&#39;</span><span class="p">:</span> <span class="n">dump_result_enabled</span>
         <span class="p">}</span>
 
-        <span class="n">dataset</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="n">dataset_config</span><span class="p">)</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">get_dataset</span><span class="p">(</span><span class="n">dataset_config</span><span class="p">)</span>
         
         <span class="n">feature_func</span> <span class="o">=</span> <span class="n">load_object_by_str</span><span class="p">(</span><span class="n">feature_func</span><span class="p">)</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;load dataset start.&#39;</span><span class="p">)</span>
@@ -94,19 +94,19 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;evaluate done.&#39;</span><span class="p">)</span>
             <span class="n">ret</span><span class="p">[</span><span class="s1">&#39;evaluate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rep</span>
         <span class="k">if</span> <span class="n">fit_model_enabled</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;fit start.&#39;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;fit start.&#39;</span><span class="p">)</span>
             <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">fX</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;fit done.&#39;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;fit done.&#39;</span><span class="p">)</span>
             <span class="n">ret</span><span class="p">[</span><span class="s1">&#39;model&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span>
         <span class="k">if</span> <span class="n">dump_result_enabled</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;dump_train_result start.&#39;</span><span class="p">)</span>
-            <span class="n">dump_train_result</span><span class="p">(</span><span class="n">operation_index</span><span class="p">,</span> <span class="n">scenario_tag</span><span class="p">,</span> <span class="n">ret</span><span class="p">)</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;dump_train_result done.&#39;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;dump_train_result start.&#39;</span><span class="p">)</span>
+            <span class="n">dump_train_result</span><span class="p">(</span><span class="n">train_id</span><span class="p">,</span> <span class="n">scenario_tag</span><span class="p">,</span> <span class="n">ret</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;dump_train_result done.&#39;</span><span class="p">)</span>
         
         <span class="k">return</span> <span class="n">ret</span></div>
 
 
-<div class="viewcode-block" id="predict"><a class="viewcode-back" href="../../akebono.html#akebono.operator.predict">[docs]</a><span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="n">operation_index</span><span class="p">,</span> <span class="n">scenario_tag</span><span class="p">,</span>
+<div class="viewcode-block" id="predict"><a class="viewcode-back" href="../../akebono.html#akebono.operator.predict">[docs]</a><span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="n">predict_id</span><span class="p">,</span> <span class="n">scenario_tag</span><span class="p">,</span>
     <span class="n">method_type</span><span class="o">=</span><span class="s1">&#39;predict&#39;</span><span class="p">,</span>
     <span class="n">dataset_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">model_config</span><span class="o">=</span><span class="p">{},</span>
@@ -129,20 +129,18 @@
             <span class="s1">&#39;result_predict_column&#39;</span><span class="p">:</span> <span class="n">result_predict_column</span><span class="p">,</span>
         <span class="p">}</span>
 
-        <span class="k">if</span> <span class="s1">&#39;operation_index&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">model_config</span><span class="p">:</span>
-            <span class="n">model_config</span><span class="p">[</span><span class="s1">&#39;operation_index&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="s1">&#39;train_id&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">model_config</span><span class="p">:</span>
+            <span class="n">model_config</span><span class="p">[</span><span class="s1">&#39;train_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span>
         <span class="n">model_config</span><span class="p">[</span><span class="s1">&#39;scenario_tag&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">scenario_tag</span>
-        <span class="n">p_index</span> <span class="o">=</span> <span class="n">model_config</span><span class="p">[</span><span class="s1">&#39;operation_index&#39;</span><span class="p">]</span>
+        <span class="n">train_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">model_config</span><span class="p">[</span><span class="s1">&#39;train_id&#39;</span><span class="p">])</span>
 
-        <span class="n">tr</span> <span class="o">=</span> <span class="n">get_train_result</span><span class="p">(</span><span class="n">scenario_tag</span><span class="o">=</span><span class="n">scenario_tag</span><span class="p">,</span> <span class="n">operation_index</span><span class="o">=</span><span class="n">p_index</span><span class="p">)</span>
+        <span class="n">tr</span> <span class="o">=</span> <span class="n">get_train_result</span><span class="p">(</span><span class="n">scenario_tag</span><span class="o">=</span><span class="n">scenario_tag</span><span class="p">,</span> <span class="n">train_id</span><span class="o">=</span><span class="n">train_id</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">tr</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;target result not found.&#39;</span><span class="p">)</span>
         <span class="n">ret</span><span class="p">[</span><span class="s1">&#39;train_result&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tr</span>
 
-        <span class="k">if</span> <span class="s1">&#39;load_func_kwargs&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dataset_config</span><span class="p">:</span>
-            <span class="n">dataset_config</span><span class="p">[</span><span class="s1">&#39;load_func_kwargs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">dataset_config</span><span class="p">[</span><span class="s1">&#39;load_func_kwargs&#39;</span><span class="p">][</span><span class="s1">&#39;target_column&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># target_columnがNoneだと、predict用のDatasetが返ってくる</span>
-        <span class="n">dataset</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="n">dataset_config</span><span class="p">)</span>
+        <span class="n">dataset_config</span><span class="p">[</span><span class="s1">&#39;target_column&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># target_columnがNoneだと、predict用のDatasetが返ってくる</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">get_dataset</span><span class="p">(</span><span class="n">dataset_config</span><span class="p">)</span>
         <span class="n">feature_func</span> <span class="o">=</span> <span class="n">load_object_by_str</span><span class="p">(</span><span class="n">tr</span><span class="p">[</span><span class="s1">&#39;feature_func&#39;</span><span class="p">])</span>
         <span class="n">X</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">value</span>
         <span class="n">fX</span> <span class="o">=</span> <span class="n">feature_func</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="o">**</span><span class="n">tr</span><span class="p">[</span><span class="s1">&#39;feature_func_kwargs&#39;</span><span class="p">])</span>
@@ -155,16 +153,16 @@
         <span class="k">if</span> <span class="n">predict_func</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> is not defined.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">method_type</span><span class="p">))</span>
         <span class="n">rawresult</span> <span class="o">=</span> <span class="n">predict_func</span><span class="p">(</span><span class="n">fX</span><span class="p">)</span>
-        <span class="n">predict_result</span> <span class="o">=</span> <span class="n">fX</span>
+        <span class="n">predict_result</span> <span class="o">=</span> <span class="n">fX</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">result_target_columns</span> <span class="o">==</span> <span class="s1">&#39;all&#39;</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result_target_columns</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;result_target_columns must be list.&#39;</span><span class="p">)</span>
             <span class="n">predict_result</span> <span class="o">=</span> <span class="n">fX</span><span class="p">[</span><span class="n">result_target_columns</span><span class="p">]</span>
-        <span class="n">predict_result</span><span class="p">[</span><span class="n">result_predict_column</span><span class="p">]</span> <span class="o">=</span> <span class="n">rawresult</span>
+        <span class="n">predict_result</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span><span class="n">result_predict_column</span><span class="p">]</span> <span class="o">=</span> <span class="n">rawresult</span>
 
         <span class="k">if</span> <span class="n">dump_result_enabled</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;dump_predicted_result start.&#39;</span><span class="p">)</span>
-            <span class="n">dump_predicted_result</span><span class="p">(</span><span class="n">operation_index</span><span class="p">,</span> <span class="n">scenario_tag</span><span class="p">,</span> <span class="n">dump_result_format</span><span class="p">,</span> <span class="n">predict_result</span><span class="p">,</span> <span class="n">ret</span><span class="p">)</span>
+            <span class="n">dump_predicted_result</span><span class="p">(</span><span class="n">predict_id</span><span class="p">,</span> <span class="n">scenario_tag</span><span class="p">,</span> <span class="n">dump_result_format</span><span class="p">,</span> <span class="n">predict_result</span><span class="p">,</span> <span class="n">ret</span><span class="p">)</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;dump_predicted_result done.&#39;</span><span class="p">)</span>
 
         <span class="n">ret</span><span class="p">[</span><span class="s1">&#39;predict_result&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">predict_result</span>

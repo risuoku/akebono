@@ -36,14 +36,13 @@
 
 
 <div class="viewcode-block" id="WrappedModel"><a class="viewcode-back" href="../../../akebono.models.html#akebono.models.base.WrappedModel">[docs]</a><span class="k">class</span> <span class="nc">WrappedModel</span><span class="p">:</span>
-    <span class="n">model_type</span> <span class="o">=</span> <span class="kc">None</span>
-
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_kwargs</span><span class="o">=</span><span class="p">{},</span> <span class="n">fit_kwargs</span><span class="o">=</span><span class="p">{},</span> <span class="n">evaluate_kwargs</span><span class="o">=</span><span class="p">{},</span> <span class="n">pos_index</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_init_kwargs</span> <span class="o">=</span> <span class="n">init_kwargs</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_fit_kwargs</span> <span class="o">=</span> <span class="n">fit_kwargs</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_evaluate_kwargs</span> <span class="o">=</span> <span class="n">evaluate_kwargs</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_pos_index</span> <span class="o">=</span> <span class="n">pos_index</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_type</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">base_init_finished</span><span class="p">()</span>
     
 <div class="viewcode-block" id="WrappedModel.base_init_finished"><a class="viewcode-back" href="../../../akebono.models.html#akebono.models.base.WrappedModel.base_init_finished">[docs]</a>    <span class="k">def</span> <span class="nf">base_init_finished</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

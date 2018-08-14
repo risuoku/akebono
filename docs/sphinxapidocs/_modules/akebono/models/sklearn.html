@@ -44,9 +44,13 @@
 <span class="n">logger</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
-<span class="n">_valid_models</span> <span class="o">=</span> <span class="p">{</span>
+<span class="n">_valid_not_regressor_models</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;LogisticRegression&#39;</span><span class="p">:</span> <span class="s1">&#39;sklearn.linear_model&#39;</span><span class="p">,</span>
     <span class="s1">&#39;RandomForestClassifier&#39;</span><span class="p">:</span> <span class="s1">&#39;sklearn.ensemble&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">_valid_regressor_models</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;LinearRegression&#39;</span><span class="p">:</span> <span class="s1">&#39;sklearn.linear_model&#39;</span><span class="p">,</span>
 <span class="p">}</span>
 
 
@@ -76,12 +80,21 @@
     <span class="n">model</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
 
 
+<span class="k">def</span> <span class="nf">_base_init_finished_reg</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">set_model_type</span><span class="p">(</span><span class="n">model_type</span><span class="o">=</span><span class="s1">&#39;regressor&#39;</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+
+
 <div class="viewcode-block" id="get_wrapped_sklearn_model"><a class="viewcode-back" href="../../../akebono.models.html#akebono.models.sklearn.get_wrapped_sklearn_model">[docs]</a><span class="k">def</span> <span class="nf">get_wrapped_sklearn_model</span><span class="p">(</span><span class="n">model_cls_str</span><span class="p">):</span>
     <span class="c1"># model_cls_str は&#39;^Sklearn.+$&#39; にマッチする前提</span>
     <span class="n">model_cls_str</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;Sklearn&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">model_cls_str</span><span class="p">)</span>
-    <span class="n">model_cls_mod</span> <span class="o">=</span> <span class="n">_valid_models</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">model_cls_str</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">model_cls_mod</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">model_cls_mod_notreg</span> <span class="o">=</span> <span class="n">_valid_not_regressor_models</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">model_cls_str</span><span class="p">)</span>
+    <span class="n">model_cls_mod_reg</span> <span class="o">=</span> <span class="n">_valid_regressor_models</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">model_cls_str</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">model_cls_mod_notreg</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">model_cls_mod_reg</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> is invalid.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model_cls_str</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">model_cls_mod_notreg</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">model_cls_mod_reg</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;unexpected state.&#39;</span><span class="p">)</span>
+    <span class="n">model_cls_mod</span> <span class="o">=</span> <span class="n">model_cls_mod_notreg</span> <span class="ow">or</span> <span class="n">model_cls_mod_reg</span>
     <span class="n">model_cls</span> <span class="o">=</span> <span class="n">load_object_by_str</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">@</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model_cls_str</span><span class="p">,</span> <span class="n">model_cls_mod</span><span class="p">))</span>
 
     <span class="n">cls_attrs</span> <span class="o">=</span> <span class="p">{</span>
@@ -89,7 +102,7 @@
         <span class="s1">&#39;reset&#39;</span><span class="p">:</span> <span class="n">_generate_reset_func</span><span class="p">(</span><span class="n">model_cls</span><span class="p">),</span>
         <span class="s1">&#39;dump&#39;</span><span class="p">:</span> <span class="n">dump_sklearn_model</span><span class="p">,</span>
         <span class="s1">&#39;load&#39;</span><span class="p">:</span> <span class="n">load_sklearn_model</span><span class="p">,</span>
-        <span class="s1">&#39;base_init_finished&#39;</span><span class="p">:</span> <span class="n">_base_init_finished</span><span class="p">,</span>
+        <span class="s1">&#39;base_init_finished&#39;</span><span class="p">:</span> <span class="n">_base_init_finished</span> <span class="k">if</span> <span class="n">model_cls_mod_notreg</span> <span class="k">else</span> <span class="n">_base_init_finished_reg</span><span class="p">,</span>
     <span class="p">}</span>
 
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">model_cls</span><span class="p">,</span> <span class="s1">&#39;predict&#39;</span><span class="p">):</span>
