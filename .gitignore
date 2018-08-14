@@ -6,7 +6,6 @@ man
 result
 share
 *.swp
-*.ipynb
 *.py[co]
 *.sqlite
 __pycache__

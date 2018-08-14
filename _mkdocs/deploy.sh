@@ -14,4 +14,6 @@ fi
 
 
 # deploy
-mkdocs build && mv site $DOCS_DIR
+./jupyter_nbconvert_all.sh \
+  && mkdocs build --clean \
+  && mv site $DOCS_DIR
