@@ -8,3 +8,5 @@ google-cloud-storage
 google-cloud-bigquery
 google-api-python-client
 pytest
+mkdocs
+mkdocs-material

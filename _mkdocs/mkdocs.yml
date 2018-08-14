@@ -1,0 +1,8 @@
+site_name: akebono Doc 
+theme: material
+markdown_extensions:
+  - codehilite
+repo_url: https://github.com/risuoku/akebono
+use_directory_urls: false
+pages:
+- 'HOME': 'index.md'
