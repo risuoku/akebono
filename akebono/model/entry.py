@@ -13,6 +13,30 @@ logger = getLogger(__name__)
 
 
 def get_model(model_config):
+    """
+    Modelを生成するための関数
+
+    :param model_config: Modelについての設定
+    :type model_config: dict
+    :return: :class:`WrappedModel` object
+
+    Usage:
+        >>> from akebono.model import get_model
+        >>> model_config = {
+                'name': 'SklearnRandomForestClassifier',
+                'init_kwargs': {},
+                'fit_kwargs': {},
+                'evaluate_kwargs': {
+                    'cross_val_iterator': 'KFold@sklearn.model_selection',
+                },
+                'pos_index': 1,
+                'is_rebuild': False,
+            }
+        >>> model = get_model(model_config)
+        >>> model
+        <akebono.model._models.sklearn.WrappedSklearnRandomForestClassifier object at 0x1006c0b00>
+    """
+
     if not isinstance(model_config, dict):
         raise TypeError('model_config must be dict.')
     mcc = copy.copy(model_config)

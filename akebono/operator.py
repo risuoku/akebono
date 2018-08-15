@@ -24,6 +24,28 @@ def train(train_id, scenario_tag,
     fit_model_enabled=False,
     dump_result_enabled=False
     ):
+        """
+        モデルの訓練を実行する関数
+
+        :param train_id: シナリオ中における訓練実行の識別子
+        :type train_id: str
+        :param scenario_tag: シナリオに付与されるlatest以外のタグ
+        :type scenario_tag: str or None
+        :param dataset_config: Datasetの設定。:class:`akebono.dataset.get_dataset` の引数。
+        :type dataset_config: dict
+        :param model_config: Modelの設定。:class:`akebono.model.get_model` の引数。
+        :type model_config: dict
+        :param feature_func: Feature extractorのstring format
+        :type feature_func: str
+        :param feature_func_kwargs: Feature extractorの引数
+        :type feature_func_kwargs: dict
+        :param evaluate_enabled: モデルの評価を実行するかのフラグ
+        :type evaluate_enabled: bool
+        :param fit_model_enabled: モデルの訓練を実行するかのフラグ
+        :type fit_model_enabled: bool
+        :param dump_result_enabled: モデル、評価結果の永続化を実行するかのフラグ
+        :type dump_result_enabled: bool
+        """
         if model_config is None:
             raise ValueError('model_config must be set.')
         if dataset_config is None:
@@ -81,6 +103,28 @@ def predict(predict_id, scenario_tag,
     result_target_columns='all',
     result_predict_column='predicted'
     ):
+        """
+        予測を実行する関数
+
+        :param predict_id: シナリオ中における予測実行の識別子
+        :type predict_id: str
+        :param scenario_tag: シナリオに付与されるlatest以外のタグ
+        :type scenario_tag: str or None
+        :param method_type: 予測のタイプ。設定可能なタイプは `predict` or `predict_proba`
+        :type method_type: str
+        :param dataset_config: Datasetの設定。:class:`akebono.dataset.get_dataset` の引数。
+        :type dataset_config: dict
+        :param model_config: Modelの設定。:class:`akebono.model.get_model` の引数。
+        :type model_config: dict
+        :param dump_result_enabled: 予測結果の永続化を実行するかのフラグ
+        :type dump_result_enabled: bool
+        :param dump_result_format: 予測結果のフォーマット。設定可能なフォーマットは `csv` or `pickle`
+        :type dump_result_format: str
+        :param result_target_columns: 予測結果に含めるべき説明変数のカラム名のリスト。全ての場合は'all'とする
+        :type result_target_columns: str or list(str)
+        :param result_predict_column: 予測結果が格納されるカラム名
+        :type result_predict_column: str
+        """
         if dataset_config is None:
             raise ValueError('dataset_config must be set.')
 

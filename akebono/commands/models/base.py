@@ -8,7 +8,7 @@ class CommandBase:
 
     def pre_execute(self, namespace):
         mod_config = importlib.import_module(namespace.config)
-        settings.load(mod_config)
+        settings.apply(mod_config)
 
     def execute(self, namespace):
         raise NotImplementedError()

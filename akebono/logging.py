@@ -14,7 +14,7 @@ def getLogger(name = None):
 
     logger.addHandler(handler)
     logger.propagate = False
-    if os.environ.get('DEBUG') is None:
+    if os.environ.get('AKEBONO_DEBUG') is None:
         logger.setLevel(logging.INFO)
     else:
         logger.setLevel(logging.DEBUG)

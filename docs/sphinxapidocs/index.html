@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Welcome to akebono’s documentation! &#8212; akebono  documentation</title>
+    <title>akebono API documentation for developers &#8212; akebono  documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -15,7 +15,6 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="akebono package" href="akebono.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -32,52 +31,428 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="welcome-to-akebono-s-documentation">
-<h1>Welcome to akebono’s documentation!<a class="headerlink" href="#welcome-to-akebono-s-documentation" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="akebono.html">akebono package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="akebono.html#subpackages">Subpackages</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="akebono.dataset.html">akebono.dataset package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="akebono.dataset.html#submodules">Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="akebono.dataset.html#module-akebono.dataset.bigquery">akebono.dataset.bigquery module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="akebono.dataset.html#module-akebono.dataset.entry">akebono.dataset.entry module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="akebono.dataset.html#module-akebono.dataset.model">akebono.dataset.model module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="akebono.dataset.html#module-akebono.dataset.preprocessors">akebono.dataset.preprocessors module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="akebono.dataset.html#module-akebono.dataset">Module contents</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="akebono.models.html">akebono.models package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="akebono.models.html#submodules">Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="akebono.models.html#module-akebono.models.base">akebono.models.base module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="akebono.models.html#module-akebono.models.evaluator">akebono.models.evaluator module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="akebono.models.html#module-akebono.models.sklearn">akebono.models.sklearn module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="akebono.models.html#module-akebono.models">Module contents</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="akebono.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="akebono.html#module-akebono.features">akebono.features module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="akebono.html#module-akebono.inspector">akebono.inspector module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="akebono.html#module-akebono.logging">akebono.logging module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="akebono.html#module-akebono.operator">akebono.operator module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="akebono.html#module-akebono.settings">akebono.settings module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="akebono.html#module-akebono.utils">akebono.utils module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="akebono.html#module-akebono">Module contents</a></li>
-</ul>
-</li>
-</ul>
+  <div class="section" id="akebono-api-documentation-for-developers">
+<h1>akebono API documentation for developers<a class="headerlink" href="#akebono-api-documentation-for-developers" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="dataset">
+<h2>Dataset<a class="headerlink" href="#dataset" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="akebono.dataset.get_dataset">
+<code class="descclassname">akebono.dataset.</code><code class="descname">get_dataset</code><span class="sig-paren">(</span><em>dataset_config</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/dataset/entry.html#get_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.dataset.get_dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Datasetを生成するための関数</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dataset_config</strong> (<em>dict</em>) – Datasetについての設定</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="#akebono.dataset.Dataset" title="akebono.dataset.Dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></a> object</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt>Usage:</dt>
+<dd><div class="first last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">akebono.dataset</span> <span class="k">import</span> <span class="n">get_dataset</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset_config</span> <span class="o">=</span> <span class="p">{</span>
+<span class="go">        &#39;loader_config&#39;: {</span>
+<span class="go">            &#39;func&#39;: &#39;make_regression@akebono.dataset.generator.sklearn&#39;,</span>
+<span class="go">            &#39;func_kwargs&#39;: {</span>
+<span class="go">                &#39;n_features&#39;: 1,</span>
+<span class="go">                &#39;noise&#39;: 30.0,</span>
+<span class="go">                &#39;random_state&#39;: 0,</span>
+<span class="go">            },</span>
+<span class="go">        },</span>
+<span class="go">        &#39;target_column&#39;: &#39;target&#39;,</span>
+<span class="go">        &#39;cache_enabled&#39;: False,</span>
+<span class="go">    }</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ds</span> <span class="o">=</span> <span class="n">get_dataset</span><span class="p">(</span><span class="n">dataset_config</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ds</span>
+<span class="go">&lt;akebono.dataset.model.Dataset object at 0x11291acc0&gt;</span>
+</pre></div>
 </div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="akebono.dataset.Dataset">
+<em class="property">class </em><code class="descclassname">akebono.dataset.</code><code class="descname">Dataset</code><span class="sig-paren">(</span><em>value</em>, <em>target_column</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/dataset/model.html#Dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.dataset.Dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dataset class</p>
+<dl class="method">
+<dt id="akebono.dataset.Dataset.get_predictor_target">
+<code class="descname">get_predictor_target</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/dataset/model.html#Dataset.get_predictor_target"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.dataset.Dataset.get_predictor_target" title="Permalink to this definition">¶</a></dt>
+<dd><p>Datasetが管理するデータの説明変数と目的変数のtupleを返す</p>
+<p>Dataset生成時に目的変数が設定されていない場合は例外発生</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">tuple(pandas.DataFrame, pandas.Series) object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="akebono.dataset.Dataset.value">
+<code class="descname">value</code><a class="headerlink" href="#akebono.dataset.Dataset.value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Datasetが管理するデータの実体</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">pandas.DataFrame object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 </div>
-<div class="section" id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
-<ul class="simple">
-<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
-<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
-<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+<div class="section" id="feature-extractor">
+<h2>Feature extractor<a class="headerlink" href="#feature-extractor" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="akebono.features.identify">
+<code class="descclassname">akebono.features.</code><code class="descname">identify</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/features.html#identify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.features.identify" title="Permalink to this definition">¶</a></dt>
+<dd><p>入力データをそのまま返す関数</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> (<em>pandas.DataFrame</em>) – データセットが持つ説明変数</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">pandas.DataFrame object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="akebono.features.select_columns">
+<code class="descclassname">akebono.features.</code><code class="descname">select_columns</code><span class="sig-paren">(</span><em>df</em>, <em>columns=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/features.html#select_columns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.features.select_columns" title="Permalink to this definition">¶</a></dt>
+<dd><p>入力データから、指定したカラムのみを選択して返す関数</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>df</strong> (<em>pandas.DataFrame</em>) – データセットが持つ説明変数</li>
+<li><strong>columns</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – 選択対象カラム名のリスト</li>
 </ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">pandas.DataFrame object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="akebono.features.exclude_columns">
+<code class="descclassname">akebono.features.</code><code class="descname">exclude_columns</code><span class="sig-paren">(</span><em>df</em>, <em>columns=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/features.html#exclude_columns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.features.exclude_columns" title="Permalink to this definition">¶</a></dt>
+<dd><p>入力データから、指定したカラムのみを除外して返す関数</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>df</strong> (<em>pandas.DataFrame</em>) – データセットが持つ説明変数</li>
+<li><strong>columns</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – 選択対象カラム名のリスト</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">pandas.DataFrame object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="model">
+<h2>Model<a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="akebono.model.get_model">
+<code class="descclassname">akebono.model.</code><code class="descname">get_model</code><span class="sig-paren">(</span><em>model_config</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/model/entry.html#get_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.model.get_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modelを生成するための関数</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>model_config</strong> (<em>dict</em>) – Modelについての設定</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="#akebono.model.WrappedModel" title="akebono.model.WrappedModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">WrappedModel</span></code></a> object</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt>Usage:</dt>
+<dd><div class="first last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">akebono.model</span> <span class="k">import</span> <span class="n">get_model</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model_config</span> <span class="o">=</span> <span class="p">{</span>
+<span class="go">        &#39;name&#39;: &#39;SklearnRandomForestClassifier&#39;,</span>
+<span class="go">        &#39;init_kwargs&#39;: {},</span>
+<span class="go">        &#39;fit_kwargs&#39;: {},</span>
+<span class="go">        &#39;evaluate_kwargs&#39;: {</span>
+<span class="go">            &#39;cross_val_iterator&#39;: &#39;KFold@sklearn.model_selection&#39;,</span>
+<span class="go">        },</span>
+<span class="go">        &#39;pos_index&#39;: 1,</span>
+<span class="go">        &#39;is_rebuild&#39;: False,</span>
+<span class="go">    }</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">get_model</span><span class="p">(</span><span class="n">model_config</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span>
+<span class="go">&lt;akebono.model._models.sklearn.WrappedSklearnRandomForestClassifier object at 0x1006c0b00&gt;</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="akebono.model.WrappedModel">
+<em class="property">class </em><code class="descclassname">akebono.model.</code><code class="descname">WrappedModel</code><span class="sig-paren">(</span><em>init_kwargs={}</em>, <em>fit_kwargs={}</em>, <em>evaluate_kwargs={}</em>, <em>pos_index=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/model/_models/base.html#WrappedModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.model.WrappedModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>WrappedModel interface</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>init_kwargs</strong> (<em>dict</em>) – モデル実体の初期化時に渡されるパラメータ</li>
+<li><strong>fit_kwargs</strong> (<em>dict</em>) – モデル実体の訓練時に渡されるパラメータ</li>
+<li><strong>evaluate_kwargs</strong> (<em>dict</em>) – モデルの評価時に渡されるパラメータ</li>
+<li><strong>pos_index</strong> (<em>int</em><em> or </em><em>None</em>) – モデル実体が確率を返す予測(predict_proba)をした場合の、正例に相当するindex</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="akebono.model.WrappedModel.base_init_finished">
+<code class="descname">base_init_finished</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/model/_models/base.html#WrappedModel.base_init_finished"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.model.WrappedModel.base_init_finished" title="Permalink to this definition">¶</a></dt>
+<dd><p>self.__init__() の終了後に実行されるメソッド</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="akebono.model.WrappedModel.dump">
+<code class="descname">dump</code><span class="sig-paren">(</span><em>dirpath</em>, <em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/model/_models/base.html#WrappedModel.dump"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.model.WrappedModel.dump" title="Permalink to this definition">¶</a></dt>
+<dd><p>モデルをストレージに永続化するためのメソッド</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>dirpath</strong> (<em>str</em>) – ストレージのパス</li>
+<li><strong>name</strong> (<em>str</em>) – ファイル名</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="akebono.model.WrappedModel.evaluate">
+<code class="descname">evaluate</code><span class="sig-paren">(</span><em>X</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/model/_models/base.html#WrappedModel.evaluate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.model.WrappedModel.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>モデルを評価するためのメソッド</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>X</strong> (<em>numpy array-like</em>) – 説明変数</li>
+<li><strong>y</strong> (<em>numpy array-like</em>) – 目的変数</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="akebono.model.WrappedModel.fit">
+<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/model/_models/base.html#WrappedModel.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.model.WrappedModel.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>モデルの訓練に用いるメソッド</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>X</strong> (<em>numpy array-like</em>) – 説明変数</li>
+<li><strong>y</strong> (<em>numpy array-like</em>) – 目的変数</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">WrappedModel object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="akebono.model.WrappedModel.load">
+<code class="descname">load</code><span class="sig-paren">(</span><em>dirpath</em>, <em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/model/_models/base.html#WrappedModel.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.model.WrappedModel.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>ストレージに永続化されてるモデルを復元するためのメソッド</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>dirpath</strong> (<em>str</em>) – ストレージのパス</li>
+<li><strong>name</strong> (<em>str</em>) – ファイル名</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="akebono.model.WrappedModel.predict">
+<code class="descname">predict</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/model/_models/base.html#WrappedModel.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.model.WrappedModel.predict" title="Permalink to this definition">¶</a></dt>
+<dd><p>予測結果を返すメソッド</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>X</strong> (<em>numpy array-like</em>) – 説明変数</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">numpy array object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="akebono.model.WrappedModel.predict_proba">
+<code class="descname">predict_proba</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/model/_models/base.html#WrappedModel.predict_proba"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.model.WrappedModel.predict_proba" title="Permalink to this definition">¶</a></dt>
+<dd><p>予測結果（確率）を返すメソッド</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>X</strong> (<em>numpy array-like</em>) – 説明変数</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">numpy array object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="akebono.model.WrappedModel.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/model/_models/base.html#WrappedModel.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.model.WrappedModel.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>モデルの初期化に用いるメソッド</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">WrappedModel object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="akebono.model.WrappedModel.set_model_type">
+<code class="descname">set_model_type</code><span class="sig-paren">(</span><em>y=None</em>, <em>model_type=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/model/_models/base.html#WrappedModel.set_model_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.model.WrappedModel.set_model_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>モデルのタイプを設定するためのメソッド</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>y</strong> (<em>numpy array-like</em>) – 目的変数</li>
+<li><strong>model_type</strong> (<em>str</em>) – モデルのタイプ。設定可能値は、<cite>binary_classifier</cite> or <cite>multiple_classifier</cite> or <cite>regressor</cite></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="akebono.model.WrappedModel.value">
+<code class="descname">value</code><a class="headerlink" href="#akebono.model.WrappedModel.value" title="Permalink to this definition">¶</a></dt>
+<dd><p>モデルの実体</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="operator">
+<h2>Operator<a class="headerlink" href="#operator" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="akebono.operator.train">
+<code class="descclassname">akebono.operator.</code><code class="descname">train</code><span class="sig-paren">(</span><em>train_id</em>, <em>scenario_tag</em>, <em>dataset_config=None</em>, <em>model_config=None</em>, <em>feature_func='identify&#64;akebono.features'</em>, <em>feature_func_kwargs={}</em>, <em>evaluate_enabled=False</em>, <em>fit_model_enabled=False</em>, <em>dump_result_enabled=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/operator.html#train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.operator.train" title="Permalink to this definition">¶</a></dt>
+<dd><p>モデルの訓練を実行する関数</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>train_id</strong> (<em>str</em>) – シナリオ中における訓練実行の識別子</li>
+<li><strong>scenario_tag</strong> (<em>str</em><em> or </em><em>None</em>) – シナリオに付与されるlatest以外のタグ</li>
+<li><strong>dataset_config</strong> (<em>dict</em>) – Datasetの設定。<a class="reference internal" href="#akebono.dataset.get_dataset" title="akebono.dataset.get_dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">akebono.dataset.get_dataset</span></code></a> の引数。</li>
+<li><strong>model_config</strong> (<em>dict</em>) – Modelの設定。<a class="reference internal" href="#akebono.model.get_model" title="akebono.model.get_model"><code class="xref py py-class docutils literal notranslate"><span class="pre">akebono.model.get_model</span></code></a> の引数。</li>
+<li><strong>feature_func</strong> (<em>str</em>) – Feature extractorのstring format</li>
+<li><strong>feature_func_kwargs</strong> (<em>dict</em>) – Feature extractorの引数</li>
+<li><strong>evaluate_enabled</strong> (<em>bool</em>) – モデルの評価を実行するかのフラグ</li>
+<li><strong>fit_model_enabled</strong> (<em>bool</em>) – モデルの訓練を実行するかのフラグ</li>
+<li><strong>dump_result_enabled</strong> (<em>bool</em>) – モデル、評価結果の永続化を実行するかのフラグ</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="akebono.operator.predict">
+<code class="descclassname">akebono.operator.</code><code class="descname">predict</code><span class="sig-paren">(</span><em>predict_id</em>, <em>scenario_tag</em>, <em>method_type='predict'</em>, <em>dataset_config=None</em>, <em>model_config={}</em>, <em>dump_result_enabled=False</em>, <em>dump_result_format='csv'</em>, <em>result_target_columns='all'</em>, <em>result_predict_column='predicted'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/operator.html#predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.operator.predict" title="Permalink to this definition">¶</a></dt>
+<dd><p>予測を実行する関数</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>predict_id</strong> (<em>str</em>) – シナリオ中における予測実行の識別子</li>
+<li><strong>scenario_tag</strong> (<em>str</em><em> or </em><em>None</em>) – シナリオに付与されるlatest以外のタグ</li>
+<li><strong>method_type</strong> (<em>str</em>) – 予測のタイプ。設定可能なタイプは <cite>predict</cite> or <cite>predict_proba</cite></li>
+<li><strong>dataset_config</strong> (<em>dict</em>) – Datasetの設定。<a class="reference internal" href="#akebono.dataset.get_dataset" title="akebono.dataset.get_dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">akebono.dataset.get_dataset</span></code></a> の引数。</li>
+<li><strong>model_config</strong> (<em>dict</em>) – Modelの設定。<a class="reference internal" href="#akebono.model.get_model" title="akebono.model.get_model"><code class="xref py py-class docutils literal notranslate"><span class="pre">akebono.model.get_model</span></code></a> の引数。</li>
+<li><strong>dump_result_enabled</strong> (<em>bool</em>) – 予測結果の永続化を実行するかのフラグ</li>
+<li><strong>dump_result_format</strong> (<em>str</em>) – 予測結果のフォーマット。設定可能なフォーマットは <cite>csv</cite> or <cite>pickle</cite></li>
+<li><strong>result_target_columns</strong> (<em>str</em><em> or </em><em>list</em><em>(</em><em>str</em><em>)</em>) – 予測結果に含めるべき説明変数のカラム名のリスト。全ての場合は’all’とする</li>
+<li><strong>result_predict_column</strong> (<em>str</em>) – 予測結果が格納されるカラム名</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="settings">
+<h2>Settings<a class="headerlink" href="#settings" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="akebono.settings.apply">
+<code class="descclassname">akebono.settings.</code><code class="descname">apply</code><span class="sig-paren">(</span><em>config</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/settings.html#apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.settings.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>configを適用するための関数</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config</strong> (<em>python module object</em>) – akebonoの設定</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
 </div>
 
 
@@ -87,29 +462,25 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="#">akebono</a></h1>
-
-
-
-
-
-
-
-
-<h3>Navigation</h3>
-<p class="caption"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="akebono.html">akebono package</a></li>
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">akebono API documentation for developers</a><ul>
+<li><a class="reference internal" href="#dataset">Dataset</a></li>
+<li><a class="reference internal" href="#feature-extractor">Feature extractor</a></li>
+<li><a class="reference internal" href="#model">Model</a></li>
+<li><a class="reference internal" href="#operator">Operator</a></li>
+<li><a class="reference internal" href="#settings">Settings</a></li>
+</ul>
+</li>
 </ul>
 
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="#">Documentation overview</a><ul>
-      <li>Next: <a href="akebono.html" title="next chapter">akebono package</a></li>
-  </ul></li>
-</ul>
-</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <div class="searchformwrapper">

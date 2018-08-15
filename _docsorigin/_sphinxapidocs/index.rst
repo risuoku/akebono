@@ -3,19 +3,42 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to akebono's documentation!
-===================================
+akebono API documentation for developers
+===========================================
 
-.. toctree::
-   :maxdepth: 4
-   :caption: Contents:
+Dataset
+-----------
 
-   akebono
+.. autofunction:: akebono.dataset.get_dataset
 
+.. autoclass:: akebono.dataset.Dataset
+    :inherited-members:
 
-Indices and tables
-==================
+Feature extractor
+-------------------
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+.. autofunction:: akebono.features.identify
+
+.. autofunction:: akebono.features.select_columns
+
+.. autofunction:: akebono.features.exclude_columns
+
+Model
+-----------
+
+.. autofunction:: akebono.model.get_model
+
+.. autoclass:: akebono.model.WrappedModel
+    :inherited-members:
+
+Operator
+-----------
+
+.. autofunction:: akebono.operator.train
+
+.. autofunction:: akebono.operator.predict
+
+Settings
+-----------
+
+.. autofunction:: akebono.settings.apply

@@ -40,7 +40,13 @@ def get_template_env():
     )
 
 
-def load(config):
+def apply(config):
+    """
+    configを適用するための関数
+
+    :param config: akebonoの設定
+    :type config: python module object
+    """
     for va in _valid_attributes:
         value = getattr(config, va, None)
         if value is not None:

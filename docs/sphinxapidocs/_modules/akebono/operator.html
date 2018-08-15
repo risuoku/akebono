@@ -40,7 +40,7 @@
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">akebono.io.operation.loader</span> <span class="k">import</span> <span class="n">get_train_result</span> 
 <span class="kn">from</span> <span class="nn">akebono.dataset</span> <span class="k">import</span> <span class="n">get_dataset</span>
-<span class="kn">from</span> <span class="nn">akebono.models</span> <span class="k">import</span> <span class="n">get_model</span>
+<span class="kn">from</span> <span class="nn">akebono.model</span> <span class="k">import</span> <span class="n">get_model</span>
 <span class="kn">from</span> <span class="nn">akebono.utils</span> <span class="k">import</span> <span class="n">load_object_by_str</span>
 <span class="kn">import</span> <span class="nn">akebono.settings</span> <span class="k">as</span> <span class="nn">settings</span>
 <span class="kn">import</span> <span class="nn">os</span>
@@ -49,7 +49,7 @@
 <span class="n">logger</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="train"><a class="viewcode-back" href="../../akebono.html#akebono.operator.train">[docs]</a><span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="n">train_id</span><span class="p">,</span> <span class="n">scenario_tag</span><span class="p">,</span>
+<div class="viewcode-block" id="train"><a class="viewcode-back" href="../../index.html#akebono.operator.train">[docs]</a><span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="n">train_id</span><span class="p">,</span> <span class="n">scenario_tag</span><span class="p">,</span>
     <span class="n">dataset_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">model_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">feature_func</span><span class="o">=</span><span class="s1">&#39;identify@akebono.features&#39;</span><span class="p">,</span>
@@ -58,6 +58,28 @@
     <span class="n">fit_model_enabled</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">dump_result_enabled</span><span class="o">=</span><span class="kc">False</span>
     <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        モデルの訓練を実行する関数</span>
+
+<span class="sd">        :param train_id: シナリオ中における訓練実行の識別子</span>
+<span class="sd">        :type train_id: str</span>
+<span class="sd">        :param scenario_tag: シナリオに付与されるlatest以外のタグ</span>
+<span class="sd">        :type scenario_tag: str or None</span>
+<span class="sd">        :param dataset_config: Datasetの設定。:class:`akebono.dataset.get_dataset` の引数。</span>
+<span class="sd">        :type dataset_config: dict</span>
+<span class="sd">        :param model_config: Modelの設定。:class:`akebono.model.get_model` の引数。</span>
+<span class="sd">        :type model_config: dict</span>
+<span class="sd">        :param feature_func: Feature extractorのstring format</span>
+<span class="sd">        :type feature_func: str</span>
+<span class="sd">        :param feature_func_kwargs: Feature extractorの引数</span>
+<span class="sd">        :type feature_func_kwargs: dict</span>
+<span class="sd">        :param evaluate_enabled: モデルの評価を実行するかのフラグ</span>
+<span class="sd">        :type evaluate_enabled: bool</span>
+<span class="sd">        :param fit_model_enabled: モデルの訓練を実行するかのフラグ</span>
+<span class="sd">        :type fit_model_enabled: bool</span>
+<span class="sd">        :param dump_result_enabled: モデル、評価結果の永続化を実行するかのフラグ</span>
+<span class="sd">        :type dump_result_enabled: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">model_config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;model_config must be set.&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">dataset_config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -106,7 +128,7 @@
         <span class="k">return</span> <span class="n">ret</span></div>
 
 
-<div class="viewcode-block" id="predict"><a class="viewcode-back" href="../../akebono.html#akebono.operator.predict">[docs]</a><span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="n">predict_id</span><span class="p">,</span> <span class="n">scenario_tag</span><span class="p">,</span>
+<div class="viewcode-block" id="predict"><a class="viewcode-back" href="../../index.html#akebono.operator.predict">[docs]</a><span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="n">predict_id</span><span class="p">,</span> <span class="n">scenario_tag</span><span class="p">,</span>
     <span class="n">method_type</span><span class="o">=</span><span class="s1">&#39;predict&#39;</span><span class="p">,</span>
     <span class="n">dataset_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">model_config</span><span class="o">=</span><span class="p">{},</span>
@@ -115,6 +137,28 @@
     <span class="n">result_target_columns</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span>
     <span class="n">result_predict_column</span><span class="o">=</span><span class="s1">&#39;predicted&#39;</span>
     <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        予測を実行する関数</span>
+
+<span class="sd">        :param predict_id: シナリオ中における予測実行の識別子</span>
+<span class="sd">        :type predict_id: str</span>
+<span class="sd">        :param scenario_tag: シナリオに付与されるlatest以外のタグ</span>
+<span class="sd">        :type scenario_tag: str or None</span>
+<span class="sd">        :param method_type: 予測のタイプ。設定可能なタイプは `predict` or `predict_proba`</span>
+<span class="sd">        :type method_type: str</span>
+<span class="sd">        :param dataset_config: Datasetの設定。:class:`akebono.dataset.get_dataset` の引数。</span>
+<span class="sd">        :type dataset_config: dict</span>
+<span class="sd">        :param model_config: Modelの設定。:class:`akebono.model.get_model` の引数。</span>
+<span class="sd">        :type model_config: dict</span>
+<span class="sd">        :param dump_result_enabled: 予測結果の永続化を実行するかのフラグ</span>
+<span class="sd">        :type dump_result_enabled: bool</span>
+<span class="sd">        :param dump_result_format: 予測結果のフォーマット。設定可能なフォーマットは `csv` or `pickle`</span>
+<span class="sd">        :type dump_result_format: str</span>
+<span class="sd">        :param result_target_columns: 予測結果に含めるべき説明変数のカラム名のリスト。全ての場合は&#39;all&#39;とする</span>
+<span class="sd">        :type result_target_columns: str or list(str)</span>
+<span class="sd">        :param result_predict_column: 予測結果が格納されるカラム名</span>
+<span class="sd">        :type result_predict_column: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">dataset_config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;dataset_config must be set.&#39;</span><span class="p">)</span>
 
@@ -175,30 +219,6 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../../index.html">akebono</a></h1>
-
-
-
-
-
-
-
-
-<h3>Navigation</h3>
-<p class="caption"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../akebono.html">akebono package</a></li>
-</ul>
-
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../../index.html">Documentation overview</a><ul>
-  <li><a href="../index.html">Module code</a><ul>
-  </ul></li>
-  </ul></li>
-</ul>
-</div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <div class="searchformwrapper">

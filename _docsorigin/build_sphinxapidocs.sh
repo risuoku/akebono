@@ -6,8 +6,7 @@ if [ ! -d ./site ]; then
 fi
 rm -rf ./site/sphinxapidocs
 
-sphinx-apidoc -a -f -o _sphinxapidocs ../akebono \
-  && cd _sphinxapidocs \
+cd _sphinxapidocs \
   && rm -rf _build \
   && PYTHONPATH=../.. make html \
   && mv _build/html ../site/sphinxapidocs

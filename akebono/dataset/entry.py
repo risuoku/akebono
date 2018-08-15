@@ -14,6 +14,32 @@ logger = getLogger(__name__)
 
 
 def get_dataset(dataset_config):
+    """
+    Datasetを生成するための関数
+
+    :param dataset_config: Datasetについての設定
+    :type dataset_config: dict
+    :return: :class:`Dataset` object
+
+    Usage:
+        >>> from akebono.dataset import get_dataset
+        >>> dataset_config = {
+                'loader_config': {
+                    'func': 'make_regression@akebono.dataset.generator.sklearn',
+                    'func_kwargs': {
+                        'n_features': 1,
+                        'noise': 30.0,
+                        'random_state': 0,
+                    },
+                },
+                'target_column': 'target',
+                'cache_enabled': False,
+            }
+        >>> ds = get_dataset(dataset_config)
+        >>> ds
+        <akebono.dataset.model.Dataset object at 0x11291acc0>
+    """
+
     dataset_name = dataset_config.get('name')
     target_column = dataset_config.get('target_column', 'target')
     cache_enabled = dataset_config.get('cache_enabled', False)

@@ -21,7 +21,7 @@ sys.path.insert(0, '/Users/risuo/local/projects/akebono/akebono')
 
 project = 'akebono'
 copyright = '2018, Author'
-author = 'Author'
+author = 'risuoku'
 
 # The short X.Y version
 version = ''
@@ -98,7 +98,10 @@ html_static_path = ['_static']
 # default: ``['localtoc.html', 'relations.html', 'sourcelink.html',
 # 'searchbox.html']``.
 #
-# html_sidebars = {}
+html_sidebars = {
+    'index':    ['localtoc.html', 'sourcelink.html', 'searchbox.html'],
+    '**':       ['localtoc.html', 'sourcelink.html', 'searchbox.html']
+}
 
 
 # -- Options for HTMLHelp output ---------------------------------------------
