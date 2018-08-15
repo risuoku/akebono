@@ -6,7 +6,7 @@ from akebono.io.operation.dumper import (
 )
 from akebono.io.operation.loader import get_train_result 
 from akebono.dataset import get_dataset
-from akebono.models import get_model
+from akebono.model import get_model
 from akebono.utils import load_object_by_str
 import akebono.settings as settings
 import os

@@ -1,4 +1,4 @@
-from .evaluator import evaluate
+from akebono.model.evaluator import evaluate
 
 
 class WrappedModel:
