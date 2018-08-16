@@ -1,4 +1,3 @@
-import akebono.features as features
 from akebono.logging import getLogger
 from akebono.io.operation.dumper import (
     dump_train_result,
@@ -7,6 +6,7 @@ from akebono.io.operation.dumper import (
 from akebono.io.operation.loader import get_train_result 
 from akebono.dataset import get_dataset
 from akebono.model import get_model
+from akebono.preprocessors import get_preprocessor
 from akebono.utils import load_object_by_str
 import akebono.settings as settings
 import os
@@ -18,8 +18,7 @@ logger = getLogger(__name__)
 def train(train_id, scenario_tag,
     dataset_config=None,
     model_config=None,
-    feature_func='identify@akebono.features',
-    feature_func_kwargs={},
+    preprocessor_config=None,
     evaluate_enabled=False,
     fit_model_enabled=False,
     dump_result_enabled=False
@@ -35,10 +34,8 @@ def train(train_id, scenario_tag,
         :type dataset_config: dict
         :param model_config: Modelの設定。:class:`akebono.model.get_model` の引数。
         :type model_config: dict
-        :param feature_func: Feature extractorのstring format
-        :type feature_func: str
-        :param feature_func_kwargs: Feature extractorの引数
-        :type feature_func_kwargs: dict
+        :param preprocessor_config: Preprocessorの設定。:class:`akebono.preprocessors.get_preprocessor`の引数。
+        :type preprocessor_config: dict
         :param evaluate_enabled: モデルの評価を実行するかのフラグ
         :type evaluate_enabled: bool
         :param fit_model_enabled: モデルの訓練を実行するかのフラグ
@@ -50,14 +47,18 @@ def train(train_id, scenario_tag,
             raise ValueError('model_config must be set.')
         if dataset_config is None:
             raise ValueError('dataset_config must be set.')
+        if preprocessor_config is None:
+            preprocessor_config = {
+                'name': 'identify',
+                'kwargs': {},
+            }
 
         ret = {
             'type': 'train',
             'id': train_id,
             'dataset_config': dataset_config,
             'model_config': model_config,
-            'feature_func': feature_func,
-            'feature_func_kwargs': feature_func_kwargs,
+            'preprocessor_config': preprocessor_config,
             'evaluate_enabled': evaluate_enabled,
             'fit_model_enabled': fit_model_enabled,
             'dump_result_enabled': dump_result_enabled
@@ -65,29 +66,28 @@ def train(train_id, scenario_tag,
 
         dataset = get_dataset(dataset_config)
         
-        feature_func = load_object_by_str(feature_func)
+        preprocessor = get_preprocessor(preprocessor_config)
         logger.debug('load dataset start.')
         X, y = dataset.get_predictor_target()
         logger.debug('load dataset done.')
-        logger.debug('load feature start.')
-        fX = feature_func(X, **feature_func_kwargs)
-        logger.debug('load feature done.')
         
         model_config['is_rebuild'] = False
         model = get_model(model_config)
         
         if evaluate_enabled:
             logger.debug('evaluate start.')
-            rep = model.evaluate(fX, y)
+            rep = model.evaluate(X, y, preprocessor)
             logger.debug('evaluate done.')
             ret['evaluate'] = rep
         if fit_model_enabled:
             logger.debug('fit start.')
+            fX, _ = preprocessor.process(X, None)
             model.fit(fX, y)
             logger.debug('fit done.')
             ret['model'] = model
         if dump_result_enabled:
             logger.debug('dump_train_result start.')
+            ret['preprocessor'] = preprocessor
             dump_train_result(train_id, scenario_tag, ret)
             logger.debug('dump_train_result done.')
         
@@ -151,9 +151,9 @@ def predict(predict_id, scenario_tag,
 
         dataset_config['target_column'] = None # target_columnがNoneだと、predict用のDatasetが返ってくる
         dataset = get_dataset(dataset_config)
-        feature_func = load_object_by_str(tr['feature_func'])
+        preprocessor = get_preprocessor(tr['preprocessor_config'])
         X = dataset.value
-        fX = feature_func(X, **tr['feature_func_kwargs'])
+        fX, _ = preprocessor.process(X, None)
         
         model_config.update(tr['model_config'])
         model_config['is_rebuild'] = True

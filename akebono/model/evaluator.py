@@ -83,9 +83,17 @@ def _fit_and_predict(X_train, X_test, y_train, model):
     y_pred = y_pred_proba = None
 
     if hasattr(model, 'predict'):
-        y_pred = model.predict(X_test)
+        try:
+            y_pred = model.predict(X_test)
+        except NotImplementedError:
+            # ignore exception
+            pass
     if hasattr(model, 'predict_proba'):
-        y_pred_proba = model.predict_proba(X_test)
+        try:
+            y_pred_proba = model.predict_proba(X_test)
+        except NotImplementedError:
+            # ignore exception
+            pass
     
     return model, y_pred, y_pred_proba
 
@@ -126,7 +134,7 @@ def _sklearn_cross_val_iter2train_test_iter(X, y, cross_val_iter, cross_val_iter
 
 
 def evaluate(model,
-    X, y,
+    X, y, preprocessor,
     train_test_split_func='train_test_split@sklearn.model_selection',
     train_test_split_func_kwargs={},
     cross_val_iterator=None,
@@ -158,7 +166,8 @@ def evaluate(model,
         train_test_iterator = _sklearn_cross_val_iter2train_test_iter(X, y, cross_val_iterator, cross_val_iterator_kwargs)
         result['cv'] = True
 
-    for X_train, X_test, y_train, y_test in train_test_iterator:
+    for Xraw_train, Xraw_test, y_train, y_test in train_test_iterator:
+        X_train, X_test = preprocessor.process(Xraw_train, Xraw_test)
         one_result = []
         model, y_pred, y_pred_proba = _fit_and_predict(X_train, X_test, y_train, model)
         if metrics == 'all':

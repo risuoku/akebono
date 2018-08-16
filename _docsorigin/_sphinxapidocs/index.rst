@@ -14,14 +14,14 @@ Dataset
 .. autoclass:: akebono.dataset.Dataset
     :inherited-members:
 
-Feature extractor
+Preprocessor
 -------------------
 
-.. autofunction:: akebono.features.identify
+.. autofunction:: akebono.preprocessors.identify
 
-.. autofunction:: akebono.features.select_columns
+.. autofunction:: akebono.preprocessors.select_columns
 
-.. autofunction:: akebono.features.exclude_columns
+.. autofunction:: akebono.preprocessors.exclude_columns
 
 Model
 -----------

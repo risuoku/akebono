@@ -120,7 +120,7 @@ class WrappedModel:
         """
         return self._value
 
-    def evaluate(self, X, y):
+    def evaluate(self, X, y, preprocessor):
         """
         モデルを評価するためのメソッド
 
@@ -131,4 +131,4 @@ class WrappedModel:
 
         :return: list
         """
-        return evaluate(self, X, y, **self._evaluate_kwargs)
+        return evaluate(self, X, y, preprocessor, **self._evaluate_kwargs)
