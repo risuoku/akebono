@@ -274,6 +274,20 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#_2" title="プロジェクトの初期化" class="md-nav__link">
+    プロジェクトの初期化
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iris" title="irisデータセットを分類する" class="md-nav__link">
+    irisデータセットを分類する
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -349,6 +363,20 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#_2" title="プロジェクトの初期化" class="md-nav__link">
+    プロジェクトの初期化
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iris" title="irisデータセットを分類する" class="md-nav__link">
+    irisデータセットを分類する
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -384,6 +412,89 @@
 <h3 id="_1">インストール<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h3>
 <div class="codehilite"><pre><span></span>pip install git+https://github.com/risuoku/akebono
 </pre></div>
+
+
+<h3 id="_2">プロジェクトの初期化<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
+<p>まず、適当な作業用ディレクトリを作って移動します。MacやLinuxの場合は例えばこうします。</p>
+<div class="codehilite"><pre><span></span>mkdir demo-akebono
+cd demo-akebono
+</pre></div>
+
+
+<p>次に、<code>config.py</code> という名前のファイルを作成します。中身は空で大丈夫です。</p>
+<div class="codehilite"><pre><span></span>touch config.py
+</pre></div>
+
+
+<p>次に、以下のコマンドを入力して実行します。</p>
+<div class="codehilite"><pre><span></span>akebono init
+</pre></div>
+
+
+<p>これは、akebonoを動作させるために必要な初期化処理を実行します。コマンド実行後、直下に <code>_storage</code> というディレクトリが作成されたでしょうか？
+これは、akebonoがデータを保存したり読み込むためのスペースとなります。この場所は設定で変更することが可能です。</p>
+<h3 id="iris">irisデータセットを分類する<a class="headerlink" href="#iris" title="Permanent link">&para;</a></h3>
+<p>最初のタスクとして、irisデータセットの分類機を作ってみます。
+より具体的には、以下のような作業をやります。</p>
+<ol>
+<li>irisデータセットを取得する。</li>
+<li>irisデータセットのpandas.DataFrameを作成する。</li>
+<li>scikit-learnのロジスティック回帰を使ってモデルを訓練する。評価は１０分割の交差検定による正解率を用いる。</li>
+</ol>
+<p>akebonoを使って上記を実行する手順を説明します。</p>
+<p>まず、<code>config.py</code> を以下のとおりに編集します。</p>
+<div class="codehilite"><pre><span></span><span class="n">train_operations</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;dataset_config&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;loader_config&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;func&#39;</span><span class="p">:</span> <span class="s1">&#39;load_iris@akebono.dataset.generator.sklearn&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;func_kwargs&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="p">},</span>
+            <span class="p">},</span>
+        <span class="p">},</span>
+        <span class="s1">&#39;model_config&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;SklearnLogisticRegression&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;init_kwargs&#39;</span><span class="p">:</span> <span class="p">{},</span>
+            <span class="s1">&#39;fit_kwargs&#39;</span><span class="p">:</span> <span class="p">{},</span>
+            <span class="s1">&#39;evaluate_kwargs&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;cross_val_iterator&#39;</span><span class="p">:</span> <span class="s1">&#39;KFold@sklearn.model_selection&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;cross_val_iterator_kwargs&#39;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s1">&#39;n_splits&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+                    <span class="s1">&#39;shuffle&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+                    <span class="s1">&#39;random_state&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="p">},</span>
+            <span class="p">},</span>
+            <span class="s1">&#39;model_type&#39;</span><span class="p">:</span> <span class="s1">&#39;multiple_classifier&#39;</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="s1">&#39;evaluate_enabled&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+        <span class="s1">&#39;fit_model_enabled&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+        <span class="s1">&#39;dump_result_enabled&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+    <span class="p">}</span> 
+<span class="p">]</span>
+</pre></div>
+
+
+<p>次に、以下のコマンドを入力して実行します。</p>
+<div class="codehilite"><pre><span></span>akebono train
+</pre></div>
+
+
+<p>実行ログが流れましたか？このコマンドは <code>config.py</code> を読み込んで上記1から3を実行した後、実行結果や訓練済みモデルを保存するところまでやりました。</p>
+<p>モデルの評価を確認するには以下のコマンドを実行します。</p>
+<div class="codehilite"><pre><span></span>akebono inspect
+
+### 以下、実行結果
+=== performance summary .. scenario_tag: latest ===
+
+------------------------------
+train_id: 0
+
+accuracy
+0.94667 
+</pre></div>
+
+
+<p>accuracy、つまり正解率が約95%のモデルを訓練できたことがわかりました。</p>
                 
                   
                 
