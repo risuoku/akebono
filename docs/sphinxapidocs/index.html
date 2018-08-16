@@ -113,18 +113,86 @@
 <h2>Preprocessor<a class="headerlink" href="#preprocessor" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="akebono.preprocessor.get_preprocessor">
-<code class="descclassname">akebono.preprocessor.</code><code class="descname">get_preprocessor</code><span class="sig-paren">(</span><em>preprocessor_config</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/preprocessor/entry.html#get_preprocessor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.preprocessor.get_preprocessor" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">akebono.preprocessor.</code><code class="descname">get_preprocessor</code><span class="sig-paren">(</span><em>preprocessor_config</em>, <em>pipeline_enabled=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/preprocessor/entry.html#get_preprocessor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.preprocessor.get_preprocessor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Preprocessorを生成するための関数</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>preprocessor_config</strong> (<em>dict</em>) – Preprocessorについての設定</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>preprocessor_config</strong> (<em>list</em><em> or </em><em>dict</em>) – Preprocessorについての設定</li>
+<li><strong>pipeline_enabled</strong> – PreprocessorPipelineを有効にするかどうかのフラグ</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="#akebono.preprocessor.StatelessPreprocessor" title="akebono.preprocessor.StatelessPreprocessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">StatelessPreprocessor</span></code></a> or <a class="reference internal" href="#akebono.preprocessor.StatefulPreprocessor" title="akebono.preprocessor.StatefulPreprocessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">StatefulPreprocessor</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#akebono.preprocessor.PreprocessorPipeline" title="akebono.preprocessor.PreprocessorPipeline"><code class="xref py py-class docutils literal notranslate"><span class="pre">PreprocessorPipeline</span></code></a> or <a class="reference internal" href="#akebono.preprocessor.StatelessPreprocessor" title="akebono.preprocessor.StatelessPreprocessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">StatelessPreprocessor</span></code></a> or <a class="reference internal" href="#akebono.preprocessor.StatefulPreprocessor" title="akebono.preprocessor.StatefulPreprocessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">StatefulPreprocessor</span></code></a></p>
+</td>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="class">
+<dt id="akebono.preprocessor.PreprocessorPipeline">
+<em class="property">class </em><code class="descclassname">akebono.preprocessor.</code><code class="descname">PreprocessorPipeline</code><span class="sig-paren">(</span><em>preprocessors</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/preprocessor/pipeline.html#PreprocessorPipeline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.preprocessor.PreprocessorPipeline" title="Permalink to this definition">¶</a></dt>
+<dd><p>複数のPreprocessor連結を抽象化するためのクラス</p>
+<dl class="method">
+<dt id="akebono.preprocessor.PreprocessorPipeline.dump_with_operation_rule">
+<code class="descname">dump_with_operation_rule</code><span class="sig-paren">(</span><em>dirpath</em>, <em>train_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/preprocessor/pipeline.html#PreprocessorPipeline.dump_with_operation_rule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.preprocessor.PreprocessorPipeline.dump_with_operation_rule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pipelineに含まれるStatefulPreprocessorを永続化するためのメソッド</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>dirpath</strong> (<em>str</em>) – ストレージのパス</li>
+<li><strong>train_id</strong> (<em>str</em>) – train_id</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="akebono.preprocessor.PreprocessorPipeline.load_with_operation_rule">
+<code class="descname">load_with_operation_rule</code><span class="sig-paren">(</span><em>dirpath</em>, <em>train_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/preprocessor/pipeline.html#PreprocessorPipeline.load_with_operation_rule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.preprocessor.PreprocessorPipeline.load_with_operation_rule" title="Permalink to this definition">¶</a></dt>
+<dd><p>ストレージに永続化されているStatefulPreprocessorをPipelineに復元するためのメソッド</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>dirpath</strong> (<em>str</em>) – ストレージのパス</li>
+<li><strong>train_id</strong> (<em>str</em>) – train_id</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="akebono.preprocessor.PreprocessorPipeline.process">
+<code class="descname">process</code><span class="sig-paren">(</span><em>df_train</em>, <em>df_test</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/preprocessor/pipeline.html#PreprocessorPipeline.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.preprocessor.PreprocessorPipeline.process" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pipelineに含まれるPreprocessorのprocessを順次直列に実行するためのメソッド</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>df_train</strong> (<em>pandas.DataFrame</em>) – 訓練データセットが持つ説明変数</li>
+<li><strong>df_test</strong> (<em>pandas.DataFrame</em><em> or </em><em>None</em>) – テストデータセットが持つ説明変数</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">tuple(pandas.DataFrame, pandas.DataFrame) object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">

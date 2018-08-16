@@ -105,8 +105,7 @@
         <span class="n">dataset</span> <span class="o">=</span> <span class="n">get_dataset</span><span class="p">(</span><span class="n">dataset_config</span><span class="p">)</span>
         
         <span class="n">preprocessor</span> <span class="o">=</span> <span class="n">get_preprocessor</span><span class="p">(</span><span class="n">preprocessor_config</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">preprocessor</span><span class="p">,</span> <span class="n">StatefulPreprocessor</span><span class="p">):</span>
-            <span class="n">preprocessor</span><span class="o">.</span><span class="n">set_operation_mode</span><span class="p">(</span><span class="s1">&#39;train&#39;</span><span class="p">)</span>
+        <span class="n">preprocessor</span><span class="o">.</span><span class="n">set_operation_mode</span><span class="p">(</span><span class="s1">&#39;train&#39;</span><span class="p">)</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;load dataset start.&#39;</span><span class="p">)</span>
         <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">get_predictor_target</span><span class="p">()</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;load dataset done.&#39;</span><span class="p">)</span>
@@ -129,8 +128,7 @@
             <span class="n">ret</span><span class="p">[</span><span class="s1">&#39;model&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span>
         <span class="k">if</span> <span class="n">dump_result_enabled</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;dump_train_result start.&#39;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">preprocessor</span><span class="p">,</span> <span class="n">StatefulPreprocessor</span><span class="p">):</span>
-                <span class="n">ret</span><span class="p">[</span><span class="s1">&#39;preprocessor&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">preprocessor</span>
+            <span class="n">ret</span><span class="p">[</span><span class="s1">&#39;preprocessor&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">preprocessor</span>
             <span class="n">dump_train_result</span><span class="p">(</span><span class="n">train_id</span><span class="p">,</span> <span class="n">scenario_tag</span><span class="p">,</span> <span class="n">ret</span><span class="p">)</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;dump_train_result done.&#39;</span><span class="p">)</span>
         
@@ -195,12 +193,10 @@
         <span class="n">dataset_config</span><span class="p">[</span><span class="s1">&#39;target_column&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># target_columnがNoneだと、predict用のDatasetが返ってくる</span>
         <span class="n">dataset</span> <span class="o">=</span> <span class="n">get_dataset</span><span class="p">(</span><span class="n">dataset_config</span><span class="p">)</span>
         <span class="n">preprocessor</span> <span class="o">=</span> <span class="n">get_preprocessor</span><span class="p">(</span><span class="n">tr</span><span class="p">[</span><span class="s1">&#39;preprocessor_config&#39;</span><span class="p">])</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">preprocessor</span><span class="p">,</span> <span class="n">StatefulPreprocessor</span><span class="p">):</span>
-            <span class="n">preprocessor</span><span class="o">.</span><span class="n">set_operation_mode</span><span class="p">(</span><span class="s1">&#39;predict&#39;</span><span class="p">)</span>
-            <span class="n">dirpath</span> <span class="o">=</span> <span class="n">pathjoin</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">operation_results_dir</span><span class="p">,</span> <span class="n">scenario_tag</span><span class="p">)</span>
-            <span class="n">preprocessor_name</span> <span class="o">=</span> <span class="s1">&#39;train_result_preprocessor_</span><span class="si">{}</span><span class="s1">_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">preprocessor</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">train_id</span><span class="p">)</span>
-            <span class="n">preprocessor</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">dirpath</span><span class="p">,</span> <span class="n">preprocessor_name</span><span class="p">)</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;loaded model .. preprocessor: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">preprocessor</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
+        <span class="n">preprocessor</span><span class="o">.</span><span class="n">set_operation_mode</span><span class="p">(</span><span class="s1">&#39;predict&#39;</span><span class="p">)</span>
+        <span class="n">dirpath</span> <span class="o">=</span> <span class="n">pathjoin</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">operation_results_dir</span><span class="p">,</span> <span class="n">scenario_tag</span><span class="p">)</span>
+        <span class="n">preprocessor</span><span class="o">.</span><span class="n">load_with_operation_rule</span><span class="p">(</span><span class="n">dirpath</span><span class="p">,</span> <span class="n">train_id</span><span class="p">)</span>
+
         <span class="n">X</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">value</span>
         <span class="n">fX</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">preprocessor</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>

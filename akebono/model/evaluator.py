@@ -3,7 +3,6 @@ from akebono.utils import (
     load_object_by_str,
     get_label_by_object,
 )
-from akebono.preprocessor import StatefulPreprocessor
 from akebono.logging import getLogger
 
 
@@ -181,9 +180,7 @@ def evaluate(model,
         result['cv'] = True
 
     for Xraw_train, Xraw_test, y_train, y_test in train_test_iterator:
-        if isinstance(preprocessor, StatefulPreprocessor):
-            logger.debug('StatefulPreprocessor detected. preprocessor: {}'.format(preprocessor.__class__.__name__))
-            preprocessor.reset()
+        preprocessor.reset()
         X_train, X_test = preprocessor.process(Xraw_train, Xraw_test)
         one_result = []
         model, y_pred, y_pred_proba = _fit_and_predict(X_train, X_test, y_train, model)

@@ -19,6 +19,9 @@ Preprocessor
 
 .. autofunction:: akebono.preprocessor.get_preprocessor
 
+.. autoclass:: akebono.preprocessor.PreprocessorPipeline
+    :inherited-members:
+
 .. autoclass:: akebono.preprocessor.StatelessPreprocessor
     :inherited-members:
 

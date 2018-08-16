@@ -41,29 +41,51 @@
 <span class="kn">from</span> <span class="nn">.statefulmodels</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">ApplyStandardScaler</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.pipeline</span> <span class="k">import</span> <span class="n">PreprocessorPipeline</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 
 
 <span class="bp">self</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="vm">__name__</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="get_preprocessor"><a class="viewcode-back" href="../../../index.html#akebono.preprocessor.get_preprocessor">[docs]</a><span class="k">def</span> <span class="nf">get_preprocessor</span><span class="p">(</span><span class="n">preprocessor_config</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Preprocessorを生成するための関数</span>
-
-<span class="sd">    :param preprocessor_config: Preprocessorについての設定</span>
-<span class="sd">    :type preprocessor_config: dict</span>
-<span class="sd">    :return: :class:`StatelessPreprocessor` or :class:`StatefulPreprocessor`</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">name</span> <span class="o">=</span> <span class="n">preprocessor_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_get_preprocessor_strict</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;preprocessor_config.name must be set.&#39;</span><span class="p">)</span>
     <span class="n">ppcls</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">snake2camel</span><span class="p">(</span><span class="n">name</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">ppcls</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;unsuppoorted preprocessor .. name: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
-    <span class="n">ppobj</span> <span class="o">=</span> <span class="n">ppcls</span><span class="p">(</span><span class="o">**</span><span class="n">preprocessor_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;kwargs&#39;</span><span class="p">,</span> <span class="p">{}))</span>
-    <span class="k">return</span> <span class="n">ppobj</span></div>
+    <span class="k">return</span> <span class="n">ppcls</span><span class="p">(</span><span class="o">**</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;kwargs&#39;</span><span class="p">,</span> <span class="p">{}))</span>
+
+
+<div class="viewcode-block" id="get_preprocessor"><a class="viewcode-back" href="../../../index.html#akebono.preprocessor.get_preprocessor">[docs]</a><span class="k">def</span> <span class="nf">get_preprocessor</span><span class="p">(</span><span class="n">preprocessor_config</span><span class="p">,</span> <span class="n">pipeline_enabled</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Preprocessorを生成するための関数</span>
+
+<span class="sd">    :param preprocessor_config: Preprocessorについての設定</span>
+<span class="sd">    :type preprocessor_config: list or dict</span>
+<span class="sd">    :param pipeline_enabled: PreprocessorPipelineを有効にするかどうかのフラグ</span>
+<span class="sd">    :type pipiline_enabled: bool</span>
+<span class="sd">    :return: :class:`PreprocessorPipeline` or :class:`StatelessPreprocessor` or :class:`StatefulPreprocessor`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">pipeline_enabled</span><span class="p">:</span>
+        <span class="n">ppcl</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">preprocessor_config</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">ppcl</span> <span class="o">=</span> <span class="p">[</span><span class="n">preprocessor_config</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">preprocessor_config</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">ppcl</span> <span class="o">=</span> <span class="n">preprocessor_config</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;preprocessor_config must be list or dict.&#39;</span><span class="p">)</span>
+
+        <span class="n">pp_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">ppc</span> <span class="ow">in</span> <span class="n">ppcl</span><span class="p">:</span>
+            <span class="n">pp_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_get_preprocessor_strict</span><span class="p">(</span><span class="n">ppc</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">PreprocessorPipeline</span><span class="p">(</span><span class="n">pp_list</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">preprocessor_config</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;preprocessor_config must be dict if pipeline_enabled is False&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_get_preprocessor_strict</span><span class="p">(</span><span class="n">preprocessor_config</span><span class="p">)</span></div>
 </pre></div>
 
           </div>

@@ -17,12 +17,8 @@ def dump_sklearn_model(obj, dirpath, model_name):
 
 
 def dump_train_result(train_id, scenario_tag, result):
-    model = result.get('model')
-    preprocessor = result.get('preprocessor')
-    if model is not None:
-        result.pop('model')
-    if preprocessor is not None:
-        result.pop('preprocessor')
+    model = result.pop('model', None)
+    preprocessor = result.pop('preprocessor', None)
     model_name = 'train_result_model_{}'.format(train_id)
     result_name = 'train_result_meta_{}'.format(train_id)
     tag_list = ['latest']
@@ -34,8 +30,7 @@ def dump_train_result(train_id, scenario_tag, result):
         if model is not None:
             model.dump(dirpath, model_name)
         if preprocessor is not None:
-            preprocessor_name = 'train_result_preprocessor_{}_{}'.format(preprocessor.__class__.__name__, train_id)
-            preprocessor.dump(dirpath, preprocessor_name)
+            preprocessor.dump_with_operation_rule(dirpath, train_id)
 
 
 def dump_predicted_result(predict_id, scenario_tag, dump_result_format, df, meta):

@@ -8,4 +8,5 @@ from .statefulmodels import (
     StatefulPreprocessor,
     ApplyStandardScaler,
 )
+from .pipeline import PreprocessorPipeline
 from .entry import get_preprocessor

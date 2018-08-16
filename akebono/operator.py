@@ -71,8 +71,7 @@ def train(train_id, scenario_tag,
         dataset = get_dataset(dataset_config)
         
         preprocessor = get_preprocessor(preprocessor_config)
-        if isinstance(preprocessor, StatefulPreprocessor):
-            preprocessor.set_operation_mode('train')
+        preprocessor.set_operation_mode('train')
         logger.debug('load dataset start.')
         X, y = dataset.get_predictor_target()
         logger.debug('load dataset done.')
@@ -95,8 +94,7 @@ def train(train_id, scenario_tag,
             ret['model'] = model
         if dump_result_enabled:
             logger.debug('dump_train_result start.')
-            if isinstance(preprocessor, StatefulPreprocessor):
-                ret['preprocessor'] = preprocessor
+            ret['preprocessor'] = preprocessor
             dump_train_result(train_id, scenario_tag, ret)
             logger.debug('dump_train_result done.')
         
@@ -161,12 +159,10 @@ def predict(predict_id, scenario_tag,
         dataset_config['target_column'] = None # target_columnがNoneだと、predict用のDatasetが返ってくる
         dataset = get_dataset(dataset_config)
         preprocessor = get_preprocessor(tr['preprocessor_config'])
-        if isinstance(preprocessor, StatefulPreprocessor):
-            preprocessor.set_operation_mode('predict')
-            dirpath = pathjoin(settings.operation_results_dir, scenario_tag)
-            preprocessor_name = 'train_result_preprocessor_{}_{}'.format(preprocessor.__class__.__name__, train_id)
-            preprocessor.load(dirpath, preprocessor_name)
-            logger.debug('loaded model .. preprocessor: {}'.format(preprocessor.__class__.__name__))
+        preprocessor.set_operation_mode('predict')
+        dirpath = pathjoin(settings.operation_results_dir, scenario_tag)
+        preprocessor.load_with_operation_rule(dirpath, train_id)
+
         X = dataset.value
         fX, _ = preprocessor.process(X, None)
         gc.collect()
