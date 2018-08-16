@@ -1,4 +1,6 @@
 import importlib
+import sys
+import os
 import akebono.settings as settings
 
 
@@ -7,6 +9,7 @@ class CommandBase:
         pass
 
     def pre_execute(self, namespace):
+        sys.path.append(os.getcwd())
         mod_config = importlib.import_module(namespace.config)
         settings.apply(mod_config)
 
