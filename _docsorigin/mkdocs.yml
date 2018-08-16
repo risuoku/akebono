@@ -1,11 +1,15 @@
-site_name: akebono Doc 
+site_name: akebono documentation
 theme: material
+#theme: mkdocs
 markdown_extensions:
+  - toc:
+      permalink: true
   - codehilite
+  - def_list
 repo_url: https://github.com/risuoku/akebono
 edit_uri: blob/master/_docsorigin/docs
 use_directory_urls: false
-pages:
+nav:
 - 'HOME': 'index.md'
 - 'hello': 'notebooks/hello.md'
-- 'hoge': 'sphinxapidocs/index.html'
+- 'APIリファレンス': 'sphinxapidocs/index.html'
