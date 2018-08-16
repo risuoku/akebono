@@ -32,8 +32,7 @@
           <div class="body" role="main">
             
   <h1>Source code for akebono.operator</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">akebono.features</span> <span class="k">as</span> <span class="nn">features</span>
-<span class="kn">from</span> <span class="nn">akebono.logging</span> <span class="k">import</span> <span class="n">getLogger</span>
+<span></span><span class="kn">from</span> <span class="nn">akebono.logging</span> <span class="k">import</span> <span class="n">getLogger</span>
 <span class="kn">from</span> <span class="nn">akebono.io.operation.dumper</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">dump_train_result</span><span class="p">,</span>
     <span class="n">dump_predicted_result</span><span class="p">,</span>
@@ -41,9 +40,14 @@
 <span class="kn">from</span> <span class="nn">akebono.io.operation.loader</span> <span class="k">import</span> <span class="n">get_train_result</span> 
 <span class="kn">from</span> <span class="nn">akebono.dataset</span> <span class="k">import</span> <span class="n">get_dataset</span>
 <span class="kn">from</span> <span class="nn">akebono.model</span> <span class="k">import</span> <span class="n">get_model</span>
-<span class="kn">from</span> <span class="nn">akebono.utils</span> <span class="k">import</span> <span class="n">load_object_by_str</span>
+<span class="kn">from</span> <span class="nn">akebono.preprocessor</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">get_preprocessor</span><span class="p">,</span>
+    <span class="n">StatefulPreprocessor</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">akebono.utils</span> <span class="k">import</span> <span class="n">pathjoin</span>
 <span class="kn">import</span> <span class="nn">akebono.settings</span> <span class="k">as</span> <span class="nn">settings</span>
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">gc</span>
 
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -52,8 +56,7 @@
 <div class="viewcode-block" id="train"><a class="viewcode-back" href="../../index.html#akebono.operator.train">[docs]</a><span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="n">train_id</span><span class="p">,</span> <span class="n">scenario_tag</span><span class="p">,</span>
     <span class="n">dataset_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">model_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">feature_func</span><span class="o">=</span><span class="s1">&#39;identify@akebono.features&#39;</span><span class="p">,</span>
-    <span class="n">feature_func_kwargs</span><span class="o">=</span><span class="p">{},</span>
+    <span class="n">preprocessor_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">evaluate_enabled</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">fit_model_enabled</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">dump_result_enabled</span><span class="o">=</span><span class="kc">False</span>
@@ -69,10 +72,8 @@
 <span class="sd">        :type dataset_config: dict</span>
 <span class="sd">        :param model_config: Modelの設定。:class:`akebono.model.get_model` の引数。</span>
 <span class="sd">        :type model_config: dict</span>
-<span class="sd">        :param feature_func: Feature extractorのstring format</span>
-<span class="sd">        :type feature_func: str</span>
-<span class="sd">        :param feature_func_kwargs: Feature extractorの引数</span>
-<span class="sd">        :type feature_func_kwargs: dict</span>
+<span class="sd">        :param preprocessor_config: Preprocessorの設定。:class:`akebono.preprocessor.get_preprocessor`の引数。</span>
+<span class="sd">        :type preprocessor_config: dict</span>
 <span class="sd">        :param evaluate_enabled: モデルの評価を実行するかのフラグ</span>
 <span class="sd">        :type evaluate_enabled: bool</span>
 <span class="sd">        :param fit_model_enabled: モデルの訓練を実行するかのフラグ</span>
@@ -84,14 +85,18 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;model_config must be set.&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">dataset_config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;dataset_config must be set.&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">preprocessor_config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">preprocessor_config</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;identify&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;kwargs&#39;</span><span class="p">:</span> <span class="p">{},</span>
+            <span class="p">}</span>
 
         <span class="n">ret</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;train&#39;</span><span class="p">,</span>
             <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="n">train_id</span><span class="p">,</span>
             <span class="s1">&#39;dataset_config&#39;</span><span class="p">:</span> <span class="n">dataset_config</span><span class="p">,</span>
             <span class="s1">&#39;model_config&#39;</span><span class="p">:</span> <span class="n">model_config</span><span class="p">,</span>
-            <span class="s1">&#39;feature_func&#39;</span><span class="p">:</span> <span class="n">feature_func</span><span class="p">,</span>
-            <span class="s1">&#39;feature_func_kwargs&#39;</span><span class="p">:</span> <span class="n">feature_func_kwargs</span><span class="p">,</span>
+            <span class="s1">&#39;preprocessor_config&#39;</span><span class="p">:</span> <span class="n">preprocessor_config</span><span class="p">,</span>
             <span class="s1">&#39;evaluate_enabled&#39;</span><span class="p">:</span> <span class="n">evaluate_enabled</span><span class="p">,</span>
             <span class="s1">&#39;fit_model_enabled&#39;</span><span class="p">:</span> <span class="n">fit_model_enabled</span><span class="p">,</span>
             <span class="s1">&#39;dump_result_enabled&#39;</span><span class="p">:</span> <span class="n">dump_result_enabled</span>
@@ -99,29 +104,33 @@
 
         <span class="n">dataset</span> <span class="o">=</span> <span class="n">get_dataset</span><span class="p">(</span><span class="n">dataset_config</span><span class="p">)</span>
         
-        <span class="n">feature_func</span> <span class="o">=</span> <span class="n">load_object_by_str</span><span class="p">(</span><span class="n">feature_func</span><span class="p">)</span>
+        <span class="n">preprocessor</span> <span class="o">=</span> <span class="n">get_preprocessor</span><span class="p">(</span><span class="n">preprocessor_config</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">preprocessor</span><span class="p">,</span> <span class="n">StatefulPreprocessor</span><span class="p">):</span>
+            <span class="n">preprocessor</span><span class="o">.</span><span class="n">set_operation_mode</span><span class="p">(</span><span class="s1">&#39;train&#39;</span><span class="p">)</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;load dataset start.&#39;</span><span class="p">)</span>
         <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">get_predictor_target</span><span class="p">()</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;load dataset done.&#39;</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;load feature start.&#39;</span><span class="p">)</span>
-        <span class="n">fX</span> <span class="o">=</span> <span class="n">feature_func</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="o">**</span><span class="n">feature_func_kwargs</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;load feature done.&#39;</span><span class="p">)</span>
         
         <span class="n">model_config</span><span class="p">[</span><span class="s1">&#39;is_rebuild&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">model</span> <span class="o">=</span> <span class="n">get_model</span><span class="p">(</span><span class="n">model_config</span><span class="p">)</span>
         
         <span class="k">if</span> <span class="n">evaluate_enabled</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;evaluate start.&#39;</span><span class="p">)</span>
-            <span class="n">rep</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">fX</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+            <span class="n">rep</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">preprocessor</span><span class="p">)</span>
+            <span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;evaluate done.&#39;</span><span class="p">)</span>
             <span class="n">ret</span><span class="p">[</span><span class="s1">&#39;evaluate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rep</span>
         <span class="k">if</span> <span class="n">fit_model_enabled</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;fit start.&#39;</span><span class="p">)</span>
+            <span class="n">fX</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">preprocessor</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
             <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">fX</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+            <span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;fit done.&#39;</span><span class="p">)</span>
             <span class="n">ret</span><span class="p">[</span><span class="s1">&#39;model&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span>
         <span class="k">if</span> <span class="n">dump_result_enabled</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;dump_train_result start.&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">preprocessor</span><span class="p">,</span> <span class="n">StatefulPreprocessor</span><span class="p">):</span>
+                <span class="n">ret</span><span class="p">[</span><span class="s1">&#39;preprocessor&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">preprocessor</span>
             <span class="n">dump_train_result</span><span class="p">(</span><span class="n">train_id</span><span class="p">,</span> <span class="n">scenario_tag</span><span class="p">,</span> <span class="n">ret</span><span class="p">)</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;dump_train_result done.&#39;</span><span class="p">)</span>
         
@@ -131,7 +140,7 @@
 <div class="viewcode-block" id="predict"><a class="viewcode-back" href="../../index.html#akebono.operator.predict">[docs]</a><span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="n">predict_id</span><span class="p">,</span> <span class="n">scenario_tag</span><span class="p">,</span>
     <span class="n">method_type</span><span class="o">=</span><span class="s1">&#39;predict&#39;</span><span class="p">,</span>
     <span class="n">dataset_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">model_config</span><span class="o">=</span><span class="p">{},</span>
+    <span class="n">train_id</span><span class="o">=</span><span class="s1">&#39;0&#39;</span><span class="p">,</span>
     <span class="n">dump_result_enabled</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">dump_result_format</span><span class="o">=</span><span class="s1">&#39;csv&#39;</span><span class="p">,</span>
     <span class="n">result_target_columns</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span>
@@ -148,8 +157,8 @@
 <span class="sd">        :type method_type: str</span>
 <span class="sd">        :param dataset_config: Datasetの設定。:class:`akebono.dataset.get_dataset` の引数。</span>
 <span class="sd">        :type dataset_config: dict</span>
-<span class="sd">        :param model_config: Modelの設定。:class:`akebono.model.get_model` の引数。</span>
-<span class="sd">        :type model_config: dict</span>
+<span class="sd">        :param train_id: 予測で使うモデルのtrain_id</span>
+<span class="sd">        :type train_id: str</span>
 <span class="sd">        :param dump_result_enabled: 予測結果の永続化を実行するかのフラグ</span>
 <span class="sd">        :type dump_result_enabled: bool</span>
 <span class="sd">        :param dump_result_format: 予測結果のフォーマット。設定可能なフォーマットは `csv` or `pickle`</span>
@@ -162,21 +171,21 @@
         <span class="k">if</span> <span class="n">dataset_config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;dataset_config must be set.&#39;</span><span class="p">)</span>
 
+        <span class="n">train_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">train_id</span><span class="p">)</span>
+        <span class="n">model_config</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">ret</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;predict&#39;</span><span class="p">,</span>
             <span class="s1">&#39;method_type&#39;</span><span class="p">:</span> <span class="n">method_type</span><span class="p">,</span>
             <span class="s1">&#39;dataset_config&#39;</span><span class="p">:</span> <span class="n">dataset_config</span><span class="p">,</span>
-            <span class="s1">&#39;model_config&#39;</span><span class="p">:</span> <span class="n">model_config</span><span class="p">,</span>
+            <span class="s1">&#39;train_id&#39;</span><span class="p">:</span> <span class="n">train_id</span><span class="p">,</span>
             <span class="s1">&#39;dump_result_enabled&#39;</span><span class="p">:</span> <span class="n">dump_result_enabled</span><span class="p">,</span>
             <span class="s1">&#39;dump_result_format&#39;</span><span class="p">:</span> <span class="n">dump_result_format</span><span class="p">,</span>
             <span class="s1">&#39;result_target_columns&#39;</span><span class="p">:</span> <span class="n">result_target_columns</span><span class="p">,</span>
             <span class="s1">&#39;result_predict_column&#39;</span><span class="p">:</span> <span class="n">result_predict_column</span><span class="p">,</span>
         <span class="p">}</span>
 
-        <span class="k">if</span> <span class="s1">&#39;train_id&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">model_config</span><span class="p">:</span>
-            <span class="n">model_config</span><span class="p">[</span><span class="s1">&#39;train_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span>
+        <span class="n">model_config</span><span class="p">[</span><span class="s1">&#39;train_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">train_id</span>
         <span class="n">model_config</span><span class="p">[</span><span class="s1">&#39;scenario_tag&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">scenario_tag</span>
-        <span class="n">train_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">model_config</span><span class="p">[</span><span class="s1">&#39;train_id&#39;</span><span class="p">])</span>
 
         <span class="n">tr</span> <span class="o">=</span> <span class="n">get_train_result</span><span class="p">(</span><span class="n">scenario_tag</span><span class="o">=</span><span class="n">scenario_tag</span><span class="p">,</span> <span class="n">train_id</span><span class="o">=</span><span class="n">train_id</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">tr</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -185,9 +194,16 @@
 
         <span class="n">dataset_config</span><span class="p">[</span><span class="s1">&#39;target_column&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># target_columnがNoneだと、predict用のDatasetが返ってくる</span>
         <span class="n">dataset</span> <span class="o">=</span> <span class="n">get_dataset</span><span class="p">(</span><span class="n">dataset_config</span><span class="p">)</span>
-        <span class="n">feature_func</span> <span class="o">=</span> <span class="n">load_object_by_str</span><span class="p">(</span><span class="n">tr</span><span class="p">[</span><span class="s1">&#39;feature_func&#39;</span><span class="p">])</span>
+        <span class="n">preprocessor</span> <span class="o">=</span> <span class="n">get_preprocessor</span><span class="p">(</span><span class="n">tr</span><span class="p">[</span><span class="s1">&#39;preprocessor_config&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">preprocessor</span><span class="p">,</span> <span class="n">StatefulPreprocessor</span><span class="p">):</span>
+            <span class="n">preprocessor</span><span class="o">.</span><span class="n">set_operation_mode</span><span class="p">(</span><span class="s1">&#39;predict&#39;</span><span class="p">)</span>
+            <span class="n">dirpath</span> <span class="o">=</span> <span class="n">pathjoin</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">operation_results_dir</span><span class="p">,</span> <span class="n">scenario_tag</span><span class="p">)</span>
+            <span class="n">preprocessor_name</span> <span class="o">=</span> <span class="s1">&#39;train_result_preprocessor_</span><span class="si">{}</span><span class="s1">_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">preprocessor</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">train_id</span><span class="p">)</span>
+            <span class="n">preprocessor</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">dirpath</span><span class="p">,</span> <span class="n">preprocessor_name</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;loaded model .. preprocessor: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">preprocessor</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
         <span class="n">X</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">value</span>
-        <span class="n">fX</span> <span class="o">=</span> <span class="n">feature_func</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="o">**</span><span class="n">tr</span><span class="p">[</span><span class="s1">&#39;feature_func_kwargs&#39;</span><span class="p">])</span>
+        <span class="n">fX</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">preprocessor</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
         
         <span class="n">model_config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">tr</span><span class="p">[</span><span class="s1">&#39;model_config&#39;</span><span class="p">])</span>
         <span class="n">model_config</span><span class="p">[</span><span class="s1">&#39;is_rebuild&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
@@ -197,6 +213,7 @@
         <span class="k">if</span> <span class="n">predict_func</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> is not defined.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">method_type</span><span class="p">))</span>
         <span class="n">rawresult</span> <span class="o">=</span> <span class="n">predict_func</span><span class="p">(</span><span class="n">fX</span><span class="p">)</span>
+        <span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
         <span class="n">predict_result</span> <span class="o">=</span> <span class="n">fX</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">result_target_columns</span> <span class="o">==</span> <span class="s1">&#39;all&#39;</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result_target_columns</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>

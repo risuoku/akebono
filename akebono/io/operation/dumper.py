@@ -18,8 +18,11 @@ def dump_sklearn_model(obj, dirpath, model_name):
 
 def dump_train_result(train_id, scenario_tag, result):
     model = result.get('model')
+    preprocessor = result.get('preprocessor')
     if model is not None:
         result.pop('model')
+    if preprocessor is not None:
+        result.pop('preprocessor')
     model_name = 'train_result_model_{}'.format(train_id)
     result_name = 'train_result_meta_{}'.format(train_id)
     tag_list = ['latest']
@@ -30,6 +33,9 @@ def dump_train_result(train_id, scenario_tag, result):
         to_pickle(pathjoin(dirpath, '{}.pkl'.format(result_name)), result) # dump result
         if model is not None:
             model.dump(dirpath, model_name)
+        if preprocessor is not None:
+            preprocessor_name = 'train_result_preprocessor_{}_{}'.format(preprocessor.__class__.__name__, train_id)
+            preprocessor.dump(dirpath, preprocessor_name)
 
 
 def dump_predicted_result(predict_id, scenario_tag, dump_result_format, df, meta):

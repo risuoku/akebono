@@ -6,10 +6,14 @@ from akebono.io.operation.dumper import (
 from akebono.io.operation.loader import get_train_result 
 from akebono.dataset import get_dataset
 from akebono.model import get_model
-from akebono.preprocessors import get_preprocessor
-from akebono.utils import load_object_by_str
+from akebono.preprocessor import (
+    get_preprocessor,
+    StatefulPreprocessor,
+)
+from akebono.utils import pathjoin
 import akebono.settings as settings
 import os
+import gc
 
 
 logger = getLogger(__name__)
@@ -34,7 +38,7 @@ def train(train_id, scenario_tag,
         :type dataset_config: dict
         :param model_config: Modelの設定。:class:`akebono.model.get_model` の引数。
         :type model_config: dict
-        :param preprocessor_config: Preprocessorの設定。:class:`akebono.preprocessors.get_preprocessor`の引数。
+        :param preprocessor_config: Preprocessorの設定。:class:`akebono.preprocessor.get_preprocessor`の引数。
         :type preprocessor_config: dict
         :param evaluate_enabled: モデルの評価を実行するかのフラグ
         :type evaluate_enabled: bool
@@ -67,6 +71,8 @@ def train(train_id, scenario_tag,
         dataset = get_dataset(dataset_config)
         
         preprocessor = get_preprocessor(preprocessor_config)
+        if isinstance(preprocessor, StatefulPreprocessor):
+            preprocessor.set_operation_mode('train')
         logger.debug('load dataset start.')
         X, y = dataset.get_predictor_target()
         logger.debug('load dataset done.')
@@ -77,17 +83,20 @@ def train(train_id, scenario_tag,
         if evaluate_enabled:
             logger.debug('evaluate start.')
             rep = model.evaluate(X, y, preprocessor)
+            gc.collect()
             logger.debug('evaluate done.')
             ret['evaluate'] = rep
         if fit_model_enabled:
             logger.debug('fit start.')
             fX, _ = preprocessor.process(X, None)
             model.fit(fX, y)
+            gc.collect()
             logger.debug('fit done.')
             ret['model'] = model
         if dump_result_enabled:
             logger.debug('dump_train_result start.')
-            ret['preprocessor'] = preprocessor
+            if isinstance(preprocessor, StatefulPreprocessor):
+                ret['preprocessor'] = preprocessor
             dump_train_result(train_id, scenario_tag, ret)
             logger.debug('dump_train_result done.')
         
@@ -97,7 +106,7 @@ def train(train_id, scenario_tag,
 def predict(predict_id, scenario_tag,
     method_type='predict',
     dataset_config=None,
-    model_config={},
+    train_id='0',
     dump_result_enabled=False,
     dump_result_format='csv',
     result_target_columns='all',
@@ -114,8 +123,8 @@ def predict(predict_id, scenario_tag,
         :type method_type: str
         :param dataset_config: Datasetの設定。:class:`akebono.dataset.get_dataset` の引数。
         :type dataset_config: dict
-        :param model_config: Modelの設定。:class:`akebono.model.get_model` の引数。
-        :type model_config: dict
+        :param train_id: 予測で使うモデルのtrain_id
+        :type train_id: str
         :param dump_result_enabled: 予測結果の永続化を実行するかのフラグ
         :type dump_result_enabled: bool
         :param dump_result_format: 予測結果のフォーマット。設定可能なフォーマットは `csv` or `pickle`
@@ -128,21 +137,21 @@ def predict(predict_id, scenario_tag,
         if dataset_config is None:
             raise ValueError('dataset_config must be set.')
 
+        train_id = str(train_id)
+        model_config = {}
         ret = {
             'type': 'predict',
             'method_type': method_type,
             'dataset_config': dataset_config,
-            'model_config': model_config,
+            'train_id': train_id,
             'dump_result_enabled': dump_result_enabled,
             'dump_result_format': dump_result_format,
             'result_target_columns': result_target_columns,
             'result_predict_column': result_predict_column,
         }
 
-        if 'train_id' not in model_config:
-            model_config['train_id'] = '0'
+        model_config['train_id'] = train_id
         model_config['scenario_tag'] = scenario_tag
-        train_id = str(model_config['train_id'])
 
         tr = get_train_result(scenario_tag=scenario_tag, train_id=train_id)
         if tr is None:
@@ -152,8 +161,15 @@ def predict(predict_id, scenario_tag,
         dataset_config['target_column'] = None # target_columnがNoneだと、predict用のDatasetが返ってくる
         dataset = get_dataset(dataset_config)
         preprocessor = get_preprocessor(tr['preprocessor_config'])
+        if isinstance(preprocessor, StatefulPreprocessor):
+            preprocessor.set_operation_mode('predict')
+            dirpath = pathjoin(settings.operation_results_dir, scenario_tag)
+            preprocessor_name = 'train_result_preprocessor_{}_{}'.format(preprocessor.__class__.__name__, train_id)
+            preprocessor.load(dirpath, preprocessor_name)
+            logger.debug('loaded model .. preprocessor: {}'.format(preprocessor.__class__.__name__))
         X = dataset.value
         fX, _ = preprocessor.process(X, None)
+        gc.collect()
         
         model_config.update(tr['model_config'])
         model_config['is_rebuild'] = True
@@ -163,6 +179,7 @@ def predict(predict_id, scenario_tag,
         if predict_func is None:
             raise Exception('{} is not defined.'.format(method_type))
         rawresult = predict_func(fX)
+        gc.collect()
         predict_result = fX.copy()
         if not result_target_columns == 'all':
             if not isinstance(result_target_columns, list):

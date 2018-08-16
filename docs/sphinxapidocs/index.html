@@ -109,64 +109,300 @@
 </dd></dl>
 
 </div>
-<div class="section" id="feature-extractor">
-<h2>Feature extractor<a class="headerlink" href="#feature-extractor" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="preprocessor">
+<h2>Preprocessor<a class="headerlink" href="#preprocessor" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
-<dt id="akebono.features.identify">
-<code class="descclassname">akebono.features.</code><code class="descname">identify</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/features.html#identify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.features.identify" title="Permalink to this definition">¶</a></dt>
-<dd><p>入力データをそのまま返す関数</p>
+<dt id="akebono.preprocessor.get_preprocessor">
+<code class="descclassname">akebono.preprocessor.</code><code class="descname">get_preprocessor</code><span class="sig-paren">(</span><em>preprocessor_config</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/preprocessor/entry.html#get_preprocessor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.preprocessor.get_preprocessor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Preprocessorを生成するための関数</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> (<em>pandas.DataFrame</em>) – データセットが持つ説明変数</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>preprocessor_config</strong> (<em>dict</em>) – Preprocessorについての設定</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">pandas.DataFrame object</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="#akebono.preprocessor.StatelessPreprocessor" title="akebono.preprocessor.StatelessPreprocessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">StatelessPreprocessor</span></code></a> or <a class="reference internal" href="#akebono.preprocessor.StatefulPreprocessor" title="akebono.preprocessor.StatefulPreprocessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">StatefulPreprocessor</span></code></a></td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-<dl class="function">
-<dt id="akebono.features.select_columns">
-<code class="descclassname">akebono.features.</code><code class="descname">select_columns</code><span class="sig-paren">(</span><em>df</em>, <em>columns=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/features.html#select_columns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.features.select_columns" title="Permalink to this definition">¶</a></dt>
-<dd><p>入力データから、指定したカラムのみを選択して返す関数</p>
+<dl class="class">
+<dt id="akebono.preprocessor.StatelessPreprocessor">
+<em class="property">class </em><code class="descclassname">akebono.preprocessor.</code><code class="descname">StatelessPreprocessor</code><a class="reference internal" href="_modules/akebono/preprocessor/statelessmodels.html#StatelessPreprocessor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.preprocessor.StatelessPreprocessor" title="Permalink to this definition">¶</a></dt>
+<dd><p>状態を持たないPreprocessor</p>
+<dl class="method">
+<dt id="akebono.preprocessor.StatelessPreprocessor.process">
+<code class="descname">process</code><span class="sig-paren">(</span><em>df_train</em>, <em>df_test</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/preprocessor/statelessmodels.html#StatelessPreprocessor.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.preprocessor.StatelessPreprocessor.process" title="Permalink to this definition">¶</a></dt>
+<dd><p>前処理を実行するためのメソッド</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>df</strong> (<em>pandas.DataFrame</em>) – データセットが持つ説明変数</li>
-<li><strong>columns</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – 選択対象カラム名のリスト</li>
+<li><strong>df_train</strong> (<em>pandas.DataFrame</em>) – 訓練データセットが持つ説明変数</li>
+<li><strong>df_test</strong> (<em>pandas.DataFrame</em><em> or </em><em>None</em>) – テストデータセットが持つ説明変数</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">pandas.DataFrame object</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">tuple(pandas.DataFrame, pandas.DataFrame) object</p>
 </td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-<dl class="function">
-<dt id="akebono.features.exclude_columns">
-<code class="descclassname">akebono.features.</code><code class="descname">exclude_columns</code><span class="sig-paren">(</span><em>df</em>, <em>columns=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/features.html#exclude_columns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.features.exclude_columns" title="Permalink to this definition">¶</a></dt>
-<dd><p>入力データから、指定したカラムのみを除外して返す関数</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="akebono.preprocessor.StatefulPreprocessor">
+<em class="property">class </em><code class="descclassname">akebono.preprocessor.</code><code class="descname">StatefulPreprocessor</code><a class="reference internal" href="_modules/akebono/preprocessor/statefulmodels.html#StatefulPreprocessor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.preprocessor.StatefulPreprocessor" title="Permalink to this definition">¶</a></dt>
+<dd><p>状態を持つPreprocessor</p>
+<dl class="method">
+<dt id="akebono.preprocessor.StatefulPreprocessor.dump">
+<code class="descname">dump</code><span class="sig-paren">(</span><em>dirpath</em>, <em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/preprocessor/statefulmodels.html#StatefulPreprocessor.dump"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.preprocessor.StatefulPreprocessor.dump" title="Permalink to this definition">¶</a></dt>
+<dd><p>Preprocessorをストレージに永続化するためのメソッド</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>dirpath</strong> (<em>str</em>) – ストレージのパス</li>
+<li><strong>name</strong> (<em>str</em>) – ファイル名</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="akebono.preprocessor.StatefulPreprocessor.load">
+<code class="descname">load</code><span class="sig-paren">(</span><em>dirpath</em>, <em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/preprocessor/statefulmodels.html#StatefulPreprocessor.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.preprocessor.StatefulPreprocessor.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>ストレージに永続化されてるPreprocessorを復元するためのメソッド</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>dirpath</strong> (<em>str</em>) – ストレージのパス</li>
+<li><strong>name</strong> (<em>str</em>) – ファイル名</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="akebono.preprocessor.StatefulPreprocessor.process">
+<code class="descname">process</code><span class="sig-paren">(</span><em>df_train</em>, <em>df_test</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/preprocessor/statefulmodels.html#StatefulPreprocessor.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.preprocessor.StatefulPreprocessor.process" title="Permalink to this definition">¶</a></dt>
+<dd><p>前処理を実行するためのメソッド</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>df</strong> (<em>pandas.DataFrame</em>) – データセットが持つ説明変数</li>
-<li><strong>columns</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – 選択対象カラム名のリスト</li>
+<li><strong>df_train</strong> (<em>pandas.DataFrame</em>) – 訓練データセットが持つ説明変数</li>
+<li><strong>df_test</strong> (<em>pandas.DataFrame</em><em> or </em><em>None</em>) – テストデータセットが持つ説明変数</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">pandas.DataFrame object</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">tuple(pandas.DataFrame, pandas.DataFrame) object</p>
 </td>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="akebono.preprocessor.StatefulPreprocessor.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/preprocessor/statefulmodels.html#StatefulPreprocessor.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.preprocessor.StatefulPreprocessor.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>前処理実体を初期化するメソッド</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="akebono.preprocessor.StatefulPreprocessor.set_operation_mode">
+<code class="descname">set_operation_mode</code><span class="sig-paren">(</span><em>mode</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/preprocessor/statefulmodels.html#StatefulPreprocessor.set_operation_mode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.preprocessor.StatefulPreprocessor.set_operation_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>operation_modeを設定するメソッド</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>mode</strong> (<em>str</em>) – 設定可能な値は <cite>train</cite> or <cite>predict</cite></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="akebono.preprocessor.StatefulPreprocessor.value">
+<code class="descname">value</code><a class="headerlink" href="#akebono.preprocessor.StatefulPreprocessor.value" title="Permalink to this definition">¶</a></dt>
+<dd><p>前処理実体</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="akebono.preprocessor.Identify">
+<em class="property">class </em><code class="descclassname">akebono.preprocessor.</code><code class="descname">Identify</code><a class="reference internal" href="_modules/akebono/preprocessor/statelessmodels.html#Identify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.preprocessor.Identify" title="Permalink to this definition">¶</a></dt>
+<dd><p>入力データをそのまま返すPreprocessor</p>
+<dl class="method">
+<dt id="akebono.preprocessor.Identify.process">
+<code class="descname">process</code><span class="sig-paren">(</span><em>df_train</em>, <em>df_test</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/preprocessor/statelessmodels.html#Identify.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.preprocessor.Identify.process" title="Permalink to this definition">¶</a></dt>
+<dd><p>前処理を実行するためのメソッド</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>df_train</strong> (<em>pandas.DataFrame</em>) – 訓練データセットが持つ説明変数</li>
+<li><strong>df_test</strong> (<em>pandas.DataFrame</em><em> or </em><em>None</em>) – テストデータセットが持つ説明変数</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">tuple(pandas.DataFrame, pandas.DataFrame) object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="akebono.preprocessor.SelectColumns">
+<em class="property">class </em><code class="descclassname">akebono.preprocessor.</code><code class="descname">SelectColumns</code><span class="sig-paren">(</span><em>columns=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/preprocessor/statelessmodels.html#SelectColumns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.preprocessor.SelectColumns" title="Permalink to this definition">¶</a></dt>
+<dd><p>入力データから、指定したカラムのみを選択して返すPreprocessor</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>columns</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – 選択対象カラム名のリスト</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="akebono.preprocessor.SelectColumns.process">
+<code class="descname">process</code><span class="sig-paren">(</span><em>df_train</em>, <em>df_test</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/preprocessor/statelessmodels.html#SelectColumns.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.preprocessor.SelectColumns.process" title="Permalink to this definition">¶</a></dt>
+<dd><p>前処理を実行するためのメソッド</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>df_train</strong> (<em>pandas.DataFrame</em>) – 訓練データセットが持つ説明変数</li>
+<li><strong>df_test</strong> (<em>pandas.DataFrame</em><em> or </em><em>None</em>) – テストデータセットが持つ説明変数</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">tuple(pandas.DataFrame, pandas.DataFrame) object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="akebono.preprocessor.ExcludeColumns">
+<em class="property">class </em><code class="descclassname">akebono.preprocessor.</code><code class="descname">ExcludeColumns</code><span class="sig-paren">(</span><em>columns=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/preprocessor/statelessmodels.html#ExcludeColumns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.preprocessor.ExcludeColumns" title="Permalink to this definition">¶</a></dt>
+<dd><p>入力データから、指定したカラムのみを除外して返すPreprocessor</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>columns</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – 選択対象カラム名のリスト</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="akebono.preprocessor.ExcludeColumns.process">
+<code class="descname">process</code><span class="sig-paren">(</span><em>df_train</em>, <em>df_test</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/preprocessor/statelessmodels.html#ExcludeColumns.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.preprocessor.ExcludeColumns.process" title="Permalink to this definition">¶</a></dt>
+<dd><p>前処理を実行するためのメソッド</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>df_train</strong> (<em>pandas.DataFrame</em>) – 訓練データセットが持つ説明変数</li>
+<li><strong>df_test</strong> (<em>pandas.DataFrame</em><em> or </em><em>None</em>) – テストデータセットが持つ説明変数</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">tuple(pandas.DataFrame, pandas.DataFrame) object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="akebono.preprocessor.ApplyStandardScaler">
+<em class="property">class </em><code class="descclassname">akebono.preprocessor.</code><code class="descname">ApplyStandardScaler</code><span class="sig-paren">(</span><em>init_kwargs={}</em>, <em>columns='all'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/preprocessor/statefulmodels.html#ApplyStandardScaler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.preprocessor.ApplyStandardScaler" title="Permalink to this definition">¶</a></dt>
+<dd><p>入力データを正規化するPreprocessor</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>init_kwargs</strong> (<em>dict</em>) – 前処理実体の初期化パラメータ</li>
+<li><strong>columns</strong> (<em>list</em><em>[</em><em>str</em><em>] or </em><em>str</em>) – 正規化する対象のカラム名</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="akebono.preprocessor.ApplyStandardScaler.process">
+<code class="descname">process</code><span class="sig-paren">(</span><em>df_train</em>, <em>df_test</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/preprocessor/statefulmodels.html#ApplyStandardScaler.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.preprocessor.ApplyStandardScaler.process" title="Permalink to this definition">¶</a></dt>
+<dd><p>前処理を実行するためのメソッド</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>df_train</strong> (<em>pandas.DataFrame</em>) – 訓練データセットが持つ説明変数</li>
+<li><strong>df_test</strong> (<em>pandas.DataFrame</em><em> or </em><em>None</em>) – テストデータセットが持つ説明変数</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">tuple(pandas.DataFrame, pandas.DataFrame) object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="akebono.preprocessor.ApplyStandardScaler.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/preprocessor/statefulmodels.html#ApplyStandardScaler.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.preprocessor.ApplyStandardScaler.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>前処理実体を初期化するメソッド</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="akebono.preprocessor.ApplyStandardScaler.set_operation_mode">
+<code class="descname">set_operation_mode</code><span class="sig-paren">(</span><em>mode</em><span class="sig-paren">)</span><a class="headerlink" href="#akebono.preprocessor.ApplyStandardScaler.set_operation_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>operation_modeを設定するメソッド</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>mode</strong> (<em>str</em>) – 設定可能な値は <cite>train</cite> or <cite>predict</cite></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="akebono.preprocessor.ApplyStandardScaler.value">
+<code class="descname">value</code><a class="headerlink" href="#akebono.preprocessor.ApplyStandardScaler.value" title="Permalink to this definition">¶</a></dt>
+<dd><p>前処理実体</p>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -252,7 +488,7 @@
 
 <dl class="method">
 <dt id="akebono.model.WrappedModel.evaluate">
-<code class="descname">evaluate</code><span class="sig-paren">(</span><em>X</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/model/_models/base.html#WrappedModel.evaluate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.model.WrappedModel.evaluate" title="Permalink to this definition">¶</a></dt>
+<code class="descname">evaluate</code><span class="sig-paren">(</span><em>X</em>, <em>y</em>, <em>preprocessor</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/model/_models/base.html#WrappedModel.evaluate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.model.WrappedModel.evaluate" title="Permalink to this definition">¶</a></dt>
 <dd><p>モデルを評価するためのメソッド</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -387,7 +623,7 @@
 <h2>Operator<a class="headerlink" href="#operator" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="akebono.operator.train">
-<code class="descclassname">akebono.operator.</code><code class="descname">train</code><span class="sig-paren">(</span><em>train_id</em>, <em>scenario_tag</em>, <em>dataset_config=None</em>, <em>model_config=None</em>, <em>feature_func='identify&#64;akebono.features'</em>, <em>feature_func_kwargs={}</em>, <em>evaluate_enabled=False</em>, <em>fit_model_enabled=False</em>, <em>dump_result_enabled=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/operator.html#train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.operator.train" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">akebono.operator.</code><code class="descname">train</code><span class="sig-paren">(</span><em>train_id</em>, <em>scenario_tag</em>, <em>dataset_config=None</em>, <em>model_config=None</em>, <em>preprocessor_config=None</em>, <em>evaluate_enabled=False</em>, <em>fit_model_enabled=False</em>, <em>dump_result_enabled=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/operator.html#train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.operator.train" title="Permalink to this definition">¶</a></dt>
 <dd><p>モデルの訓練を実行する関数</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -398,8 +634,7 @@
 <li><strong>scenario_tag</strong> (<em>str</em><em> or </em><em>None</em>) – シナリオに付与されるlatest以外のタグ</li>
 <li><strong>dataset_config</strong> (<em>dict</em>) – Datasetの設定。<a class="reference internal" href="#akebono.dataset.get_dataset" title="akebono.dataset.get_dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">akebono.dataset.get_dataset</span></code></a> の引数。</li>
 <li><strong>model_config</strong> (<em>dict</em>) – Modelの設定。<a class="reference internal" href="#akebono.model.get_model" title="akebono.model.get_model"><code class="xref py py-class docutils literal notranslate"><span class="pre">akebono.model.get_model</span></code></a> の引数。</li>
-<li><strong>feature_func</strong> (<em>str</em>) – Feature extractorのstring format</li>
-<li><strong>feature_func_kwargs</strong> (<em>dict</em>) – Feature extractorの引数</li>
+<li><strong>preprocessor_config</strong> (<em>dict</em>) – Preprocessorの設定。:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>akebono.preprocessor.get_preprocessor`の引数。</li>
 <li><strong>evaluate_enabled</strong> (<em>bool</em>) – モデルの評価を実行するかのフラグ</li>
 <li><strong>fit_model_enabled</strong> (<em>bool</em>) – モデルの訓練を実行するかのフラグ</li>
 <li><strong>dump_result_enabled</strong> (<em>bool</em>) – モデル、評価結果の永続化を実行するかのフラグ</li>
@@ -412,7 +647,7 @@
 
 <dl class="function">
 <dt id="akebono.operator.predict">
-<code class="descclassname">akebono.operator.</code><code class="descname">predict</code><span class="sig-paren">(</span><em>predict_id</em>, <em>scenario_tag</em>, <em>method_type='predict'</em>, <em>dataset_config=None</em>, <em>model_config={}</em>, <em>dump_result_enabled=False</em>, <em>dump_result_format='csv'</em>, <em>result_target_columns='all'</em>, <em>result_predict_column='predicted'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/operator.html#predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.operator.predict" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">akebono.operator.</code><code class="descname">predict</code><span class="sig-paren">(</span><em>predict_id</em>, <em>scenario_tag</em>, <em>method_type='predict'</em>, <em>dataset_config=None</em>, <em>train_id='0'</em>, <em>dump_result_enabled=False</em>, <em>dump_result_format='csv'</em>, <em>result_target_columns='all'</em>, <em>result_predict_column='predicted'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/operator.html#predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.operator.predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>予測を実行する関数</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -423,7 +658,7 @@
 <li><strong>scenario_tag</strong> (<em>str</em><em> or </em><em>None</em>) – シナリオに付与されるlatest以外のタグ</li>
 <li><strong>method_type</strong> (<em>str</em>) – 予測のタイプ。設定可能なタイプは <cite>predict</cite> or <cite>predict_proba</cite></li>
 <li><strong>dataset_config</strong> (<em>dict</em>) – Datasetの設定。<a class="reference internal" href="#akebono.dataset.get_dataset" title="akebono.dataset.get_dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">akebono.dataset.get_dataset</span></code></a> の引数。</li>
-<li><strong>model_config</strong> (<em>dict</em>) – Modelの設定。<a class="reference internal" href="#akebono.model.get_model" title="akebono.model.get_model"><code class="xref py py-class docutils literal notranslate"><span class="pre">akebono.model.get_model</span></code></a> の引数。</li>
+<li><strong>train_id</strong> (<em>str</em>) – 予測で使うモデルのtrain_id</li>
 <li><strong>dump_result_enabled</strong> (<em>bool</em>) – 予測結果の永続化を実行するかのフラグ</li>
 <li><strong>dump_result_format</strong> (<em>str</em>) – 予測結果のフォーマット。設定可能なフォーマットは <cite>csv</cite> or <cite>pickle</cite></li>
 <li><strong>result_target_columns</strong> (<em>str</em><em> or </em><em>list</em><em>(</em><em>str</em><em>)</em>) – 予測結果に含めるべき説明変数のカラム名のリスト。全ての場合は’all’とする</li>
@@ -466,7 +701,7 @@
   <ul>
 <li><a class="reference internal" href="#">akebono API documentation for developers</a><ul>
 <li><a class="reference internal" href="#dataset">Dataset</a></li>
-<li><a class="reference internal" href="#feature-extractor">Feature extractor</a></li>
+<li><a class="reference internal" href="#preprocessor">Preprocessor</a></li>
 <li><a class="reference internal" href="#model">Model</a></li>
 <li><a class="reference internal" href="#operator">Operator</a></li>
 <li><a class="reference internal" href="#settings">Settings</a></li>

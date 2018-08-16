@@ -58,6 +58,10 @@
       <li><a href="index.html#akebono.settings.apply">apply() (in module akebono.settings)</a>
 </li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="index.html#akebono.preprocessor.ApplyStandardScaler">ApplyStandardScaler (class in akebono.preprocessor)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="B">B</h2>
@@ -76,7 +80,11 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="index.html#akebono.model.WrappedModel.dump">dump() (akebono.model.WrappedModel method)</a>
+
+      <ul>
+        <li><a href="index.html#akebono.preprocessor.StatefulPreprocessor.dump">(akebono.preprocessor.StatefulPreprocessor method)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -87,7 +95,7 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="index.html#akebono.features.exclude_columns">exclude_columns() (in module akebono.features)</a>
+      <li><a href="index.html#akebono.preprocessor.ExcludeColumns">ExcludeColumns (class in akebono.preprocessor)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -105,11 +113,13 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="index.html#akebono.dataset.get_dataset">get_dataset() (in module akebono.dataset)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="index.html#akebono.model.get_model">get_model() (in module akebono.model)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="index.html#akebono.dataset.Dataset.get_predictor_target">get_predictor_target() (akebono.dataset.Dataset method)</a>
+</li>
+      <li><a href="index.html#akebono.preprocessor.get_preprocessor">get_preprocessor() (in module akebono.preprocessor)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -117,7 +127,7 @@
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="index.html#akebono.features.identify">identify() (in module akebono.features)</a>
+      <li><a href="index.html#akebono.preprocessor.Identify">Identify (class in akebono.preprocessor)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -126,7 +136,11 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="index.html#akebono.model.WrappedModel.load">load() (akebono.model.WrappedModel method)</a>
+
+      <ul>
+        <li><a href="index.html#akebono.preprocessor.StatefulPreprocessor.load">(akebono.preprocessor.StatefulPreprocessor method)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -139,10 +153,22 @@
         <li><a href="index.html#akebono.operator.predict">(in module akebono.operator)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="index.html#akebono.model.WrappedModel.predict_proba">predict_proba() (akebono.model.WrappedModel method)</a>
 </li>
+      <li><a href="index.html#akebono.preprocessor.ApplyStandardScaler.process">process() (akebono.preprocessor.ApplyStandardScaler method)</a>
+
+      <ul>
+        <li><a href="index.html#akebono.preprocessor.ExcludeColumns.process">(akebono.preprocessor.ExcludeColumns method)</a>
+</li>
+        <li><a href="index.html#akebono.preprocessor.Identify.process">(akebono.preprocessor.Identify method)</a>
+</li>
+        <li><a href="index.html#akebono.preprocessor.SelectColumns.process">(akebono.preprocessor.SelectColumns method)</a>
+</li>
+        <li><a href="index.html#akebono.preprocessor.StatefulPreprocessor.process">(akebono.preprocessor.StatefulPreprocessor method)</a>
+</li>
+        <li><a href="index.html#akebono.preprocessor.StatelessPreprocessor.process">(akebono.preprocessor.StatelessPreprocessor method)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -150,18 +176,34 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="index.html#akebono.model.WrappedModel.reset">reset() (akebono.model.WrappedModel method)</a>
+
+      <ul>
+        <li><a href="index.html#akebono.preprocessor.ApplyStandardScaler.reset">(akebono.preprocessor.ApplyStandardScaler method)</a>
 </li>
+        <li><a href="index.html#akebono.preprocessor.StatefulPreprocessor.reset">(akebono.preprocessor.StatefulPreprocessor method)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="index.html#akebono.features.select_columns">select_columns() (in module akebono.features)</a>
+      <li><a href="index.html#akebono.preprocessor.SelectColumns">SelectColumns (class in akebono.preprocessor)</a>
 </li>
+      <li><a href="index.html#akebono.model.WrappedModel.set_model_type">set_model_type() (akebono.model.WrappedModel method)</a>
+</li>
+      <li><a href="index.html#akebono.preprocessor.ApplyStandardScaler.set_operation_mode">set_operation_mode() (akebono.preprocessor.ApplyStandardScaler method)</a>
+
+      <ul>
+        <li><a href="index.html#akebono.preprocessor.StatefulPreprocessor.set_operation_mode">(akebono.preprocessor.StatefulPreprocessor method)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="index.html#akebono.model.WrappedModel.set_model_type">set_model_type() (akebono.model.WrappedModel method)</a>
+      <li><a href="index.html#akebono.preprocessor.StatefulPreprocessor">StatefulPreprocessor (class in akebono.preprocessor)</a>
+</li>
+      <li><a href="index.html#akebono.preprocessor.StatelessPreprocessor">StatelessPreprocessor (class in akebono.preprocessor)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -181,6 +223,10 @@
 
       <ul>
         <li><a href="index.html#akebono.model.WrappedModel.value">(akebono.model.WrappedModel attribute)</a>
+</li>
+        <li><a href="index.html#akebono.preprocessor.ApplyStandardScaler.value">(akebono.preprocessor.ApplyStandardScaler attribute)</a>
+</li>
+        <li><a href="index.html#akebono.preprocessor.StatefulPreprocessor.value">(akebono.preprocessor.StatefulPreprocessor attribute)</a>
 </li>
       </ul></li>
   </ul></td>

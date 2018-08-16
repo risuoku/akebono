@@ -4,6 +4,9 @@ from .statelessmodels import (
     SelectColumns,
     ExcludeColumns,
 )
+from .statefulmodels import (
+    ApplyStandardScaler,
+)
 import sys
 
 
@@ -16,7 +19,7 @@ def get_preprocessor(preprocessor_config):
 
     :param preprocessor_config: Preprocessorについての設定
     :type preprocessor_config: dict
-    :return: :class:`StatelessPreprocessor` or :class:`StatefullPreprocessor`
+    :return: :class:`StatelessPreprocessor` or :class:`StatefulPreprocessor`
     """
 
     name = preprocessor_config.get('name')

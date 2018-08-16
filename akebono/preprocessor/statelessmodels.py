@@ -6,8 +6,14 @@ logger = getLogger(__name__)
 
 
 class StatelessPreprocessor:
+    """
+    状態を持たないPreprocessor
+    """
+
     def process(self, df_train, df_test):
         """
+        前処理を実行するためのメソッド
+
         :param df_train: 訓練データセットが持つ説明変数
         :type df_train: pandas.DataFrame
         :param df_test: テストデータセットが持つ説明変数

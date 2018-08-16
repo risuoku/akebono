@@ -17,11 +17,25 @@ Dataset
 Preprocessor
 -------------------
 
-.. autofunction:: akebono.preprocessors.identify
+.. autofunction:: akebono.preprocessor.get_preprocessor
 
-.. autofunction:: akebono.preprocessors.select_columns
+.. autoclass:: akebono.preprocessor.StatelessPreprocessor
+    :inherited-members:
 
-.. autofunction:: akebono.preprocessors.exclude_columns
+.. autoclass:: akebono.preprocessor.StatefulPreprocessor
+    :inherited-members:
+
+.. autoclass:: akebono.preprocessor.Identify
+    :inherited-members:
+
+.. autoclass:: akebono.preprocessor.SelectColumns
+    :inherited-members:
+
+.. autoclass:: akebono.preprocessor.ExcludeColumns
+    :inherited-members:
+
+.. autoclass:: akebono.preprocessor.ApplyStandardScaler
+    :inherited-members:
 
 Model
 -----------
