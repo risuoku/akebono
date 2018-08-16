@@ -1,6 +1,5 @@
 site_name: akebono documentation
 theme: material
-#theme: mkdocs
 markdown_extensions:
   - toc:
       permalink: true
