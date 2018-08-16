@@ -128,6 +128,8 @@ class WrappedModel:
         :type X: numpy array-like
         :param y: 目的変数
         :type y: numpy array-like
+        :param preprocessor: Preprocessor object
+        :type preprocessor: StatefulPreprocessor or StatelessPreprocessor
 
         :return: list
         """

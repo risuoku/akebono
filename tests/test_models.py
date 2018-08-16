@@ -1,4 +1,5 @@
-from akebono.models import get_model
+from akebono.model import get_model
+from akebono.preprocessor import get_preprocessor
 import sklearn.metrics as skl_metrics
 from sklearn.model_selection import train_test_split as skl_train_test_split
 from sklearn.linear_model import (
@@ -31,6 +32,10 @@ def test_model_regressor(pd_assert_equal):
         },
         'target_column': 'target',
     }
+    preprocessor = get_preprocessor({
+        'name': 'identify',
+        'kwargs': {},
+    })
     ds1 = get_dataset(dataset_config)
     X1, y1 = ds1.get_predictor_target()
 
@@ -52,7 +57,7 @@ def test_model_regressor(pd_assert_equal):
                 # assertion
                 pd_assert_equal(pd.Series(m.predict(X1)).astype('float64'), pd.Series(morigin.predict(X1)).astype('float64'))
                 X_train, X_test, y_train, y_test = skl_train_test_split(X1, y1, **evaluate_kwargs['train_test_split_func_kwargs'])
-                rev1 = m.evaluate(X1, y1)
+                rev1 = m.evaluate(X1, y1, preprocessor)
                 if not rev1['cv']:
                     met = rev1['metrics'][0]
                     mean_absolute_error = [o['value'] for o in met if o['name'] == 'mean_absolute_error'][0]

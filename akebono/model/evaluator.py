@@ -44,6 +44,15 @@ _binary_classifier_metrics = [
 ]
 
 
+_multiple_classifier_metrics = [
+    {
+        'name': 'accuracy',
+        'func': skl_metrics.accuracy_score,
+        'predict_type': 'predict',
+    },
+]
+
+
 _regressor_metrics = [
     {
         'name': 'mean_absolute_error',
@@ -184,6 +193,8 @@ def evaluate(model,
                 _preload_metrics = _binary_classifier_metrics
             elif model_type == 'regressor':
                 _preload_metrics = _regressor_metrics
+            elif model_type == 'multiple_classifier':
+                _preload_metrics =_multiple_classifier_metrics 
             else:
                 raise Exception('not supported.')
             for m in _preload_metrics:

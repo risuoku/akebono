@@ -497,6 +497,7 @@
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>X</strong> (<em>numpy array-like</em>) – 説明変数</li>
 <li><strong>y</strong> (<em>numpy array-like</em>) – 目的変数</li>
+<li><strong>preprocessor</strong> (<a class="reference internal" href="#akebono.preprocessor.StatefulPreprocessor" title="akebono.preprocessor.StatefulPreprocessor"><em>StatefulPreprocessor</em></a><em> or </em><a class="reference internal" href="#akebono.preprocessor.StatelessPreprocessor" title="akebono.preprocessor.StatelessPreprocessor"><em>StatelessPreprocessor</em></a>) – Preprocessor object</li>
 </ul>
 </td>
 </tr>
@@ -634,7 +635,7 @@
 <li><strong>scenario_tag</strong> (<em>str</em><em> or </em><em>None</em>) – シナリオに付与されるlatest以外のタグ</li>
 <li><strong>dataset_config</strong> (<em>dict</em>) – Datasetの設定。<a class="reference internal" href="#akebono.dataset.get_dataset" title="akebono.dataset.get_dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">akebono.dataset.get_dataset</span></code></a> の引数。</li>
 <li><strong>model_config</strong> (<em>dict</em>) – Modelの設定。<a class="reference internal" href="#akebono.model.get_model" title="akebono.model.get_model"><code class="xref py py-class docutils literal notranslate"><span class="pre">akebono.model.get_model</span></code></a> の引数。</li>
-<li><strong>preprocessor_config</strong> (<em>dict</em>) – Preprocessorの設定。:class:<a href="#id1"><span class="problematic" id="id2">`</span></a>akebono.preprocessor.get_preprocessor`の引数。</li>
+<li><strong>preprocessor_config</strong> (<em>dict</em>) – Preprocessorの設定。<a class="reference internal" href="#akebono.preprocessor.get_preprocessor" title="akebono.preprocessor.get_preprocessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">akebono.preprocessor.get_preprocessor</span></code></a> の引数。</li>
 <li><strong>evaluate_enabled</strong> (<em>bool</em>) – モデルの評価を実行するかのフラグ</li>
 <li><strong>fit_model_enabled</strong> (<em>bool</em>) – モデルの訓練を実行するかのフラグ</li>
 <li><strong>dump_result_enabled</strong> (<em>bool</em>) – モデル、評価結果の永続化を実行するかのフラグ</li>

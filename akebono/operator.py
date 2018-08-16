@@ -38,7 +38,7 @@ def train(train_id, scenario_tag,
         :type dataset_config: dict
         :param model_config: Modelの設定。:class:`akebono.model.get_model` の引数。
         :type model_config: dict
-        :param preprocessor_config: Preprocessorの設定。:class:`akebono.preprocessor.get_preprocessor`の引数。
+        :param preprocessor_config: Preprocessorの設定。:class:`akebono.preprocessor.get_preprocessor` の引数。
         :type preprocessor_config: dict
         :param evaluate_enabled: モデルの評価を実行するかのフラグ
         :type evaluate_enabled: bool

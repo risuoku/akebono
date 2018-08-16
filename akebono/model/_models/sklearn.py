@@ -30,6 +30,8 @@ def _predict(model, X):
 
 
 def _predict_proba(model, X):
+    if not model.model_type == 'binary_classifier': # 暫定的に、binary_classifierのみ適用可能にする
+        return None
     if model._pos_index is None:
         raise Exception('predict_proba need pos_index')
     return model._value.predict_proba(X)[:, model._pos_index]

@@ -46,6 +46,7 @@ def get_model(model_config):
     is_rebuild = mcc.pop('is_rebuild')
     scenario_tag = mcc.pop('scenario_tag', None)
     train_id = mcc.pop('train_id', None)
+    model_type = mcc.pop('model_type', None)
 
     model = None
     if re.search('^Sklearn.+$', model_name) is not None:
@@ -57,6 +58,8 @@ def get_model(model_config):
 
     if model is None:
         raise Exception('unexpedted.')
+    if model_type is not None:
+        model.set_model_type(model_type)
 
     if is_rebuild:
         if scenario_tag is None or train_id is None:
