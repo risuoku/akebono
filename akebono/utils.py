@@ -34,7 +34,7 @@ def pd_to_csv(df, path, **kwargs):
         df.to_csv(path, **kwargs)
     elif settings.storage_type == 'gcs':
         try:
-            tmppath = './tmp.csv'
+            tmppath = os.path.join(os.getcwd(), 'tmp.csv')
             df.to_csv(tmppath, **kwargs)
             with open(tmppath, 'r') as f:
                 bkt = _get_gcs_bucket(settings.storage_option['bucket_name'])
