@@ -279,9 +279,70 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#configpy" title="config.pyの仕様" class="md-nav__link">
-    config.pyの仕様
+  <a href="#configpy" title="config.pyの記法" class="md-nav__link">
+    config.pyの記法
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configpy_1" title="config.pyのプロパティ" class="md-nav__link">
+    config.pyのプロパティ
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" title="グローバル" class="md-nav__link">
+    グローバル
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#storage_option" title="storage_option" class="md-nav__link">
+    storage_option
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#local" title="local" class="md-nav__link">
+    local
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gcs" title="gcs" class="md-nav__link">
+    gcs
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#train_config" title="train_config" class="md-nav__link">
+    train_config
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#predict_config" title="predict_config" class="md-nav__link">
+    predict_config
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -384,9 +445,70 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#configpy" title="config.pyの仕様" class="md-nav__link">
-    config.pyの仕様
+  <a href="#configpy" title="config.pyの記法" class="md-nav__link">
+    config.pyの記法
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configpy_1" title="config.pyのプロパティ" class="md-nav__link">
+    config.pyのプロパティ
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" title="グローバル" class="md-nav__link">
+    グローバル
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#storage_option" title="storage_option" class="md-nav__link">
+    storage_option
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#local" title="local" class="md-nav__link">
+    local
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gcs" title="gcs" class="md-nav__link">
+    gcs
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#train_config" title="train_config" class="md-nav__link">
+    train_config
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#predict_config" title="predict_config" class="md-nav__link">
+    predict_config
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -412,9 +534,16 @@
                 <h1 id="akebono">akebonoの設定<a class="headerlink" href="#akebono" title="Permanent link">&para;</a></h1>
 <h2 id="_1">開発の基本<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <p>akebonoを使った開発は、akebonoの設定ファイル(このドキュメントの色々なところで登場する<code>config.py</code>)を作成する作業が基本になります。
-設定ファイルといっても、実体はpythonモジュールですから実行時に値を決定することもできます。</p>
+設定ファイルといっても、実体はpythonモジュールですから実行時に値が決定されます。</p>
 <p><code>config.py</code>は、akebonoが実行すべきオペレーションの内容、ストレージの場所、プロジェクト名などakebonoの振る舞いを決定する役割を担います。</p>
-<h2 id="configpy">config.pyの仕様<a class="headerlink" href="#configpy" title="Permanent link">&para;</a></h2>
+<h2 id="configpy">config.pyの記法<a class="headerlink" href="#configpy" title="Permanent link">&para;</a></h2>
+<p>config.pyは、python処理系から見るとpythonモジュールで、各プロパティはpythonのオブジェクトとして定義されます。</p>
+<p>ただし、一部のプロパティで可読性のためオブジェクトをstring形式で表すことがあります。これを、「@記法」と呼ぶことにします。
+@記法は、形式的には <code>&lt;オブジェクト名&gt;@&lt;オブジェクトが生成されるモジュール名&gt;</code> で表されます。例えば、
+<code>load_iris@akebono.dataset.generator.sklearn</code>という@記法の文字列は、<code>akebono.dataset.generator.sklearn</code>モジュールで生成される
+<code>load_iris</code>オブジェクトを表します。</p>
+<h2 id="configpy_1">config.pyのプロパティ<a class="headerlink" href="#configpy_1" title="Permanent link">&para;</a></h2>
+<h3 id="_2">グローバル<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
 <p><code>config.py</code>で設定可能なプロパティは下表のようになります。</p>
 <table>
 <thead>
@@ -473,6 +602,354 @@
 <td align="left">dict or list</td>
 <td align="left"><code>{}</code></td>
 <td align="left">predictの処理内容。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="storage_option">storage_option<a class="headerlink" href="#storage_option" title="Permanent link">&para;</a></h3>
+<h4 id="local">local<a class="headerlink" href="#local" title="Permanent link">&para;</a></h4>
+<p>該当設定無し</p>
+<h4 id="gcs">gcs<a class="headerlink" href="#gcs" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th align="left">key</th>
+<th align="left">型</th>
+<th align="left">デフォルト値</th>
+<th align="left">制約</th>
+<th align="left">意味</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">bucket_name</td>
+<td align="left">string</td>
+<td align="left">無し</td>
+<td align="left">required:<code>true</code></td>
+<td align="left">ストレージとして使うバケット名</td>
+</tr>
+</tbody>
+</table>
+<h3 id="train_config">train_config<a class="headerlink" href="#train_config" title="Permanent link">&para;</a></h3>
+<p>下表は、train_configの型がdictの場合です。listの場合は、その要素が下表の仕様に従います。</p>
+<table>
+<thead>
+<tr>
+<th align="left">key</th>
+<th align="left">型</th>
+<th align="left">デフォルト値</th>
+<th align="left">制約</th>
+<th align="left">意味</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">dataset_config</td>
+<td align="left">dict</td>
+<td align="left">無し</td>
+<td align="left">required:<code>true</code></td>
+<td align="left">Datasetの設定</td>
+</tr>
+<tr>
+<td align="left">dataset_config.name</td>
+<td align="left">string</td>
+<td align="left">無し</td>
+<td align="left">dataset_config.cache_enabledが<code>true</code>の場合はrequired:<code>true</code>, そうでなければrequired:<code>false</code></td>
+<td align="left">Datasetの名前</td>
+</tr>
+<tr>
+<td align="left">dataset_config.target_column</td>
+<td align="left">string</td>
+<td align="left"><code>target</code></td>
+<td align="left">required:<code>false</code></td>
+<td align="left">目的変数のカラム名</td>
+</tr>
+<tr>
+<td align="left">dataset_config.cache_enabled</td>
+<td align="left">bool</td>
+<td align="left"><code>False</code></td>
+<td align="left">required:<code>false</code></td>
+<td align="left">データセットのキャッシュを作成するかどうかのフラグ</td>
+</tr>
+<tr>
+<td align="left">dataset_config.loader_config</td>
+<td align="left">dict</td>
+<td align="left">無し</td>
+<td align="left">required:<code>true</code></td>
+<td align="left">Dataset loaderの設定</td>
+</tr>
+<tr>
+<td align="left">dataset_config.loader_config.func</td>
+<td align="left">string</td>
+<td align="left">無し</td>
+<td align="left">required:<code>true</code></td>
+<td align="left">loaderが実行する関数。@記法で書かれる。</td>
+</tr>
+<tr>
+<td align="left">dataset_config.loader_config.func_kwargs</td>
+<td align="left">dict</td>
+<td align="left"><code>{}</code></td>
+<td align="left">required:<code>false</code></td>
+<td align="left">loaderが実行する関数に渡されるキーワード引数。</td>
+</tr>
+<tr>
+<td align="left">dataset_config.loader_config.param</td>
+<td align="left">dict</td>
+<td align="left"><code>{}</code></td>
+<td align="left">required:<code>false</code></td>
+<td align="left">loaderの振る舞いを決定するパラメータ。</td>
+</tr>
+<tr>
+<td align="left">dataset_config.preprocess_func</td>
+<td align="left">string</td>
+<td align="left"><code>identify@akebono.dataset.preprocessors</code></td>
+<td align="left">required:<code>false</code></td>
+<td align="left">Datasetの前処理を実行する関数。@記法で書かれる。</td>
+</tr>
+<tr>
+<td align="left">dataset_config.preprocess_func_kwargs</td>
+<td align="left">dict</td>
+<td align="left"><code>{}</code></td>
+<td align="left">required:<code>false</code></td>
+<td align="left">Datasetの前処理を実行する関数に渡されるキーワード引数。</td>
+</tr>
+<tr>
+<td align="left">model_config</td>
+<td align="left">dict</td>
+<td align="left">無し</td>
+<td align="left">required:<code>true</code></td>
+<td align="left">Modelの設定</td>
+</tr>
+<tr>
+<td align="left">model_config.name</td>
+<td align="left">string</td>
+<td align="left">無し</td>
+<td align="left">required:<code>true</code></td>
+<td align="left">Modelの名前。主に、手法名。</td>
+</tr>
+<tr>
+<td align="left">model_config.model_type</td>
+<td align="left">string</td>
+<td align="left">無し</td>
+<td align="left">required:<code>false</code></td>
+<td align="left">Modelのタイプ。基本的に不要だが、データが少数の場合は設定しておいたほうが安全。</td>
+</tr>
+<tr>
+<td align="left">model_config.init_kwargs</td>
+<td align="left">dict</td>
+<td align="left"><code>{}</code></td>
+<td align="left">required:<code>false</code></td>
+<td align="left">モデル初期化の実行に渡すキーワード引数。</td>
+</tr>
+<tr>
+<td align="left">model_config.fit_kwargs</td>
+<td align="left">dict</td>
+<td align="left"><code>{}</code></td>
+<td align="left">required:<code>false</code></td>
+<td align="left">モデル訓練の実行時に渡すキーワード引数。</td>
+</tr>
+<tr>
+<td align="left">model_config.evaluate_kwargs</td>
+<td align="left">dict</td>
+<td align="left"><code>{}</code></td>
+<td align="left">required:<code>false</code></td>
+<td align="left">モデル評価の実行時に渡すキーワード引数</td>
+</tr>
+<tr>
+<td align="left">model_config.evaluate_kwargs.train_test_split_func</td>
+<td align="left">string</td>
+<td align="left"><code>train_test_split@sklearn.model_selection</code></td>
+<td align="left">required:<code>false</code></td>
+<td align="left">評価時に、モデル訓練用と評価用でデータを分割するための関数。@記法で書かれる。<code>cross_val_iterator</code>が指定されている場合は無視される。</td>
+</tr>
+<tr>
+<td align="left">model_config.evaluate_kwargs.train_test_split_func_kwargs</td>
+<td align="left">dict</td>
+<td align="left"><code>{}</code></td>
+<td align="left">required:<code>false</code></td>
+<td align="left">train_test_split_funcの実行時に渡されるキーワード引数。</td>
+</tr>
+<tr>
+<td align="left">model_config.evaluate_kwargs.cross_val_iterator</td>
+<td align="left">string</td>
+<td align="left"><code>None</code></td>
+<td align="left">required:<code>false</code></td>
+<td align="left">交差検定をする際のデータ生成に使うイテレータ。@記法で書かれる。</td>
+</tr>
+<tr>
+<td align="left">model_config.evaluate_kwargs.cross_val_iterator_kwargs</td>
+<td align="left">dict</td>
+<td align="left"><code>{}</code></td>
+<td align="left">required:<code>false</code></td>
+<td align="left">交差検定用イテレータの生成時に渡されるキーワード引数。</td>
+</tr>
+<tr>
+<td align="left">model_config.pos_index</td>
+<td align="left">int</td>
+<td align="left"><code>None</code></td>
+<td align="left">モデルの評価や予測で<code>predict_proba</code>を実行する場合はrequired:<code>true</code>。そうでなければrequired:<code>false</code></td>
+<td align="left">正例のインデックス</td>
+</tr>
+<tr>
+<td align="left">preprocessor_config</td>
+<td align="left">dict or list</td>
+<td align="left"><code>{'name':'identify','kwargs':{}}</code></td>
+<td align="left">required:<code>false</code></td>
+<td align="left">前処理の設定</td>
+</tr>
+<tr>
+<td align="left">preprocessor_config.name</td>
+<td align="left">string</td>
+<td align="left"><code>identify</code></td>
+<td align="left">required:<code>false</code></td>
+<td align="left">前処理の名前</td>
+</tr>
+<tr>
+<td align="left">preprocessor_config.kwargs</td>
+<td align="left">dict</td>
+<td align="left"><code>{}</code></td>
+<td align="left">required:<code>false</code></td>
+<td align="left">前処理に渡すキーワード引数</td>
+</tr>
+<tr>
+<td align="left">evaluate_enabled</td>
+<td align="left">bool</td>
+<td align="left"><code>False</code></td>
+<td align="left">required:<code>false</code></td>
+<td align="left">モデルの評価を実行するかのフラグ。</td>
+</tr>
+<tr>
+<td align="left">fit_model_enabled</td>
+<td align="left">bool</td>
+<td align="left"><code>False</code></td>
+<td align="left">required:<code>false</code></td>
+<td align="left">モデルの訓練を実行するかのフラグ。</td>
+</tr>
+<tr>
+<td align="left">dump_result_enabled</td>
+<td align="left">bool</td>
+<td align="left"><code>False</code></td>
+<td align="left">required:<code>false</code></td>
+<td align="left">trainオペレーションの結果や訓練済みモデルをストレージに保存するかどうかのフラグ。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="predict_config">predict_config<a class="headerlink" href="#predict_config" title="Permanent link">&para;</a></h3>
+<p>下表は、predict_configの型がdictの場合です。listの場合は、その要素が下表の仕様に従います。</p>
+<table>
+<thead>
+<tr>
+<th align="left">key</th>
+<th align="left">型</th>
+<th align="left">デフォルト値</th>
+<th align="left">制約</th>
+<th align="left">意味</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">dataset_config</td>
+<td align="left">dict</td>
+<td align="left">無し</td>
+<td align="left">required:<code>true</code></td>
+<td align="left">Datasetの設定</td>
+</tr>
+<tr>
+<td align="left">dataset_config.name</td>
+<td align="left">string</td>
+<td align="left">無し</td>
+<td align="left">dataset_config.cache_enabledが<code>true</code>の場合はrequired:<code>true</code>, そうでなければrequired:<code>false</code></td>
+<td align="left">Datasetの名前</td>
+</tr>
+<tr>
+<td align="left">dataset_config.cache_enabled</td>
+<td align="left">bool</td>
+<td align="left"><code>False</code></td>
+<td align="left">required:<code>false</code></td>
+<td align="left">データセットのキャッシュを作成するかどうかのフラグ</td>
+</tr>
+<tr>
+<td align="left">dataset_config.loader_config</td>
+<td align="left">dict</td>
+<td align="left">無し</td>
+<td align="left">required:<code>true</code></td>
+<td align="left">Dataset loaderの設定</td>
+</tr>
+<tr>
+<td align="left">dataset_config.loader_config.func</td>
+<td align="left">string</td>
+<td align="left">無し</td>
+<td align="left">required:<code>true</code></td>
+<td align="left">loaderが実行する関数。@記法で書かれる。</td>
+</tr>
+<tr>
+<td align="left">dataset_config.loader_config.func_kwargs</td>
+<td align="left">dict</td>
+<td align="left"><code>{}</code></td>
+<td align="left">required:<code>false</code></td>
+<td align="left">loaderが実行する関数に渡されるキーワード引数。</td>
+</tr>
+<tr>
+<td align="left">dataset_config.loader_config.param</td>
+<td align="left">dict</td>
+<td align="left"><code>{}</code></td>
+<td align="left">required:<code>false</code></td>
+<td align="left">loaderの振る舞いを決定するパラメータ。</td>
+</tr>
+<tr>
+<td align="left">dataset_config.preprocess_func</td>
+<td align="left">string</td>
+<td align="left"><code>identify@akebono.dataset.preprocessors</code></td>
+<td align="left">required:<code>false</code></td>
+<td align="left">Datasetの前処理を実行する関数。@記法で書かれる。</td>
+</tr>
+<tr>
+<td align="left">dataset_config.preprocess_func_kwargs</td>
+<td align="left">dict</td>
+<td align="left"><code>{}</code></td>
+<td align="left">required:<code>false</code></td>
+<td align="left">Datasetの前処理を実行する関数に渡されるキーワード引数。</td>
+</tr>
+<tr>
+<td align="left">method_type</td>
+<td align="left">string</td>
+<td align="left"><code>predict</code></td>
+<td align="left">required:<code>false</code></td>
+<td align="left">予測のタイプ。<code>predict</code>or<code>predict_proba</code>。</td>
+</tr>
+<tr>
+<td align="left">train_id</td>
+<td align="left">int or string</td>
+<td align="left"><code>0</code></td>
+<td align="left">required:<code>false</code></td>
+<td align="left">予測で使うモデルのtrain_id。</td>
+</tr>
+<tr>
+<td align="left">dump_result_enabled</td>
+<td align="left">bool</td>
+<td align="left"><code>False</code></td>
+<td align="left">required:<code>false</code></td>
+<td align="left">predictオペレーションの結果をストレージに保存するかどうかのフラグ。</td>
+</tr>
+<tr>
+<td align="left">dump_result_format</td>
+<td align="left">string</td>
+<td align="left"><code>csv</code></td>
+<td align="left">required:<code>false</code></td>
+<td align="left">predictオペレーションの結果をストレージに保存する際のフォーマット。</td>
+</tr>
+<tr>
+<td align="left">result_target_columns</td>
+<td align="left">string or list</td>
+<td align="left"><code>all</code></td>
+<td align="left">required:<code>false</code></td>
+<td align="left">predictの結果に含める説明変数のカラム名のリスト。<code>all</code>の場合は全て含める。</td>
+</tr>
+<tr>
+<td align="left">result_predict_column</td>
+<td align="left">string</td>
+<td align="left"><code>predicted</code></td>
+<td align="left">required:<code>false</code></td>
+<td align="left">predictの結果を表すカラム名。</td>
 </tr>
 </tbody>
 </table>
