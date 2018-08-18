@@ -61,16 +61,15 @@
 
 
 <span class="k">def</span> <span class="nf">init</span><span class="p">():</span>
-    <span class="k">if</span> <span class="n">storage_type</span> <span class="o">==</span> <span class="s1">&#39;local&#39;</span> <span class="ow">and</span> <span class="n">storage_auto_create_dir</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">storage_type</span> <span class="o">==</span> <span class="s1">&#39;local&#39;</span><span class="p">:</span>
         <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">storage_project_root_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">cache_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">operation_results_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     
     
 <span class="k">def</span> <span class="nf">get_template_env</span><span class="p">():</span>
-    <span class="n">_bq_tpl_absdir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_root_dir</span><span class="p">,</span> <span class="n">bq_sql_template_dir</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">jinja2</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span>
-        <span class="n">loader</span> <span class="o">=</span> <span class="n">jinja2</span><span class="o">.</span><span class="n">FileSystemLoader</span><span class="p">(</span><span class="n">_bq_tpl_absdir</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="n">loader</span> <span class="o">=</span> <span class="n">jinja2</span><span class="o">.</span><span class="n">FileSystemLoader</span><span class="p">(</span><span class="n">bq_sql_template_dir</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
     <span class="p">)</span>
 
 
@@ -81,11 +80,21 @@
 <span class="sd">    :param config: akebonoの設定</span>
 <span class="sd">    :type config: python module object</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># phase1.</span>
     <span class="k">for</span> <span class="n">va</span> <span class="ow">in</span> <span class="n">_valid_attributes</span><span class="p">:</span>
         <span class="n">value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">va</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">va</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-    <span class="n">_update_associated_attrs</span><span class="p">()</span></div>
+
+    <span class="n">_update_associated_attrs</span><span class="p">()</span>
+
+    <span class="c1"># phase2. _update_associated_attrに依存する設定を反映させるため、</span>
+    <span class="c1"># phase1と同じ処理を入れる</span>
+    <span class="k">for</span> <span class="n">va</span> <span class="ow">in</span> <span class="n">_valid_attributes</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">va</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">va</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="get_train_configs"><a class="viewcode-back" href="../../index.html#akebono.settings.get_train_configs">[docs]</a><span class="k">def</span> <span class="nf">get_train_configs</span><span class="p">():</span>
@@ -123,10 +132,9 @@
     <span class="n">storage_root_dir</span> <span class="o">=</span> <span class="s1">&#39;_storage&#39;</span>
     <span class="n">storage_type</span> <span class="o">=</span> <span class="s1">&#39;local&#39;</span>
     <span class="n">storage_option</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">storage_auto_create_dir</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="n">bq_sql_template_dir</span> <span class="o">=</span> <span class="s1">&#39;_dataset/bq_sql_templates&#39;</span>
     <span class="n">project_name</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span>
     <span class="n">project_root_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+    <span class="n">bq_sql_template_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_root_dir</span><span class="p">,</span> <span class="s1">&#39;_dataset/bq_sql_templates&#39;</span><span class="p">)</span>
     <span class="n">train_config</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">predict_config</span> <span class="o">=</span> <span class="p">{}</span>
 

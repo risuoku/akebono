@@ -10,6 +10,8 @@ edit_uri: blob/master/_docsorigin/docs
 use_directory_urls: false
 nav:
 - 'akebonoをはじめる': 'index.md'
+- 'akebonoの設定': 'config.md'
 - 'akebonoの構成': 'system.md'
-- 'チュートリアル': 'tutorials.md'
+- 'チュートリアル': 
+  - '２つ以上の設定を一度に実行する': 'tutorials/1.md'
 - 'APIリファレンス': 'sphinxapidocs/index.html'

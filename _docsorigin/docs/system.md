@@ -1,6 +1,6 @@
 # akebonoの構成
 
-## settings
+## Settings
 
 ## Dataset
 

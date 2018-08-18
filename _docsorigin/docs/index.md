@@ -71,14 +71,10 @@ train_config = {
     'dataset_config': {
         'loader_config': {
             'func': 'load_iris@akebono.dataset.generator.sklearn',
-            'func_kwargs': {
-            },
         },
     },
     'model_config': {
         'name': 'SklearnLogisticRegression',
-        'init_kwargs': {},
-        'fit_kwargs': {},
         'evaluate_kwargs': {
             'cross_val_iterator': 'KFold@sklearn.model_selection',
             'cross_val_iterator_kwargs': {
@@ -131,7 +127,6 @@ predict_config = {
     'dataset_config': {
         'loader_config': {
             'func': 'load_iris@akebono.dataset.generator.sklearn',
-            'func_kwargs': {},
         },  
     },
     'train_id': '0',
