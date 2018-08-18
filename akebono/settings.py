@@ -27,16 +27,15 @@ def _update_associated_attrs():
 
 
 def init():
-    if storage_type == 'local' and storage_auto_create_dir:
+    if storage_type == 'local':
         os.makedirs(storage_project_root_dir, exist_ok=True)
         os.makedirs(cache_dir, exist_ok=True)
         os.makedirs(operation_results_dir, exist_ok=True)
     
     
 def get_template_env():
-    _bq_tpl_absdir = os.path.join(project_root_dir, bq_sql_template_dir)
     return jinja2.Environment(
-        loader = jinja2.FileSystemLoader(_bq_tpl_absdir, encoding='utf-8')
+        loader = jinja2.FileSystemLoader(bq_sql_template_dir, encoding='utf-8')
     )
 
 
@@ -47,11 +46,21 @@ def apply(config):
     :param config: akebonoの設定
     :type config: python module object
     """
+
+    # phase1.
     for va in _valid_attributes:
         value = getattr(config, va, None)
         if value is not None:
             setattr(self, va, value)
+
     _update_associated_attrs()
+
+    # phase2. _update_associated_attrに依存する設定を反映させるため、
+    # phase1と同じ処理を入れる
+    for va in _valid_attributes:
+        value = getattr(config, va, None)
+        if value is not None:
+            setattr(self, va, value)
 
 
 def get_train_configs():
@@ -89,10 +98,9 @@ if not _init:
     storage_root_dir = '_storage'
     storage_type = 'local'
     storage_option = {}
-    storage_auto_create_dir = True
-    bq_sql_template_dir = '_dataset/bq_sql_templates'
     project_name = 'default'
     project_root_dir = os.getcwd()
+    bq_sql_template_dir = os.path.join(project_root_dir, '_dataset/bq_sql_templates')
     train_config = {}
     predict_config = {}
 
