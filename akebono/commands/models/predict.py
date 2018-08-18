@@ -13,6 +13,6 @@ class Predict(CommandBase):
         parser.add_argument('-t', '--scenario-tag', default='latest')
 
     def execute(self, namespace):
-        for op in settings.predict_operations:
+        for op in settings.get_predict_configs():
             predict_id = get_random_string(16)
             operator.predict(predict_id, namespace.scenario_tag, **op)

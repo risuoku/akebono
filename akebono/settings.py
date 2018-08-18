@@ -15,8 +15,8 @@ _valid_attributes = [
     'bq_sql_template_dir',
     'project_name',
     'project_root_dir',
-    'train_operations',
-    'predict_operations',
+    'train_config',
+    'predict_config',
 ]
 
 
@@ -54,6 +54,34 @@ def apply(config):
     _update_associated_attrs()
 
 
+def get_train_configs():
+    """
+    train_configのリストを返す関数
+
+    :return: list[dict]
+    """
+    if isinstance(train_config, dict):
+        return [train_config]
+    elif isinstance(train_config, list):
+        return train_config
+    else:
+        raise TypeError('invalid type .. train_config must be dict or list.')
+
+
+def get_predict_configs():
+    """
+    predict_configのリストを返す関数
+
+    :return: list[dict]
+    """
+    if isinstance(predict_config, dict):
+        return [predict_config]
+    elif isinstance(predict_config, list):
+        return predict_config
+    else:
+        raise TypeError('invalid type .. predict_config must be dict or list.')
+
+
 ### default settings
 ### settings moduleロード時に一度だけ実行される
 
@@ -65,8 +93,8 @@ if not _init:
     bq_sql_template_dir = '_dataset/bq_sql_templates'
     project_name = 'default'
     project_root_dir = os.getcwd()
-    train_operations = []
-    predict_operations = []
+    train_config = {}
+    predict_config = {}
 
 
     _pathjoin_gcs_pattern = re.compile('^(\/+)([^/].*)$')

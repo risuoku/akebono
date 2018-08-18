@@ -47,7 +47,7 @@ class Train(CommandBase):
 
             # train
             logger.info('===== train start .. config: {} ====='.format(namespace.config))
-            for idx, op in enumerate(settings.train_operations):
+            for idx, op in enumerate(settings.get_train_configs()):
                 logger.info('training .. id: {}'.format(idx))
                 operator.train(str(idx), scenario_tag, **op)
                 gc.collect() # free memory
