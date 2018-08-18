@@ -49,8 +49,8 @@
     <span class="s1">&#39;bq_sql_template_dir&#39;</span><span class="p">,</span>
     <span class="s1">&#39;project_name&#39;</span><span class="p">,</span>
     <span class="s1">&#39;project_root_dir&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;train_operations&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;predict_operations&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;train_config&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;predict_config&#39;</span><span class="p">,</span>
 <span class="p">]</span>
 
 
@@ -88,6 +88,34 @@
     <span class="n">_update_associated_attrs</span><span class="p">()</span></div>
 
 
+<div class="viewcode-block" id="get_train_configs"><a class="viewcode-back" href="../../index.html#akebono.settings.get_train_configs">[docs]</a><span class="k">def</span> <span class="nf">get_train_configs</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    train_configのリストを返す関数</span>
+
+<span class="sd">    :return: list[dict]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">train_config</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">train_config</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">train_config</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">train_config</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;invalid type .. train_config must be dict or list.&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_predict_configs"><a class="viewcode-back" href="../../index.html#akebono.settings.get_predict_configs">[docs]</a><span class="k">def</span> <span class="nf">get_predict_configs</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    predict_configのリストを返す関数</span>
+
+<span class="sd">    :return: list[dict]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">predict_config</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">predict_config</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">predict_config</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">predict_config</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;invalid type .. predict_config must be dict or list.&#39;</span><span class="p">)</span></div>
+
+
 <span class="c1">### default settings</span>
 <span class="c1">### settings moduleロード時に一度だけ実行される</span>
 
@@ -99,8 +127,8 @@
     <span class="n">bq_sql_template_dir</span> <span class="o">=</span> <span class="s1">&#39;_dataset/bq_sql_templates&#39;</span>
     <span class="n">project_name</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span>
     <span class="n">project_root_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
-    <span class="n">train_operations</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">predict_operations</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">train_config</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">predict_config</span> <span class="o">=</span> <span class="p">{}</span>
 
 
     <span class="n">_pathjoin_gcs_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;^(\/+)([^/].*)$&#39;</span><span class="p">)</span>

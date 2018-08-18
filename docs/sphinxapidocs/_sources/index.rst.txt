@@ -59,3 +59,7 @@ Settings
 -----------
 
 .. autofunction:: akebono.settings.apply
+
+.. autofunction:: akebono.settings.get_train_configs
+
+.. autofunction:: akebono.settings.get_predict_configs

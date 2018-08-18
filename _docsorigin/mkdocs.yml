@@ -9,6 +9,7 @@ repo_url: https://github.com/risuoku/akebono
 edit_uri: blob/master/_docsorigin/docs
 use_directory_urls: false
 nav:
-- 'HOME': 'index.md'
-- 'hello': 'notebooks/hello.md'
+- 'akebonoをはじめる': 'index.md'
+- 'akebonoの構成': 'system.md'
+- 'チュートリアル': 'tutorials.md'
 - 'APIリファレンス': 'sphinxapidocs/index.html'
