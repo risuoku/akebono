@@ -551,7 +551,7 @@ accuracy
 
 <p>結果的には、前処理無しが最も良くなりました。前処理1,2を組み合わせると片方だけに比べると良いようです。</p>
 <p>ここでは、<code>StatefulPreprocessor</code>である<code>apply_standard_scaler</code>を適用した場合に訓練データに依存したパラメータが保存されていることを確認しておきます。</p>
-<div class="codehilite"><pre><span></span>ls -l _storage/default/operation_results/latest | awk &#39;{print $9}&#39;
+<div class="codehilite"><pre><span></span>$ ls -l _storage/default/operation_results/latest <span class="p">|</span> awk <span class="s1">&#39;{print $9}&#39;</span>
 
 train_result_meta_0.pkl
 train_result_meta_1.pkl

@@ -519,7 +519,7 @@
 
 
 <p>ds2は最初と同じ値が格納されています。ここで、キャッシュが作成されていることを確認します。</p>
-<div class="codehilite"><pre><span></span>ls -l _storage/default/cache/hathitrustbooks_1800_e3b0c44298fc1c149afbf4c8_055aa78309b36ea9aeaf1e89_e3b0c44298fc1c149afbf4c8.pkl | awk &#39;{print $9}&#39;
+<div class="codehilite"><pre><span></span>$ ls -l _storage/default/cache/hathitrustbooks_1800_e3b0c44298fc1c149afbf4c8_055aa78309b36ea9aeaf1e89_e3b0c44298fc1c149afbf4c8.pkl <span class="p">|</span> awk <span class="s1">&#39;{print $9}&#39;</span>
 _storage/default/cache/hathitrustbooks_1800_e3b0c44298fc1c149afbf4c8_055aa78309b36ea9aeaf1e89_e3b0c44298fc1c149afbf4c8.pkl
 </pre></div>
 
@@ -592,7 +592,7 @@ _storage/default/cache/hathitrustbooks_1800_e3b0c44298fc1c149afbf4c8_055aa78309b
 <p>期待したとおりのカラムが選択されています。</p>
 <p>また、キャッシュは名前とパラメータの組み合わせで生成されるので、今回の例のように名前が同じでもパラメータが異なると別々にキャッシュが生成されます。
 実際、生成されたキャッシュは以下のようになっています。</p>
-<div class="codehilite"><pre><span></span>ls -l _storage/default/cache | awk &#39;{print $9}&#39; | grep hathitrustbooks_1800_2
+<div class="codehilite"><pre><span></span>$ ls -l _storage/default/cache <span class="p">|</span> awk <span class="s1">&#39;{print $9}&#39;</span> <span class="p">|</span> grep hathitrustbooks_1800_2
 hathitrustbooks_1800_2_cc5cf0a617cc14dda7359ba7_055aa78309b36ea9aeaf1e89_e3b0c44298fc1c149afbf4c8.pkl
 hathitrustbooks_1800_2_f9a51ff16f984c5bda791e0b_055aa78309b36ea9aeaf1e89_e3b0c44298fc1c149afbf4c8.pkl
 </pre></div>

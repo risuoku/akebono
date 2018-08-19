@@ -65,6 +65,15 @@ akebonoの内部コンポーネントは、大きく分けて `Settings`,`Datase
 
 ## Model
 
+`Model`は、教師あり学習用モデルのインタフェースと共通実装を扱うコンポーネントです。
+`scikit-learn`のモデルに似たインタフェースを持っていますがakebono独自の部分もあります。
+例えば、akebonoの`Model`には`model_type`というプロパティがあり、これはモデルが二値分類器(binary_classifier)なのか、多値分類器(multiple_classifier)なのか、回帰器(regressor)なのかを
+区別するために使われます。二値分類器と多値分類器どちらでも使えるモデルについては、`model_type`の決定はデータから決めることもできれば`config.py`で指定することもできます。
+akebonoを使ったモデル評価では、評価項目は`model_type`に依存し、利用者に評価項目選択の自由を与えない一方で、モデルごとに最適な評価方法を考える手間を省けるようにしています。
+
+また、akebonoが標準で`scikit-learn`や`XGBoost`、`LightGBM`のような広く使われるライブラリをサポートするのに加え、必要あれば利用者が独自にカスタマイズしたモデルを追加する手段を提供しています。
+
+
 ## Operator
 
 ## Command

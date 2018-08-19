@@ -555,6 +555,12 @@
 <p>また、<code>Preprocessor</code>には<code>Pipeline</code>という仕組みがあり、これは複数の<code>Preprocessor</code>連結を１つの<code>Preprocessor</code>として扱う抽象化機構です。
 <code>Operator</code>は<code>Pipeline</code>として<code>Preprocessor</code>を扱うため、<code>config.py</code>には複数の<code>Preprocessor</code>を記述することが可能です。</p>
 <h2 id="model">Model<a class="headerlink" href="#model" title="Permanent link">&para;</a></h2>
+<p><code>Model</code>は、教師あり学習用モデルのインタフェースと共通実装を扱うコンポーネントです。
+<code>scikit-learn</code>のモデルに似たインタフェースを持っていますがakebono独自の部分もあります。
+例えば、akebonoの<code>Model</code>には<code>model_type</code>というプロパティがあり、これはモデルが二値分類器(binary_classifier)なのか、多値分類器(multiple_classifier)なのか、回帰器(regressor)なのかを
+区別するために使われます。二値分類器と多値分類器どちらでも使えるモデルについては、<code>model_type</code>の決定はデータから決めることもできれば<code>config.py</code>で指定することもできます。
+akebonoを使ったモデル評価では、評価項目は<code>model_type</code>に依存し、利用者に評価項目選択の自由を与えない一方で、モデルごとに最適な評価方法を考える手間を省けるようにしています。</p>
+<p>また、akebonoが標準で<code>scikit-learn</code>や<code>XGBoost</code>、<code>LightGBM</code>のような広く使われるライブラリをサポートするのに加え、必要あれば利用者が独自にカスタマイズしたモデルを追加する手段を提供しています。</p>
 <h2 id="operator">Operator<a class="headerlink" href="#operator" title="Permanent link">&para;</a></h2>
 <h2 id="command">Command<a class="headerlink" href="#command" title="Permanent link">&para;</a></h2>
                 
