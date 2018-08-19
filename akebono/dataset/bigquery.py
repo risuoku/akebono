@@ -1,1 +1,1 @@
-from akebono.io.dataset.bigquery.loader import load
+from akebono.io.dataset.bigquery import load

@@ -31,6 +31,7 @@ def init():
         os.makedirs(storage_project_root_dir, exist_ok=True)
         os.makedirs(cache_dir, exist_ok=True)
         os.makedirs(operation_results_dir, exist_ok=True)
+        os.makedirs(datasource_dir, exist_ok=True)
     
     
 def get_template_env():
@@ -104,7 +105,6 @@ if not _init:
     train_config = {}
     predict_config = {}
 
-
     _pathjoin_gcs_pattern = re.compile('^(\/+)([^/].*)$')
     def pathjoin(*args, **kwargs):
         if self.storage_type == 'local':
@@ -118,5 +118,7 @@ if not _init:
         else:
             raise ValueError('invalid storage_type')
     
+    datasource_dir = pathjoin(storage_root_dir, project_name, 'datasource')
+
     _update_associated_attrs()
     _init = True

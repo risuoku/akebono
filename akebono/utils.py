@@ -8,6 +8,7 @@ import pickle
 import pandas as pd
 import importlib
 import re
+import io
 
 from akebono.logging import getLogger
 
@@ -29,19 +30,42 @@ def _get_gcs_bucket(bucket_name):
     return self._bkt
 
 
+def try_decode_bytes_and_get(bt):
+    if not isinstance(bt, bytes):
+        raise TypeError('`bt` must be bytes type.')
+    for charcode in ['utf8', 'sjis', 'euc-jp']:
+        try:
+            decoded = bt.decode(charcode)
+            return decoded
+        except UnicodeDecodeError:
+            # ignore
+            pass
+    return None
+
+
 def pd_to_csv(df, path, **kwargs):
     if settings.storage_type == 'local':
         df.to_csv(path, **kwargs)
     elif settings.storage_type == 'gcs':
-        try:
-            tmppath = os.path.join(os.getcwd(), 'tmp.csv')
-            df.to_csv(tmppath, **kwargs)
-            with open(tmppath, 'r') as f:
-                bkt = _get_gcs_bucket(settings.storage_option['bucket_name'])
-                bkt.blob(path, chunk_size=1048576000).upload_from_file(f, content_type='text/csv')
-        finally:
-            if os.path.isfile(tmppath):
-                os.remove(tmppath)
+        buf = df.to_csv(None, encoding='utf-8', **kwargs)
+        bkt = _get_gcs_bucket(settings.storage_option['bucket_name'])
+        bkt.blob(path, chunk_size=1048576000).upload_from_string(buf, content_type='text/csv')
+    else:
+        raise ValueError('invalid storage_type')
+
+
+def pd_read_csv(path, **kwargs):
+    if settings.storage_type == 'local':
+        return pd.read_csv(path, **kwargs)
+    elif settings.storage_type == 'gcs':
+        bkt = _get_gcs_bucket(settings.storage_option['bucket_name'])
+        obj = bkt.get_blob(path)
+        if obj is None:
+            return None
+        s = try_decode_bytes_and_get(obj.download_as_string())
+        if s is None:
+            raise Exception('decode bytes failed.')
+        return pd.read_csv(io.StringIO(s), **kwargs)
     else:
         raise ValueError('invalid storage_type')
 
