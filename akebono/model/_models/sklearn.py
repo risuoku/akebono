@@ -13,6 +13,7 @@ logger = getLogger(__name__)
 _valid_not_regressor_models = {
     'LogisticRegression': 'sklearn.linear_model',
     'RandomForestClassifier': 'sklearn.ensemble',
+    'SVC': 'sklearn.svm',
 }
 
 _valid_regressor_models = {

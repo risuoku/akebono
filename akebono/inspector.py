@@ -1,5 +1,6 @@
 from akebono.io.operation.loader import load_train_results
 import pandas as pd
+import copy
 
 
 def get_scenario_summary(scenario_tag, performance_sort_key):
@@ -12,7 +13,11 @@ def get_scenario_summary(scenario_tag, performance_sort_key):
     all_metrics = []
     for tr in trs:
         mr = tr['evaluate']['metrics'].mean()
-        mr['_akebono_train_id'] = tr['id']
+        trcp = copy.deepcopy(tr)
+        trcp.pop('evaluate')
+        trcp.pop('evaluate_enabled')
+        trcp.pop('dump_result_enabled')
+        mr['_akebono_train'] = trcp
         all_metrics.append(mr)
 
     concated = pd.concat(all_metrics, axis=1).T.reset_index(drop=True)

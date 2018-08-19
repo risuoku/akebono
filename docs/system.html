@@ -367,6 +367,18 @@
   </li>
 
         
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="tutorials/2.html" title="二値分類器を作る" class="md-nav__link">
+      二値分類器を作る
+    </a>
+  </li>
+
+        
       </ul>
     </nav>
   </li>
@@ -466,8 +478,43 @@
                 
                 
                 <h1 id="akebono">akebonoの構成<a class="headerlink" href="#akebono" title="Permanent link">&para;</a></h1>
+<p>akebonoが管理する構成は、物理的には大きく２つに分けられ、それぞれ<code>processor</code>,<code>storage</code>と呼んでおきます。</p>
+<p><code>processor</code>は、akebonoを使った開発における処理に関わる全ての領域です。
+例えば、<code>config.py</code>やカスタムモデルが書かれたpythonモジュールファイル、BigQuery loaderが読むSQLファイルなどがこれにあたります。</p>
+<p><code>storage</code>は、ファイル、ディレクトリ、これらの要素に対するオペレーション等のファイルシステム相当の機能を持った外部記憶システムを抽象化したものです。
+例えば、各種OSが持つファイルシステムと記憶領域がこれにあたります。また、Google Cloud PlatformのGCSやAWSのS3も<code>storage</code>にあたります。
+<code>storage</code>は、訓練済みモデルを保存したり、データセットのキャッシュを置いておくといった使い方をします。</p>
+<p>akebonoが管理する構成は、論理的にはトップレベルにまず<code>project</code>がきます。設定は<code>project</code>ごとに存在します。
+ストレージも<code>project</code>ごと独立した領域が存在し、<code>storage_root_dir</code>と<code>storage_type</code>が同じ２つのプロジェクトの場合は
+同じストレージの中に<code>project</code>ごと別のパスが割り当てられ、区別されて管理されます。</p>
+<p>akebonoの内部コンポーネントは、大きく分けて <code>Settings</code>,<code>Dataset</code>,<code>Preprocessor</code>,<code>Model</code>,<code>Operator</code>があり、
+これらを組み合わせた<code>Command</code>があります。</p>
 <h2 id="settings">Settings<a class="headerlink" href="#settings" title="Permanent link">&para;</a></h2>
+<p><code>Settings</code>は、akebonoの設定を管理するためのオブジェクトです。<code>config.py</code>に設定した内容は実行時に<code>Settings</code>に反映され、akebonoに存在する各コンポーネントは
+<code>Settings</code>を参照して動作します。<code>Settings</code>が管理するプロパティは<code>config.py</code>とほぼ同一で、詳細は<a href="config.html">akebonoの設定</a>を参照してください。</p>
 <h2 id="dataset">Dataset<a class="headerlink" href="#dataset" title="Permanent link">&para;</a></h2>
+<p><code>Dataset</code>は、教師あり学習で利用するデータを管理するためのオブジェクトです。具体的には、以下のような役割を持ちます。</p>
+<ul>
+<li>外部記憶システムに保存されたデータやあるルールに基づいて生成されたデータを読み込む。読み込むためのコンポーネントを<code>loader</code>と呼びます。<ul>
+<li>様々な形式に対応(csv,BigQueryなど)</li>
+<li><code>sklearn.datasets</code>等に含まれる自動生成されるデータや広く使われるデータセットの読み込みに対応</li>
+</ul>
+</li>
+<li>名前の管理<ul>
+<li><code>Dataset</code>には、各プロジェクトごと、loaderごとに一意に名前をつけることができます。例えば、<code>dataset1</code>という名前のDatasetのloaderをBigQuery loaderとすると、
+<code>dataset1.sql</code>というファイルにSQLを書くことができて、別のSQLで記述される<code>dataset2</code>とは区別されます。</li>
+</ul>
+</li>
+<li>読み込んだデータに対する前処理。これは、何らかの理由により<code>loader</code>の後に処理を加えたものを<code>Dataset</code>として管理したく、かつ
+後述の<code>Preprocessor</code>とは区別したい場合に利用します。ありそうなユースケースとしては、SQLでは書くのが難しかったり不可能な前処理を加えた後に
+説明変数として意味のある形式になるデータに対する適用です。この場合は、次元削減等のチューニングのための前処理（こういった目的では<code>Preprocessor</code>の利用を推奨します）とは区別する意味があります。</li>
+<li>目的変数のカラム名設定</li>
+<li>キャッシュ利用の有無<ul>
+<li><code>Dataset</code>はキャッシュを作成することができ、具体的にはloaderで読み込んだ後、前処理後のpandas.DataFrameをpickle化してストレージに保存しておき、次の読み込み時にはpickleから読むようになります。
+キャッシュは<code>Dataset</code>についた名前と前処理関数の名前、loaderへ渡したパラメータ、前処理関数に渡したパラメータの組み合わせから一意に生成され、これらの組み合わせが一致するとキャッシュヒットします。</li>
+</ul>
+</li>
+</ul>
 <h2 id="preprocessor">Preprocessor<a class="headerlink" href="#preprocessor" title="Permanent link">&para;</a></h2>
 <h2 id="model">Model<a class="headerlink" href="#model" title="Permanent link">&para;</a></h2>
 <h2 id="operator">Operator<a class="headerlink" href="#operator" title="Permanent link">&para;</a></h2>

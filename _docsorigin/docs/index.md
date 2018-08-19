@@ -105,9 +105,9 @@ $ akebono train
 $ akebono inspect
 
 ### 以下、実行結果
-=== performance summary .. scenario_tag: latest ===
+=== scenario summary .. tag: latest ===
 
-------------------------------
+------------------------------------------------------------
 train_id: 0
 
 accuracy

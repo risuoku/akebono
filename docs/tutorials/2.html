@@ -36,7 +36,7 @@
     
     
       
-        <title>２つ以上の設定を一度に実行する - akebono documentation</title>
+        <title>二値分類器を作る - akebono documentation</title>
       
     
     
@@ -90,7 +90,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="../#train_config" tabindex="1" class="md-skip">
+      <a href="../#_1" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -116,7 +116,7 @@
                 akebono documentation
               </span>
               <span class="md-header-nav__topic">
-                ２つ以上の設定を一度に実行する
+                二値分類器を作る
               </span>
             
           
@@ -288,52 +288,11 @@
           
           
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active">
-    
-    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-    
-    
-      <label class="md-nav__link md-nav__link--active" for="__toc">
-        ２つ以上の設定を一度に実行する
-      </label>
-    
-    <a href="1.html" title="２つ以上の設定を一度に実行する" class="md-nav__link md-nav__link--active">
+  <li class="md-nav__item">
+    <a href="1.html" title="２つ以上の設定を一度に実行する" class="md-nav__link">
       ２つ以上の設定を一度に実行する
     </a>
-    
-      
-<nav class="md-nav md-nav--secondary">
-  
-  
-  
-    <label class="md-nav__title" for="__toc">Table of contents</label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#train_config" title="train_configをリスト形式で書く" class="md-nav__link">
-    train_configをリスト形式で書く
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_1" title="可読性を高める" class="md-nav__link">
-    可読性を高める
-  </a>
-  
-</li>
-      
-      
-      
-      
-      
-    </ul>
-  
-</nav>
-    
   </li>
 
         
@@ -341,11 +300,20 @@
           
           
 
+  
 
-  <li class="md-nav__item">
-    <a href="2.html" title="二値分類器を作る" class="md-nav__link">
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+    <a href="2.html" title="二値分類器を作る" class="md-nav__link md-nav__link--active">
       二値分類器を作る
     </a>
+    
   </li>
 
         
@@ -380,29 +348,8 @@
 <nav class="md-nav md-nav--secondary">
   
   
+    
   
-    <label class="md-nav__title" for="__toc">Table of contents</label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#train_config" title="train_configをリスト形式で書く" class="md-nav__link">
-    train_configをリスト形式で書く
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_1" title="可読性を高める" class="md-nav__link">
-    可読性を高める
-  </a>
-  
-</li>
-      
-      
-      
-      
-      
-    </ul>
   
 </nav>
                   </div>
@@ -414,73 +361,64 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/risuoku/akebono/blob/master/_docsorigin/docs/tutorials/1.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="https://github.com/risuoku/akebono/blob/master/_docsorigin/docs/tutorials/2.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                  <h1>２つ以上の設定を一度に実行する</h1>
-                
-                <h2 id="train_config">train_configをリスト形式で書く<a class="headerlink" href="#train_config" title="Permanent link">&para;</a></h2>
-<p><code>train_config</code>は、リスト形式にすることもできます。</p>
-<p><code>config.py</code> として、以下を保存してください。</p>
-<div class="codehilite"><pre><span></span><span class="n">train_config_1</span> <span class="o">=</span> <span class="p">{</span>
+                <h1 id="_1">二値分類器を作る<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<p>このセクションでは、線形分類不可能なデータセットである<code>moons</code>(詳細は<a href="http://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_moons.html">こちら</a>)を分類してみます。</p>
+<p>分類器として以下４つを試して、各手法ごとの比較をします。</p>
+<ol>
+<li>ロジスティック回帰</li>
+<li>ランダムフォレスト</li>
+<li>RBFカーネルのSVM</li>
+<li>線形カーネルのSVM</li>
+</ol>
+<p><code>moons</code>は線形分離不可能な二値分類問題ですから、手法としては2と3が有利そうです。
+これを実験により確認します。</p>
+<p><code>config.py</code> を作成した後にtrain,inspectを実行してみます。</p>
+<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">copy</span>
+<span class="n">train_config_template</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;dataset_config&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s1">&#39;loader_config&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;func&#39;</span><span class="p">:</span> <span class="s1">&#39;load_iris@akebono.dataset.generator.sklearn&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;func&#39;</span><span class="p">:</span> <span class="s1">&#39;make_moons@akebono.dataset.generator.sklearn&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;func_kwargs&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;n_samples&#39;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
+                <span class="s1">&#39;noise&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+                <span class="s1">&#39;random_state&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="p">},</span>
         <span class="p">},</span>
     <span class="p">},</span>
     <span class="s1">&#39;model_config&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;SklearnLogisticRegression&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;init_kwargs&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;penalty&#39;</span><span class="p">:</span> <span class="s1">&#39;l2&#39;</span><span class="p">,</span>
-        <span class="p">},</span>
         <span class="s1">&#39;evaluate_kwargs&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;cross_val_iterator&#39;</span><span class="p">:</span> <span class="s1">&#39;KFold@sklearn.model_selection&#39;</span><span class="p">,</span>
             <span class="s1">&#39;cross_val_iterator_kwargs&#39;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s1">&#39;shuffle&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
                 <span class="s1">&#39;random_state&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-                <span class="s1">&#39;n_splits&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
-            <span class="p">},</span>
+                <span class="s1">&#39;n_splits&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> 
+            <span class="p">},</span>  
         <span class="p">},</span>
-        <span class="s1">&#39;model_type&#39;</span><span class="p">:</span> <span class="s1">&#39;multiple_classifier&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;pos_index&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
     <span class="p">},</span>
     <span class="s1">&#39;evaluate_enabled&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
     <span class="s1">&#39;fit_model_enabled&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
     <span class="s1">&#39;dump_result_enabled&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
 <span class="p">}</span>
 
-<span class="n">train_config_2</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;dataset_config&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;loader_config&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;func&#39;</span><span class="p">:</span> <span class="s1">&#39;load_iris@akebono.dataset.generator.sklearn&#39;</span><span class="p">,</span>
-        <span class="p">},</span>
-    <span class="p">},</span>
-    <span class="s1">&#39;model_config&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;SklearnLogisticRegression&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;init_kwargs&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;penalty&#39;</span><span class="p">:</span> <span class="s1">&#39;l1&#39;</span><span class="p">,</span>
-        <span class="p">},</span>
-        <span class="s1">&#39;evaluate_kwargs&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;cross_val_iterator&#39;</span><span class="p">:</span> <span class="s1">&#39;KFold@sklearn.model_selection&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;cross_val_iterator_kwargs&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s1">&#39;shuffle&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-                <span class="s1">&#39;random_state&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-                <span class="s1">&#39;n_splits&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
-            <span class="p">},</span>
-        <span class="p">},</span>
-        <span class="s1">&#39;model_type&#39;</span><span class="p">:</span> <span class="s1">&#39;multiple_classifier&#39;</span><span class="p">,</span>
-    <span class="p">},</span>
-    <span class="s1">&#39;evaluate_enabled&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-    <span class="s1">&#39;fit_model_enabled&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-    <span class="s1">&#39;dump_result_enabled&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-<span class="p">}</span>
+<span class="n">train_config_1</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">train_config_template</span><span class="p">)</span>
+<span class="n">train_config_2</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">train_config_template</span><span class="p">)</span>
+<span class="n">train_config_3</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">train_config_template</span><span class="p">)</span>
+<span class="n">train_config_4</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">train_config_template</span><span class="p">)</span>
+<span class="n">train_config_1</span><span class="p">[</span><span class="s1">&#39;model_config&#39;</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;SklearnLogisticRegression&#39;</span>
+<span class="n">train_config_2</span><span class="p">[</span><span class="s1">&#39;model_config&#39;</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;SklearnRandomForestClassifier&#39;</span>
+<span class="n">train_config_3</span><span class="p">[</span><span class="s1">&#39;model_config&#39;</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;SklearnSVC&#39;</span>
+<span class="n">train_config_3</span><span class="p">[</span><span class="s1">&#39;model_config&#39;</span><span class="p">][</span><span class="s1">&#39;init_kwargs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;kernel&#39;</span><span class="p">:</span> <span class="s1">&#39;rbf&#39;</span><span class="p">,</span> <span class="s1">&#39;probability&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s1">&#39;random_state&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+<span class="n">train_config_4</span><span class="p">[</span><span class="s1">&#39;model_config&#39;</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;SklearnSVC&#39;</span>
+<span class="n">train_config_4</span><span class="p">[</span><span class="s1">&#39;model_config&#39;</span><span class="p">][</span><span class="s1">&#39;init_kwargs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;kernel&#39;</span><span class="p">:</span> <span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="s1">&#39;probability&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s1">&#39;random_state&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
 
-<span class="n">train_config</span> <span class="o">=</span> <span class="p">[</span><span class="n">train_config_1</span><span class="p">,</span> <span class="n">train_config_2</span><span class="p">]</span>
+<span class="n">train_config</span> <span class="o">=</span> <span class="p">[</span><span class="n">train_config_1</span><span class="p">,</span> <span class="n">train_config_2</span><span class="p">,</span> <span class="n">train_config_3</span><span class="p">,</span> <span class="n">train_config_4</span><span class="p">]</span>
 </pre></div>
 
 
-<p><code>train_config_1</code>がL2正則化項付きロジスティック回帰のiris分類器、<code>train_config_2</code>がL1正則化項付きロジスティック回帰のiris分類器です。
-最後に、<code>train_config</code>を<code>train_config_1</code>,<code>train_config_2</code>を要素に持つリストにしています。</p>
-<p>trainとinspectを実行すると以下のようになります。</p>
 <div class="codehilite"><pre><span></span>$ akebono train
 $ akebono inspect
 
@@ -492,58 +430,30 @@ $ akebono inspect
 ------------------------------------------------------------
 train_id: <span class="m">0</span>
 
-accuracy
-<span class="m">0</span>.94667 
+accuracy  f1_score  log_loss  precision recall    roc_auc  
+<span class="m">0</span>.87400   <span class="m">0</span>.87192   <span class="m">4</span>.35194   <span class="m">0</span>.87180   <span class="m">0</span>.87369   <span class="m">0</span>.96103  
 
 ------------------------------------------------------------
 train_id: <span class="m">1</span>
 
-accuracy
-<span class="m">0</span>.96000
+accuracy  f1_score  log_loss  precision recall    roc_auc  
+<span class="m">0</span>.99200   <span class="m">0</span>.99168   <span class="m">0</span>.27631   <span class="m">0</span>.99574   <span class="m">0</span>.98778   <span class="m">0</span>.99856  
+
+------------------------------------------------------------
+train_id: <span class="m">2</span>
+
+accuracy  f1_score  log_loss  precision recall    roc_auc  
+<span class="m">0</span>.99200   <span class="m">0</span>.99168   <span class="m">0</span>.27632   <span class="m">0</span>.98803   <span class="m">0</span>.99555   <span class="m">0</span>.99992  
+
+------------------------------------------------------------
+train_id: <span class="m">3</span>
+
+accuracy  f1_score  log_loss  precision recall    roc_auc  
+<span class="m">0</span>.87500   <span class="m">0</span>.87274   <span class="m">4</span>.31740   <span class="m">0</span>.87163   <span class="m">0</span>.87510   <span class="m">0</span>.96118
 </pre></div>
 
 
-<p><code>train_id</code>は、<code>train_config</code>のインデックス順に自動で振られるidで、各オペレーションを区別するために割り当てられます。</p>
-<h2 id="_1">可読性を高める<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
-<p>２つ以上を一度に実行したくなる典型的なユースケースとしてパラメータチューニングがあります。
-その場合、<code>config.py</code>には各設定の差分をわかりやすく書いたほうが可読性は高いでしょう。例えば次のように書きます。</p>
-<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">copy</span>
-<span class="n">train_config_template</span> <span class="o">=</span> <span class="p">{</span> 
-    <span class="s1">&#39;dataset_config&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;loader_config&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;func&#39;</span><span class="p">:</span> <span class="s1">&#39;load_iris@akebono.dataset.generator.sklearn&#39;</span><span class="p">,</span>
-        <span class="p">},</span>  
-    <span class="p">},</span>  
-    <span class="s1">&#39;model_config&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;SklearnLogisticRegression&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;init_kwargs&#39;</span><span class="p">:</span> <span class="p">{},</span>
-        <span class="s1">&#39;evaluate_kwargs&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;cross_val_iterator&#39;</span><span class="p">:</span> <span class="s1">&#39;KFold@sklearn.model_selection&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;cross_val_iterator_kwargs&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s1">&#39;shuffle&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-                <span class="s1">&#39;random_state&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-                <span class="s1">&#39;n_splits&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
-            <span class="p">},</span>  
-        <span class="p">},</span>  
-        <span class="s1">&#39;model_type&#39;</span><span class="p">:</span> <span class="s1">&#39;multiple_classifier&#39;</span><span class="p">,</span>
-    <span class="p">},</span>  
-    <span class="s1">&#39;evaluate_enabled&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-    <span class="s1">&#39;fit_model_enabled&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-    <span class="s1">&#39;dump_result_enabled&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-<span class="p">}</span>
-
-<span class="n">train_config_1</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">train_config_template</span><span class="p">)</span>
-<span class="n">train_config_2</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">train_config_template</span><span class="p">)</span>
-<span class="n">train_config_1</span><span class="p">[</span><span class="s1">&#39;model_config&#39;</span><span class="p">][</span><span class="s1">&#39;init_kwargs&#39;</span><span class="p">][</span><span class="s1">&#39;penalty&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;l2&#39;</span>
-<span class="n">train_config_2</span><span class="p">[</span><span class="s1">&#39;model_config&#39;</span><span class="p">][</span><span class="s1">&#39;init_kwargs&#39;</span><span class="p">][</span><span class="s1">&#39;penalty&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;l1&#39;</span>
-
-<span class="n">train_config</span> <span class="o">=</span> <span class="p">[</span><span class="n">train_config_1</span><span class="p">,</span> <span class="n">train_config_2</span><span class="p">]</span>
-</pre></div>
-
-
-<p>共通の設定を<code>train_config_template</code>と定義しておき、差分を書き換えるコードになっています。
-<code>train_config_1</code>と<code>train_config_2</code>に別オブジェクトを参照させるため、copyモジュールを使っている点に注意してください。
-train,inspectの実行結果は最初と同じになります。</p>
+<p>このように、概ね予想通りであることが確認できました。</p>
                 
                   
                 
@@ -564,7 +474,7 @@ train,inspectの実行結果は最初と同じになります。</p>
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="../system.html" title="akebonoの構成" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="1.html" title="２つ以上の設定を一度に実行する" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -573,25 +483,11 @@ train,inspectの実行結果は最初と同じになります。</p>
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                akebonoの構成
+                ２つ以上の設定を一度に実行する
               </span>
             </div>
           </a>
         
-        
-          <a href="2.html" title="二値分類器を作る" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
-            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
-              <span class="md-flex__ellipsis">
-                <span class="md-footer-nav__direction">
-                  Next
-                </span>
-                二値分類器を作る
-              </span>
-            </div>
-            <div class="md-flex__cell md-flex__cell--shrink">
-              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
-            </div>
-          </a>
         
       </nav>
     </div>
