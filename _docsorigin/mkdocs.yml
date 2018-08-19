@@ -15,4 +15,6 @@ nav:
 - 'チュートリアル': 
   - '２つ以上の設定を一度に実行する': 'tutorials/1.md'
   - '二値分類器を作る': 'tutorials/2.md'
+  - 'データの前処理を追加する': 'tutorials/3.md'
+  - 'BigQuery loaderを使う': 'tutorials/4.md'
 - 'APIリファレンス': 'sphinxapidocs/index.html'

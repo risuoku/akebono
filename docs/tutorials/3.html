@@ -36,7 +36,7 @@
     
     
       
-        <title>二値分類器を作る - akebono documentation</title>
+        <title>データの前処理を追加する - akebono documentation</title>
       
     
     
@@ -116,7 +116,7 @@
                 akebono documentation
               </span>
               <span class="md-header-nav__topic">
-                二値分類器を作る
+                データの前処理を追加する
               </span>
             
           
@@ -300,6 +300,18 @@
           
           
 
+
+  <li class="md-nav__item">
+    <a href="2.html" title="二値分類器を作る" class="md-nav__link">
+      二値分類器を作る
+    </a>
+  </li>
+
+        
+          
+          
+          
+
   
 
 
@@ -310,22 +322,39 @@
       
     
     
-    <a href="2.html" title="二値分類器を作る" class="md-nav__link md-nav__link--active">
-      二値分類器を作る
-    </a>
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        データの前処理を追加する
+      </label>
     
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="3.html" title="データの前処理を追加する" class="md-nav__link">
+    <a href="3.html" title="データの前処理を追加する" class="md-nav__link md-nav__link--active">
       データの前処理を追加する
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#iris" title="irisに前処理を追加する" class="md-nav__link">
+    irisに前処理を追加する
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
   </li>
 
         
@@ -375,6 +404,22 @@
     
   
   
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#iris" title="irisに前処理を追加する" class="md-nav__link">
+    irisに前処理を追加する
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -385,34 +430,48 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/risuoku/akebono/blob/master/_docsorigin/docs/tutorials/2.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="https://github.com/risuoku/akebono/blob/master/_docsorigin/docs/tutorials/3.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <h1 id="_1">二値分類器を作る<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
-<p>このセクションでは、線形分類不可能なデータセットである<code>moons</code>(詳細は<a href="http://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_moons.html">こちら</a>)を分類してみます。</p>
-<p>分類器として以下４つを試して、各手法ごとの比較をします。</p>
+                <h1 id="_1">データの前処理を追加する<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<h2 id="iris">irisに前処理を追加する<a class="headerlink" href="#iris" title="Permanent link">&para;</a></h2>
+<p>ここでは、irisに対して前処理を追加してtrain,inspectしてみます。
+ちなみに、akebonoで扱うirisのデータ形式は以下のようになっています。
+<code>scikit-learn</code>の<code>load_iris</code>からとっているのですが、説明変数のカラム名を少し変更しています。</p>
+<div class="codehilite"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="kn">from</span> <span class="nn">akebono.dataset</span> <span class="kn">import</span> <span class="n">get_dataset</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="n">ds</span> <span class="o">=</span> <span class="n">get_dataset</span><span class="p">({</span>
+   <span class="o">...</span><span class="p">:</span>     <span class="s1">&#39;loader_config&#39;</span><span class="p">:</span> <span class="p">{</span>
+   <span class="o">...</span><span class="p">:</span>         <span class="s1">&#39;func&#39;</span><span class="p">:</span> <span class="s1">&#39;load_iris@akebono.dataset.generator.sklearn&#39;</span>
+   <span class="o">...</span><span class="p">:</span>     <span class="p">}</span>
+   <span class="o">...</span><span class="p">:</span> <span class="p">})</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">ds</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span> 
+   <span class="n">sepal_length</span>  <span class="n">sepal_width</span>  <span class="n">petal_length</span>  <span class="n">petal_width</span>  <span class="n">target</span>
+<span class="mi">0</span>           <span class="mf">5.1</span>          <span class="mf">3.5</span>           <span class="mf">1.4</span>          <span class="mf">0.2</span>       <span class="mi">0</span>
+<span class="mi">1</span>           <span class="mf">4.9</span>          <span class="mf">3.0</span>           <span class="mf">1.4</span>          <span class="mf">0.2</span>       <span class="mi">0</span>
+<span class="mi">2</span>           <span class="mf">4.7</span>          <span class="mf">3.2</span>           <span class="mf">1.3</span>          <span class="mf">0.2</span>       <span class="mi">0</span>
+<span class="mi">3</span>           <span class="mf">4.6</span>          <span class="mf">3.1</span>           <span class="mf">1.5</span>          <span class="mf">0.2</span>       <span class="mi">0</span>
+<span class="mi">4</span>           <span class="mf">5.0</span>          <span class="mf">3.6</span>           <span class="mf">1.4</span>          <span class="mf">0.2</span>       <span class="mi">0</span>
+</pre></div>
+
+
+<p>ここでは、以下２種類の前処理にたいして、複数バリエーションを設定してtrain,inspectします</p>
 <ol>
-<li>ロジスティック回帰</li>
-<li>ランダムフォレスト</li>
-<li>RBFカーネルのSVM</li>
-<li>線形カーネルのSVM</li>
+<li><code>petal_length</code>と<code>petal_width</code>だけ使うようにする</li>
+<li>標準正規化をかける</li>
 </ol>
-<p><code>moons</code>は線形分離不可能な二値分類問題ですから、手法としては2と3が有利そうです。
-これを実験により確認します。</p>
-<p><code>config.py</code> を作成した後にtrain,inspectを実行してみます。</p>
+<p><code>config.py</code>は以下のようになります。</p>
 <div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">copy</span>
-<span class="n">train_config_template</span> <span class="o">=</span> <span class="p">{</span>
+<span class="n">train_config_template</span> <span class="o">=</span> <span class="p">{</span> 
     <span class="s1">&#39;dataset_config&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s1">&#39;loader_config&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;func&#39;</span><span class="p">:</span> <span class="s1">&#39;make_moons@akebono.dataset.generator.sklearn&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;func_kwargs&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s1">&#39;n_samples&#39;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
-                <span class="s1">&#39;noise&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
-                <span class="s1">&#39;random_state&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-            <span class="p">},</span>
-        <span class="p">},</span>
-    <span class="p">},</span>
+            <span class="s1">&#39;func&#39;</span><span class="p">:</span> <span class="s1">&#39;load_iris@akebono.dataset.generator.sklearn&#39;</span><span class="p">,</span>
+        <span class="p">},</span>  
+    <span class="p">},</span>  
     <span class="s1">&#39;model_config&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;SklearnLogisticRegression&#39;</span><span class="p">,</span>
         <span class="s1">&#39;evaluate_kwargs&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;cross_val_iterator&#39;</span><span class="p">:</span> <span class="s1">&#39;KFold@sklearn.model_selection&#39;</span><span class="p">,</span>
             <span class="s1">&#39;cross_val_iterator_kwargs&#39;</span><span class="p">:</span> <span class="p">{</span>
@@ -420,8 +479,8 @@
                 <span class="s1">&#39;random_state&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
                 <span class="s1">&#39;n_splits&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> 
             <span class="p">},</span>  
-        <span class="p">},</span>
-        <span class="s1">&#39;pos_index&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="p">},</span>  
+        <span class="s1">&#39;model_type&#39;</span><span class="p">:</span> <span class="s1">&#39;multiple_classifier&#39;</span><span class="p">,</span>
     <span class="p">},</span>
     <span class="s1">&#39;evaluate_enabled&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
     <span class="s1">&#39;fit_model_enabled&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
@@ -432,52 +491,82 @@
 <span class="n">train_config_2</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">train_config_template</span><span class="p">)</span>
 <span class="n">train_config_3</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">train_config_template</span><span class="p">)</span>
 <span class="n">train_config_4</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">train_config_template</span><span class="p">)</span>
-<span class="n">train_config_1</span><span class="p">[</span><span class="s1">&#39;model_config&#39;</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;SklearnLogisticRegression&#39;</span>
-<span class="n">train_config_2</span><span class="p">[</span><span class="s1">&#39;model_config&#39;</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;SklearnRandomForestClassifier&#39;</span>
-<span class="n">train_config_3</span><span class="p">[</span><span class="s1">&#39;model_config&#39;</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;SklearnSVC&#39;</span>
-<span class="n">train_config_3</span><span class="p">[</span><span class="s1">&#39;model_config&#39;</span><span class="p">][</span><span class="s1">&#39;init_kwargs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;kernel&#39;</span><span class="p">:</span> <span class="s1">&#39;rbf&#39;</span><span class="p">,</span> <span class="s1">&#39;probability&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s1">&#39;random_state&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
-<span class="n">train_config_4</span><span class="p">[</span><span class="s1">&#39;model_config&#39;</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;SklearnSVC&#39;</span>
-<span class="n">train_config_4</span><span class="p">[</span><span class="s1">&#39;model_config&#39;</span><span class="p">][</span><span class="s1">&#39;init_kwargs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;kernel&#39;</span><span class="p">:</span> <span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="s1">&#39;probability&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s1">&#39;random_state&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+
+<span class="n">train_config_2</span><span class="p">[</span><span class="s1">&#39;preprocessor_config&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;apply_standard_scaler&#39;</span><span class="p">}</span>
+<span class="n">train_config_3</span><span class="p">[</span><span class="s1">&#39;preprocessor_config&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;select_columns&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;kwargs&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;columns&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;petal_length&#39;</span><span class="p">,</span> <span class="s1">&#39;petal_width&#39;</span><span class="p">],</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+<span class="n">train_config_4</span><span class="p">[</span><span class="s1">&#39;preprocessor_config&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;select_columns&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;kwargs&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;columns&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;petal_length&#39;</span><span class="p">,</span> <span class="s1">&#39;petal_width&#39;</span><span class="p">],</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;apply_standard_scaler&#39;</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">]</span>
 
 <span class="n">train_config</span> <span class="o">=</span> <span class="p">[</span><span class="n">train_config_1</span><span class="p">,</span> <span class="n">train_config_2</span><span class="p">,</span> <span class="n">train_config_3</span><span class="p">,</span> <span class="n">train_config_4</span><span class="p">]</span>
 </pre></div>
 
 
+<p>４種類の設定は、基本は全てロジスティック回帰による分類です。
+train_config_1は前処理無し、train_config_2は前処理2のみ、train_config_3は前処理1のみ、train_config_4は前処理1,2の連結です。
+実行すると以下のようになります。</p>
 <div class="codehilite"><pre><span></span>$ akebono train
-$ akebono inspect
-
-<span class="c1">### 実行結果</span>
-<span class="c1">### trainのログは省略</span>
+$ akebono <span class="nv">inspect</span>
 
 <span class="o">===</span> scenario summary .. tag: <span class="nv">latest</span> <span class="o">===</span>
 
 ------------------------------------------------------------
 train_id: <span class="m">0</span>
 
-accuracy  f1_score  log_loss  precision recall    roc_auc  
-<span class="m">0</span>.87400   <span class="m">0</span>.87192   <span class="m">4</span>.35194   <span class="m">0</span>.87180   <span class="m">0</span>.87369   <span class="m">0</span>.96103  
+accuracy
+<span class="m">0</span>.94667
 
 ------------------------------------------------------------
 train_id: <span class="m">1</span>
 
-accuracy  f1_score  log_loss  precision recall    roc_auc  
-<span class="m">0</span>.99200   <span class="m">0</span>.99168   <span class="m">0</span>.27631   <span class="m">0</span>.99574   <span class="m">0</span>.98778   <span class="m">0</span>.99856  
+accuracy
+<span class="m">0</span>.87333
 
 ------------------------------------------------------------
 train_id: <span class="m">2</span>
 
-accuracy  f1_score  log_loss  precision recall    roc_auc  
-<span class="m">0</span>.99200   <span class="m">0</span>.99168   <span class="m">0</span>.27632   <span class="m">0</span>.98803   <span class="m">0</span>.99555   <span class="m">0</span>.99992  
+accuracy
+<span class="m">0</span>.86000
 
 ------------------------------------------------------------
 train_id: <span class="m">3</span>
 
-accuracy  f1_score  log_loss  precision recall    roc_auc  
-<span class="m">0</span>.87500   <span class="m">0</span>.87274   <span class="m">4</span>.31740   <span class="m">0</span>.87163   <span class="m">0</span>.87510   <span class="m">0</span>.96118
+accuracy
+<span class="m">0</span>.93333
 </pre></div>
 
 
-<p>このように、概ね予想通りであることが確認できました。</p>
+<p>結果的には、前処理無しが最も良くなりました。前処理1,2を組み合わせると片方だけに比べると良いようです。</p>
+<p>ここでは、<code>StatefulPreprocessor</code>である<code>apply_standard_scaler</code>を適用した場合に訓練データに依存したパラメータが保存されていることを確認しておきます。</p>
+<div class="codehilite"><pre><span></span>ls -l _storage/default/operation_results/latest | awk &#39;{print $9}&#39;
+
+train_result_meta_0.pkl
+train_result_meta_1.pkl
+train_result_meta_2.pkl
+train_result_meta_3.pkl
+train_result_model_0.pkl
+train_result_model_1.pkl
+train_result_model_2.pkl
+train_result_model_3.pkl
+train_result_preprocessor_ApplyStandardScaler_1_0.pkl
+train_result_preprocessor_ApplyStandardScaler_3_1.pkl
+</pre></div>
+
+
+<p>ストレージに保存されているファイルのうち、下２つが<code>apply_standard_scaler</code>のパラメータファイルです。この内容は予測時に参照されます。</p>
                 
                   
                 
@@ -498,7 +587,7 @@ accuracy  f1_score  log_loss  precision recall    roc_auc
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="1.html" title="２つ以上の設定を一度に実行する" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="2.html" title="二値分類器を作る" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -507,19 +596,19 @@ accuracy  f1_score  log_loss  precision recall    roc_auc
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                ２つ以上の設定を一度に実行する
+                二値分類器を作る
               </span>
             </div>
           </a>
         
         
-          <a href="3.html" title="データの前処理を追加する" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="4.html" title="BigQuery loaderを使う" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                データの前処理を追加する
+                BigQuery loaderを使う
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">

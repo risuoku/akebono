@@ -1,4 +1,3 @@
-from .client import Client as BqClient
 import akebono.settings as settings
 import pandas as pd
 from akebono.logging import getLogger
@@ -26,7 +25,7 @@ class Client:
 
 
 logger = getLogger(__name__)
-_bqclient = BqClient()
+_bqclient = Client()
 
 
 def load_from_sql(sql):

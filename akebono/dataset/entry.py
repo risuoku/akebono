@@ -3,6 +3,7 @@ from akebono.utils import (
     cache_located_at,
     pathjoin,
     Param,
+    get_hash,
 )
 import akebono.settings as settings
 from .model import Dataset
@@ -59,7 +60,9 @@ def get_dataset(dataset_config):
     loader_param['dataset_name'] = dataset_name
     loader_param['target_column'] = target_column
 
-    preprocess_func = load_object_by_str(dataset_config.get('preprocess_func', 'identify@akebono.dataset.preprocessors'))
+    preprocess_func_str = dataset_config.get('preprocess_func', 'identify@akebono.dataset.preprocessors')
+    preprocess_func_hash = get_hash(preprocess_func_str)
+    preprocess_func = load_object_by_str(preprocess_func_str)
     preprocess_func_kwargs = Param(dataset_config.get('preprocess_func_kwargs', {}))
 
     def _core_func():
@@ -71,10 +74,11 @@ def get_dataset(dataset_config):
     if cache_enabled:
         if dataset_name is not None:
             logger.info('dataset cache enabled')
-            fname = '{}_{}{}.pkl'.format(
+            fname = '{}_{}_{}_{}.pkl'.format(
                 dataset_name,
-                load_func_kwargs.get_hashed_id(length=32),
-                preprocess_func_kwargs.get_hashed_id(length=32)
+                load_func_kwargs.get_hashed_id(length=24),
+                preprocess_func_hash[:24],
+                preprocess_func_kwargs.get_hashed_id(length=24)
             )
             _core_func = cache_located_at(pathjoin(settings.cache_dir, fname))(_core_func)
         else:

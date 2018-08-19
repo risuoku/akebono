@@ -379,6 +379,30 @@
   </li>
 
         
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="tutorials/3.html" title="データの前処理を追加する" class="md-nav__link">
+      データの前処理を追加する
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="tutorials/4.html" title="BigQuery loaderを使う" class="md-nav__link">
+      BigQuery loaderを使う
+    </a>
+  </li>
+
+        
       </ul>
     </nav>
   </li>
@@ -490,10 +514,10 @@
 <p>akebonoの内部コンポーネントは、大きく分けて <code>Settings</code>,<code>Dataset</code>,<code>Preprocessor</code>,<code>Model</code>,<code>Operator</code>があり、
 これらを組み合わせた<code>Command</code>があります。</p>
 <h2 id="settings">Settings<a class="headerlink" href="#settings" title="Permanent link">&para;</a></h2>
-<p><code>Settings</code>は、akebonoの設定を管理するためのオブジェクトです。<code>config.py</code>に設定した内容は実行時に<code>Settings</code>に反映され、akebonoに存在する各コンポーネントは
+<p><code>Settings</code>は、akebonoの設定を管理するためのコンポーネントです。<code>config.py</code>に設定した内容は実行時に<code>Settings</code>に反映され、akebonoに存在する各コンポーネントは
 <code>Settings</code>を参照して動作します。<code>Settings</code>が管理するプロパティは<code>config.py</code>とほぼ同一で、詳細は<a href="config.html">akebonoの設定</a>を参照してください。</p>
 <h2 id="dataset">Dataset<a class="headerlink" href="#dataset" title="Permanent link">&para;</a></h2>
-<p><code>Dataset</code>は、教師あり学習で利用するデータを管理するためのオブジェクトです。具体的には、以下のような役割を持ちます。</p>
+<p><code>Dataset</code>は、教師あり学習で利用するデータを管理するためのコンポーネントです。具体的には、以下のような役割を持ちます。</p>
 <ul>
 <li>外部記憶システムに保存されたデータやあるルールに基づいて生成されたデータを読み込む。読み込むためのコンポーネントを<code>loader</code>と呼びます。<ul>
 <li>様々な形式に対応(csv,BigQueryなど)</li>
@@ -511,11 +535,25 @@
 <li>目的変数のカラム名設定</li>
 <li>キャッシュ利用の有無<ul>
 <li><code>Dataset</code>はキャッシュを作成することができ、具体的にはloaderで読み込んだ後、前処理後のpandas.DataFrameをpickle化してストレージに保存しておき、次の読み込み時にはpickleから読むようになります。
-キャッシュは<code>Dataset</code>についた名前と前処理関数の名前、loaderへ渡したパラメータ、前処理関数に渡したパラメータの組み合わせから一意に生成され、これらの組み合わせが一致するとキャッシュヒットします。</li>
+キャッシュは<code>Dataset</code>についた名前と前処理関数の名前のハッシュ、loaderへ渡したパラメータ、前処理関数に渡したパラメータの組み合わせから一意に生成され、これらの組み合わせが一致するとキャッシュヒットします。</li>
 </ul>
 </li>
 </ul>
 <h2 id="preprocessor">Preprocessor<a class="headerlink" href="#preprocessor" title="Permanent link">&para;</a></h2>
+<p><code>Preprocessor</code>は、データの前処理の役割を担うコンポーネントです。
+<code>Preprocessor</code>は、大きく２つに分けることができ、それぞれ<code>StatelessPreprocessor</code>、<code>StatefulPreprocessor</code>と呼びます。
+<code>StatelessPreprocessor</code>は訓練データに依存しない前処理、<code>StatefulPreprocessor</code>は訓練データに依存する前処理です。
+<code>StatelessPreprocessor</code>の例としては、カラム選択処理があります。あるモデルをチューニングするに際し、データのカラムの一部だけを使ってノイズを減らそうとするアプローチがあります。
+カラム選択の処理は訓練データの値に依存しないのでこれは<code>StatelessPreprocessor</code>になります。
+一方、<code>StatefulPreprocessor</code>の例としてはデータの標準正規化があります。この変換処理は訓練データの平均・分散が必要になるため、訓練データの値に依存し、<code>StatefulPreprocessor</code>になります。</p>
+<p><code>StatefulPreprocessor</code>は、訓練、予測のフローの中でやや複雑な振る舞いをし、以下のとおり留意すべきポイントがあります。</p>
+<ol>
+<li>訓練データに依存して振る舞いが変わるということは、評価に際してデータを分割するたびに振る舞いが変わる。交差検定の場合は分割するたびモデルを訓練しなおすだけでなく前処理を実行する必要がある。</li>
+<li>予測の際は、訓練に使ったデータに依存した前処理が必要になる。このため、訓練時に<code>StatefulPreprocessor</code>の振る舞いを決定するパラメータを保存しておく必要がある。</li>
+</ol>
+<p>1,2に対して、後述の<code>Operator</code>経由で実行する場合は自動で配慮されます（チュートリアルで使っているコマンド経由でも同様です）。</p>
+<p>また、<code>Preprocessor</code>には<code>Pipeline</code>という仕組みがあり、これは複数の<code>Preprocessor</code>連結を１つの<code>Preprocessor</code>として扱う抽象化機構です。
+<code>Operator</code>は<code>Pipeline</code>として<code>Preprocessor</code>を扱うため、<code>config.py</code>には複数の<code>Preprocessor</code>を記述することが可能です。</p>
 <h2 id="model">Model<a class="headerlink" href="#model" title="Permanent link">&para;</a></h2>
 <h2 id="operator">Operator<a class="headerlink" href="#operator" title="Permanent link">&para;</a></h2>
 <h2 id="command">Command<a class="headerlink" href="#command" title="Permanent link">&para;</a></h2>
