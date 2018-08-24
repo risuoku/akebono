@@ -92,19 +92,23 @@ def get_predict_configs():
         raise TypeError('invalid type .. predict_config must be dict or list.')
 
 
+def reset():
+    self.storage_root_dir = '_storage'
+    self.storage_type = 'local'
+    self.storage_option = {}
+    self.project_name = 'default'
+    self.project_root_dir = os.getcwd()
+    self.bq_sql_template_dir = os.path.join(project_root_dir, '_dataset/bq_sql_templates')
+    self.train_config = []
+    self.predict_config = []
+    self.datasource_dir = pathjoin(storage_root_dir, project_name, 'datasource')
+    _update_associated_attrs()
+
+
 ### default settings
 ### settings moduleロード時に一度だけ実行される
 
 if not _init:
-    storage_root_dir = '_storage'
-    storage_type = 'local'
-    storage_option = {}
-    project_name = 'default'
-    project_root_dir = os.getcwd()
-    bq_sql_template_dir = os.path.join(project_root_dir, '_dataset/bq_sql_templates')
-    train_config = {}
-    predict_config = {}
-
     _pathjoin_gcs_pattern = re.compile('^(\/+)([^/].*)$')
     def pathjoin(*args, **kwargs):
         if self.storage_type == 'local':
@@ -117,8 +121,6 @@ if not _init:
             return r
         else:
             raise ValueError('invalid storage_type')
-    
-    datasource_dir = pathjoin(storage_root_dir, project_name, 'datasource')
 
-    _update_associated_attrs()
+    reset()
     _init = True
