@@ -135,13 +135,26 @@ def isdir(dirpath):
         raise ValueError('invalid storage_type')
 
 
-def list_directory(dirpath):
+def list_directory(dirpath, mode='path'):
     if settings.storage_type == 'local':
-        return [os.path.join(dirpath, f) for f in os.listdir(dirpath)]
+        filenames = os.listdir(dirpath)
+        if mode == 'path':
+            return [os.path.join(dirpath, f) for f in filenames]
+        elif mode == 'filename':
+            return filenames
+        else:
+            raise ValueError('invalid mode.')
     elif settings.storage_type == 'gcs':
         bkt = _get_gcs_bucket(settings.storage_option['bucket_name'])
         blob_list = [blob for blob in bkt.list_blobs() if re.search(dirpath, blob.name) is not None]
-        return [blob.name for blob in blob_list if not blob.name == dirpath]
+        pathlist = [blob.name for blob in blob_list if not blob.name == dirpath]
+        if mode == 'path':
+            return pathlist
+        elif mode == 'filename':
+            r1 = [re.sub('^' + dirpath, '', p) for p in pathlist]
+            return [f[1:] if f[0] == '/' else f for f in r1]
+        else:
+            raise ValueError('invalid mode.')
     else:
         raise ValueError('invalid storage_type')
 
