@@ -12,8 +12,6 @@ _valid_attributes = [
     'storage_root_dir',
     'storage_type',
     'storage_option',
-    'bq_sql_template_dir',
-    'bq_read_config',
     'project_name',
     'project_root_dir',
     'train_config',
@@ -33,12 +31,6 @@ def init():
         os.makedirs(cache_dir, exist_ok=True)
         os.makedirs(operation_results_dir, exist_ok=True)
         os.makedirs(datasource_dir, exist_ok=True)
-    
-    
-def get_template_env():
-    return jinja2.Environment(
-        loader = jinja2.FileSystemLoader(bq_sql_template_dir, encoding='utf-8')
-    )
 
 
 def apply(config):
@@ -99,14 +91,6 @@ def reset():
     self.storage_option = {}
     self.project_name = 'default'
     self.project_root_dir = os.getcwd()
-    self.bq_sql_template_dir = os.path.join(project_root_dir, '_dataset/bq_sql_templates')
-    self.bq_read_config = {
-        'query': {
-            'useLegacySql': False,
-            'useQueryCache': False,
-        },
-        'jobTimeoutMs': 3600 * 1000,
-    }
     self.train_config = []
     self.predict_config = []
     self.datasource_dir = pathjoin(storage_root_dir, project_name, 'datasource')
