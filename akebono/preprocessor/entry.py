@@ -6,6 +6,7 @@ from .statelessmodels import (
 )
 from .statefulmodels import (
     ApplyStandardScaler,
+    ApplyPca,
 )
 from .pipeline import PreprocessorPipeline
 import sys

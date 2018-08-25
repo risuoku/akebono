@@ -1,4 +1,5 @@
 from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
 from akebono.io.operation.dumper import dump_sklearn_model
 from akebono.io.operation.loader import load_sklearn_model
 from akebono.logging import getLogger
@@ -123,6 +124,39 @@ class ApplyStandardScaler(StatefulPreprocessor):
 
     def reset(self):
         self._value = StandardScaler(**self._init_kwargs)
+        return self
+
+    dump = dump_sklearn_model
+    load = load_sklearn_model
+
+
+class ApplyPca(StatefulPreprocessor):
+    """
+    入力データにPCAをかけるPreprocessor
+
+    :param init_kwargs: 前処理実体の初期化パラメータ
+    :type dict
+    """
+
+    def __init__(self, init_kwargs={}):
+        self._init_kwargs = init_kwargs
+        self._value = None
+        self.reset()
+
+    def process(self, df_train, df_test):
+        logger.debug('ApplyPca#process invoked')
+        if not self.operation_mode == 'predict':
+            self.value.fit(df_train)
+        n_components = self._init_kwargs.get('n_components', len(df_train.columns))
+        columns = ['x'+str(i) for i in range(n_components)]
+        r_df_test = r_df_train = None
+        r_df_train = pd.DataFrame(self.value.transform(df_train), columns=columns)
+        if df_test is not None:
+            r_df_test = pd.DataFrame(self.value.transform(df_test), columns=columns)
+        return r_df_train, r_df_test
+
+    def reset(self):
+        self._value = PCA(**self._init_kwargs)
         return self
 
     dump = dump_sklearn_model
