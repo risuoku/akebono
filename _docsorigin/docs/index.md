@@ -126,14 +126,14 @@ predict_config = {
     'method_type': 'predict',
     'dataset_config': {
         'loader_config': {
-            'func': 'iris',
+            'name': 'iris',
         },  
     },
     'train_id': '0',
     'dump_result_enabled': True,
     'dumper_config': {
         'name': 'csv',
-    }
+    },
     'result_target_columns': 'all',
 }
 ```
