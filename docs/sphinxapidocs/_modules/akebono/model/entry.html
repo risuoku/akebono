@@ -39,7 +39,10 @@
     <span class="n">get_wrapped_sklearn_model</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">import</span> <span class="nn">akebono.settings</span> <span class="k">as</span> <span class="nn">settings</span>
-<span class="kn">from</span> <span class="nn">akebono.utils</span> <span class="k">import</span> <span class="n">pathjoin</span>
+<span class="kn">from</span> <span class="nn">akebono.utils</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">pathjoin</span><span class="p">,</span>
+    <span class="n">load_object_by_str</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">akebono.logging</span> <span class="k">import</span> <span class="n">getLogger</span>
 
 
@@ -73,7 +76,7 @@
 
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model_config</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;model_config must be dict.&#39;</span><span class="p">)</span>
-    <span class="n">mcc</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">model_config</span><span class="p">)</span>
+    <span class="n">mcc</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">model_config</span><span class="p">)</span>
     <span class="k">if</span> <span class="s1">&#39;name&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">mcc</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;name must be set in model_config.&#39;</span><span class="p">)</span>
     <span class="n">model_name</span> <span class="o">=</span> <span class="n">mcc</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
@@ -88,7 +91,8 @@
     <span class="k">elif</span> <span class="n">model_name</span> <span class="o">==</span> <span class="s1">&#39;LGBMClassifier&#39;</span><span class="p">:</span>
         <span class="n">model</span> <span class="o">=</span> <span class="n">WrappedLGBMClassifier</span><span class="p">(</span><span class="o">**</span><span class="n">mcc</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> does not found.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model_name</span><span class="p">))</span>
+        <span class="n">model_cls</span> <span class="o">=</span> <span class="n">load_object_by_str</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">model_cls</span><span class="p">(</span><span class="o">**</span><span class="n">mcc</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">model</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;unexpedted.&#39;</span><span class="p">)</span>

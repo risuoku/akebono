@@ -29,7 +29,6 @@ config.pyは、python処理系から見るとpythonモジュールで、各プ�
 |storage_option|dict|`{}`|ストレージの振る舞いを決定する設定値。ストレージタイプごとに異なる。|
 |project_name|string|`default`|akebonoの操作を適用する対象プロジェクトの名前。|
 |project_root_dir|string|`os.getcwd()`|プロジェクトのrootパス。|
-|bq_sql_template_dir|string|`os.path.join(project_root_dir, '_dataset/bq_sql_templates')`|BigQuery loaderが読み込む対象のsqlテンプレートファイルを置く場所。|
 |train_config|dict or list|`{}`|trainの処理内容。|
 |predict_config|dict or list|`{}`|predictの処理内容。|
 
