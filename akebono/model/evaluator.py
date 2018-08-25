@@ -1,8 +1,5 @@
 import sklearn.metrics as skl_metrics
-from akebono.utils import (
-    load_object_by_str,
-    get_label_by_object,
-)
+from akebono.utils import load_object_by_str
 from akebono.logging import getLogger
 
 

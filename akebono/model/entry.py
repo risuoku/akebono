@@ -5,7 +5,10 @@ from ._models import (
     get_wrapped_sklearn_model,
 )
 import akebono.settings as settings
-from akebono.utils import pathjoin
+from akebono.utils import (
+    pathjoin,
+    load_object_by_str,
+)
 from akebono.logging import getLogger
 
 
@@ -39,7 +42,7 @@ def get_model(model_config):
 
     if not isinstance(model_config, dict):
         raise TypeError('model_config must be dict.')
-    mcc = copy.copy(model_config)
+    mcc = copy.deepcopy(model_config)
     if 'name' not in mcc:
         raise Exception('name must be set in model_config.')
     model_name = mcc.pop('name')
@@ -54,7 +57,8 @@ def get_model(model_config):
     elif model_name == 'LGBMClassifier':
         model = WrappedLGBMClassifier(**mcc)
     else:
-        raise Exception('{} does not found.'.format(model_name))
+        model_cls = load_object_by_str(model_name)
+        model = model_cls(**mcc)
 
     if model is None:
         raise Exception('unexpedted.')

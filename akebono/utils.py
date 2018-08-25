@@ -211,26 +211,6 @@ class Param:
     def __str__(self):
         return self.__repr__()
 
-    
-class ConsoleCommand:
-    def __init__(self, s):
-        self._raw_string = s
-        self._stdout = None
-        self._stderr = None
-    
-    def execute(self):
-        pargs = shlex.split(self._raw_string)
-        with subprocess.Popen(pargs, stdout=subprocess.PIPE, stderr=subprocess.PIPE) as proc:
-            self._stdout, self._stderr = proc.communicate()
-        return self
-    
-    def get_stdout(self):
-        return [s for s in self._stdout.decode('utf8').split('\n') if not s == '']
-
-
-def get_shellcmd_result(s):
-    return ConsoleCommand(s).execute().get_stdout()
-
 
 def load_object_by_str(s, type_is=None):
     r = re.search('(\S+)@(\S+)$', s)
@@ -243,10 +223,6 @@ def load_object_by_str(s, type_is=None):
     if type_is is not None and not isinstance(r, type_is):
         raise TypeError('invalid type')
     return r
-
-
-def get_label_by_object(obj):
-    return '{}@{}'.format(obj.__name__, obj.__module__)
 
 
 # Use the system PRNG if possible
