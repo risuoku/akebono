@@ -714,14 +714,14 @@
 <td align="left">Dataset loaderの設定</td>
 </tr>
 <tr>
-<td align="left">dataset_config.loader_config.func</td>
+<td align="left">dataset_config.loader_config.name</td>
 <td align="left">string</td>
 <td align="left">無し</td>
 <td align="left">required:<code>true</code></td>
 <td align="left">loaderが実行する関数。@記法で書かれる。</td>
 </tr>
 <tr>
-<td align="left">dataset_config.loader_config.func_kwargs</td>
+<td align="left">dataset_config.loader_config.kwargs</td>
 <td align="left">dict</td>
 <td align="left"><code>{}</code></td>
 <td align="left">required:<code>false</code></td>
@@ -911,14 +911,14 @@
 <td align="left">Dataset loaderの設定</td>
 </tr>
 <tr>
-<td align="left">dataset_config.loader_config.func</td>
+<td align="left">dataset_config.loader_config.name</td>
 <td align="left">string</td>
 <td align="left">無し</td>
 <td align="left">required:<code>true</code></td>
 <td align="left">loaderが実行する関数。@記法で書かれる。</td>
 </tr>
 <tr>
-<td align="left">dataset_config.loader_config.func_kwargs</td>
+<td align="left">dataset_config.loader_config.kwargs</td>
 <td align="left">dict</td>
 <td align="left"><code>{}</code></td>
 <td align="left">required:<code>false</code></td>
@@ -967,11 +967,11 @@
 <td align="left">predictオペレーションの結果をストレージに保存するかどうかのフラグ。</td>
 </tr>
 <tr>
-<td align="left">dump_result_format</td>
-<td align="left">string</td>
-<td align="left"><code>csv</code></td>
+<td align="left">dumper_config</td>
+<td align="left">dict</td>
+<td align="left"><code>{}</code></td>
 <td align="left">required:<code>false</code></td>
-<td align="left">predictオペレーションの結果をストレージに保存する際のフォーマット。</td>
+<td align="left">predictオペレーションの結果をストレージに保存する際の設定。</td>
 </tr>
 <tr>
 <td align="left">result_target_columns</td>

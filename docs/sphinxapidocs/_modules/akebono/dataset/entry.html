@@ -60,8 +60,8 @@
 <span class="sd">        &gt;&gt;&gt; from akebono.dataset import get_dataset</span>
 <span class="sd">        &gt;&gt;&gt; dataset_config = {</span>
 <span class="sd">                &#39;loader_config&#39;: {</span>
-<span class="sd">                    &#39;func&#39;: &#39;make_regression@akebono.dataset.generator.sklearn&#39;,</span>
-<span class="sd">                    &#39;func_kwargs&#39;: {</span>
+<span class="sd">                    &#39;name&#39;: &#39;make_regression@akebono.dataset.generator.sklearn&#39;,</span>
+<span class="sd">                    &#39;kwargs&#39;: {</span>
 <span class="sd">                        &#39;n_features&#39;: 1,</span>
 <span class="sd">                        &#39;noise&#39;: 30.0,</span>
 <span class="sd">                        &#39;random_state&#39;: 0,</span>
@@ -81,11 +81,11 @@
     <span class="n">loader_config</span> <span class="o">=</span> <span class="n">dataset_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;loader_config&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">loader_config</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;loader_config must be specified and this type is dict.&#39;</span><span class="p">)</span>
-    <span class="n">load_func</span> <span class="o">=</span> <span class="n">loader_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;func&#39;</span><span class="p">)</span>
+    <span class="n">load_func</span> <span class="o">=</span> <span class="n">loader_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">load_func</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;loader_config.func must be specified.&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;loader_config.name must be specified.&#39;</span><span class="p">)</span>
     <span class="n">load_func</span> <span class="o">=</span> <span class="n">load_object_by_str</span><span class="p">(</span><span class="n">load_func</span><span class="p">)</span>
-    <span class="n">load_func_kwargs</span> <span class="o">=</span> <span class="n">Param</span><span class="p">(</span><span class="n">loader_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;func_kwargs&#39;</span><span class="p">,</span> <span class="p">{}))</span>
+    <span class="n">load_func_kwargs</span> <span class="o">=</span> <span class="n">Param</span><span class="p">(</span><span class="n">loader_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;kwargs&#39;</span><span class="p">,</span> <span class="p">{}))</span>
     <span class="n">loader_param</span> <span class="o">=</span> <span class="n">loader_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;param&#39;</span><span class="p">,</span> <span class="p">{})</span>
     <span class="n">_reserved_params</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;dataset_name&#39;</span><span class="p">,</span> <span class="s1">&#39;target_column&#39;</span><span class="p">,)</span>
     <span class="k">for</span> <span class="n">rp</span> <span class="ow">in</span> <span class="n">_reserved_params</span><span class="p">:</span>
@@ -101,7 +101,7 @@
 
     <span class="k">def</span> <span class="nf">_core_func</span><span class="p">():</span>
         <span class="k">return</span> <span class="n">preprocess_func</span><span class="p">(</span>
-            <span class="n">load_func</span><span class="p">(</span><span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">load_func_kwargs</span><span class="o">.</span><span class="n">value</span><span class="p">),</span> <span class="n">loader_param</span><span class="p">),</span>
+            <span class="n">load_func</span><span class="p">(</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">load_func_kwargs</span><span class="o">.</span><span class="n">value</span><span class="p">),</span> <span class="n">loader_param</span><span class="p">),</span>
             <span class="o">**</span><span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">preprocess_func_kwargs</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
         <span class="p">)</span>
 

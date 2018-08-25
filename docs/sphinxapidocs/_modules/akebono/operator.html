@@ -140,7 +140,7 @@
     <span class="n">dataset_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">train_id</span><span class="o">=</span><span class="s1">&#39;0&#39;</span><span class="p">,</span>
     <span class="n">dump_result_enabled</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">dump_result_format</span><span class="o">=</span><span class="s1">&#39;csv&#39;</span><span class="p">,</span>
+    <span class="n">dumper_config</span><span class="o">=</span><span class="p">{},</span>
     <span class="n">result_target_columns</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span>
     <span class="n">result_predict_column</span><span class="o">=</span><span class="s1">&#39;predicted&#39;</span>
     <span class="p">):</span>
@@ -159,8 +159,8 @@
 <span class="sd">        :type train_id: str</span>
 <span class="sd">        :param dump_result_enabled: 予測結果の永続化を実行するかのフラグ</span>
 <span class="sd">        :type dump_result_enabled: bool</span>
-<span class="sd">        :param dump_result_format: 予測結果のフォーマット。設定可能なフォーマットは `csv` or `pickle`</span>
-<span class="sd">        :type dump_result_format: str</span>
+<span class="sd">        :param dumper_config: 予測結果の設定。</span>
+<span class="sd">        :type dumper_config: dict</span>
 <span class="sd">        :param result_target_columns: 予測結果に含めるべき説明変数のカラム名のリスト。全ての場合は&#39;all&#39;とする</span>
 <span class="sd">        :type result_target_columns: str or list(str)</span>
 <span class="sd">        :param result_predict_column: 予測結果が格納されるカラム名</span>
@@ -168,6 +168,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">dataset_config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;dataset_config must be set.&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">dump_result_enabled</span> <span class="ow">and</span> <span class="s1">&#39;name&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dumper_config</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;`name` key must be contained in dumper_config.&#39;</span><span class="p">)</span>
 
         <span class="n">train_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">train_id</span><span class="p">)</span>
         <span class="n">model_config</span> <span class="o">=</span> <span class="p">{}</span>
@@ -177,7 +180,7 @@
             <span class="s1">&#39;dataset_config&#39;</span><span class="p">:</span> <span class="n">dataset_config</span><span class="p">,</span>
             <span class="s1">&#39;train_id&#39;</span><span class="p">:</span> <span class="n">train_id</span><span class="p">,</span>
             <span class="s1">&#39;dump_result_enabled&#39;</span><span class="p">:</span> <span class="n">dump_result_enabled</span><span class="p">,</span>
-            <span class="s1">&#39;dump_result_format&#39;</span><span class="p">:</span> <span class="n">dump_result_format</span><span class="p">,</span>
+            <span class="s1">&#39;dumper_config&#39;</span><span class="p">:</span> <span class="n">dumper_config</span><span class="p">,</span>
             <span class="s1">&#39;result_target_columns&#39;</span><span class="p">:</span> <span class="n">result_target_columns</span><span class="p">,</span>
             <span class="s1">&#39;result_predict_column&#39;</span><span class="p">:</span> <span class="n">result_predict_column</span><span class="p">,</span>
         <span class="p">}</span>
@@ -219,7 +222,7 @@
 
         <span class="k">if</span> <span class="n">dump_result_enabled</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;dump_predicted_result start.&#39;</span><span class="p">)</span>
-            <span class="n">dump_predicted_result</span><span class="p">(</span><span class="n">predict_id</span><span class="p">,</span> <span class="n">scenario_tag</span><span class="p">,</span> <span class="n">dump_result_format</span><span class="p">,</span> <span class="n">predict_result</span><span class="p">,</span> <span class="n">ret</span><span class="p">)</span>
+            <span class="n">dump_predicted_result</span><span class="p">(</span><span class="n">predict_id</span><span class="p">,</span> <span class="n">scenario_tag</span><span class="p">,</span> <span class="n">dumper_config</span><span class="p">,</span> <span class="n">predict_result</span><span class="p">,</span> <span class="n">ret</span><span class="p">)</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;dump_predicted_result done.&#39;</span><span class="p">)</span>
 
         <span class="n">ret</span><span class="p">[</span><span class="s1">&#39;predict_result&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">predict_result</span>
