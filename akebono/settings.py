@@ -13,6 +13,7 @@ _valid_attributes = [
     'storage_type',
     'storage_option',
     'bq_sql_template_dir',
+    'bq_read_config',
     'project_name',
     'project_root_dir',
     'train_config',
@@ -99,6 +100,13 @@ def reset():
     self.project_name = 'default'
     self.project_root_dir = os.getcwd()
     self.bq_sql_template_dir = os.path.join(project_root_dir, '_dataset/bq_sql_templates')
+    self.bq_read_config = {
+        'query': {
+            'useLegacySql': False,
+            'useQueryCache': False,
+        },
+        'jobTimeoutMs': 3600 * 1000,
+    }
     self.train_config = []
     self.predict_config = []
     self.datasource_dir = pathjoin(storage_root_dir, project_name, 'datasource')

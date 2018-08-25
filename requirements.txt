@@ -1,4 +1,5 @@
 pandas
+pandas-gbq
 scikit-learn
 lightgbm
 jupyter

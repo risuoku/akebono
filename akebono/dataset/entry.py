@@ -67,7 +67,7 @@ def get_dataset(dataset_config):
 
     def _core_func():
         return preprocess_func(
-            load_func(copy.copy(load_func_kwargs.value), loader_param),
+            load_func(copy.deepcopy(load_func_kwargs.value), loader_param),
             **copy.copy(preprocess_func_kwargs.value)
         )
 

@@ -1,12 +1,10 @@
 import akebono.settings as settings
-from akebono.io.clients import BigqueryClient
 import pandas as pd
 from akebono.logging import getLogger
 from jinja2 import Template
 
 
 logger = getLogger(__name__)
-_bqclient = BigqueryClient()
 
 
 def load_from_sql(sql):
@@ -28,4 +26,4 @@ def load(load_func_kwargs, param):
     if sql is not None and not isinstance(sql, str):
         raise TypeError('sql must be str.')
     _rendered_sql = render_sql(param['dataset_name'], load_func_kwargs, sql=sql)
-    return pd.DataFrame(load_from_sql(_rendered_sql))
+    return pd.read_gbq(_rendered_sql, configuration=settings.bq_read_config)

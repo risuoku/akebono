@@ -21,6 +21,7 @@ setup (
     },
     install_requires=[
         'pandas',
+        'pandas-gbq',
         'scikit-learn',
         'Jinja2',
         'scipy'
