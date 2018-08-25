@@ -21,16 +21,13 @@ def dump_train_result(train_id, scenario_tag, result):
     preprocessor = result.pop('preprocessor', None)
     model_name = 'train_result_model_{}'.format(train_id)
     result_name = 'train_result_meta_{}'.format(train_id)
-    tag_list = ['latest']
-    if scenario_tag is not None:
-        tag_list.append(scenario_tag)
-    for tag in tag_list:
-        dirpath = pathjoin(settings.operation_results_dir, tag)
-        to_pickle(pathjoin(dirpath, '{}.pkl'.format(result_name)), result) # dump result
-        if model is not None:
-            model.dump(dirpath, model_name)
-        if preprocessor is not None:
-            preprocessor.dump_with_operation_rule(dirpath, train_id)
+
+    dirpath = pathjoin(settings.operation_results_dir, scenario_tag)
+    to_pickle(pathjoin(dirpath, '{}.pkl'.format(result_name)), result) # dump result
+    if model is not None:
+        model.dump(dirpath, model_name)
+    if preprocessor is not None:
+        preprocessor.dump_with_operation_rule(dirpath, train_id)
 
 
 def dump_predicted_result(predict_id, scenario_tag, dumper_config, df, meta):

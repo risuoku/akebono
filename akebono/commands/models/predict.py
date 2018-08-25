@@ -10,7 +10,7 @@ from .base import CommandBase
 class Predict(CommandBase):
     def apply_arguments(self, parser):
         parser.add_argument('-c', '--config', default='config')
-        parser.add_argument('-t', '--scenario-tag', default='latest')
+        parser.add_argument('-t', '--scenario-tag', default='default')
 
     def execute(self, namespace):
         for op in settings.get_predict_configs():

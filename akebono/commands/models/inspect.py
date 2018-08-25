@@ -18,7 +18,7 @@ def _get_fixed_length_str(s, length):
 class Inspect(CommandBase):
     def apply_arguments(self, parser):
         parser.add_argument('-c', '--config', default='config')
-        parser.add_argument('-t', '--scenario-tag', default='latest')
+        parser.add_argument('-t', '--scenario-tag', default='default')
         parser.add_argument('-k', '--performance-sort-key', default=None)
         parser.add_argument('-v', '--verbose', action='store_true', default=False)
 

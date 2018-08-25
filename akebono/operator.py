@@ -32,8 +32,8 @@ def train(train_id, scenario_tag,
 
         :param train_id: シナリオ中における訓練実行の識別子
         :type train_id: str
-        :param scenario_tag: シナリオに付与されるlatest以外のタグ
-        :type scenario_tag: str or None
+        :param scenario_tag: シナリオに付与されるタグ
+        :type scenario_tag: str
         :param dataset_config: Datasetの設定。:class:`akebono.dataset.get_dataset` の引数。
         :type dataset_config: dict
         :param model_config: Modelの設定。:class:`akebono.model.get_model` の引数。
@@ -115,8 +115,8 @@ def predict(predict_id, scenario_tag,
 
         :param predict_id: シナリオ中における予測実行の識別子
         :type predict_id: str
-        :param scenario_tag: シナリオに付与されるlatest以外のタグ
-        :type scenario_tag: str or None
+        :param scenario_tag: シナリオに付与されるタグ
+        :type scenario_tag: str
         :param method_type: 予測のタイプ。設定可能なタイプは `predict` or `predict_proba`
         :type method_type: str
         :param dataset_config: Datasetの設定。:class:`akebono.dataset.get_dataset` の引数。

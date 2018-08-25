@@ -119,7 +119,7 @@
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;invalid type .. predict_config must be dict or list.&#39;</span><span class="p">)</span></div>
 
 
-<span class="k">def</span> <span class="nf">reset</span><span class="p">():</span>
+<div class="viewcode-block" id="reset"><a class="viewcode-back" href="../../index.html#akebono.settings.reset">[docs]</a><span class="k">def</span> <span class="nf">reset</span><span class="p">():</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">storage_root_dir</span> <span class="o">=</span> <span class="s1">&#39;_storage&#39;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">storage_type</span> <span class="o">=</span> <span class="s1">&#39;local&#39;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">storage_option</span> <span class="o">=</span> <span class="p">{}</span>
@@ -128,7 +128,7 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">train_config</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">predict_config</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">datasource_dir</span> <span class="o">=</span> <span class="n">pathjoin</span><span class="p">(</span><span class="n">storage_root_dir</span><span class="p">,</span> <span class="n">project_name</span><span class="p">,</span> <span class="s1">&#39;datasource&#39;</span><span class="p">)</span>
-    <span class="n">_update_associated_attrs</span><span class="p">()</span>
+    <span class="n">_update_associated_attrs</span><span class="p">()</span></div>
 
 
 <span class="c1">### default settings</span>

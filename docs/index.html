@@ -603,7 +603,7 @@ $ <span class="nb">cd</span> demo-akebono
 <div class="codehilite"><pre><span></span>$ akebono inspect
 
 <span class="c1">### 以下、実行結果</span>
-<span class="o">===</span> scenario summary .. tag: <span class="nv">latest</span> <span class="o">===</span>
+<span class="o">===</span> scenario summary .. tag: <span class="nv">default</span> <span class="o">===</span>
 
 ------------------------------------------------------------
 train_id: <span class="m">0</span>
@@ -639,10 +639,10 @@ accuracy
 </pre></div>
 
 
-<p><code>_storage/default/operation_results/latest</code> 以下に <code>predict_result_*</code> というファイルが生成されていたら成功です。
-今回の予測結果は、 <code>_storage/default/operation_results/latest/predict_result_JBIjqknXCIv5SNm2.csv</code> に入っており、
+<p><code>_storage/default/operation_results/default</code> 以下に <code>predict_result_*</code> というファイルが生成されていたら成功です。
+今回の予測結果は、 <code>_storage/default/operation_results/default/predict_result_JBIjqknXCIv5SNm2.csv</code> に入っており、
 予測結果がcsvフォーマットで保存されています。ただし、ファイル名のランダム文字列部分はpredict実行時に生成されます。</p>
-<div class="codehilite"><pre><span></span>$ head -10 _storage/default/operation_results/latest/predict_result_JBIjqknXCIv5SNm2.csv 
+<div class="codehilite"><pre><span></span>$ head -10 _storage/default/operation_results/default/predict_result_JBIjqknXCIv5SNm2.csv 
 
 <span class="c1">### 以下、実行結果</span>
 sepal_length,sepal_width,petal_length,petal_width,predicted

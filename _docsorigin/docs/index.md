@@ -105,7 +105,7 @@ $ akebono train
 $ akebono inspect
 
 ### 以下、実行結果
-=== scenario summary .. tag: latest ===
+=== scenario summary .. tag: default ===
 
 ------------------------------------------------------------
 train_id: 0
@@ -144,12 +144,12 @@ predict_config = {
 $ akebono predict
 ```
 
-`_storage/default/operation_results/latest` 以下に `predict_result_*` というファイルが生成されていたら成功です。
-今回の予測結果は、 `_storage/default/operation_results/latest/predict_result_JBIjqknXCIv5SNm2.csv` に入っており、
+`_storage/default/operation_results/default` 以下に `predict_result_*` というファイルが生成されていたら成功です。
+今回の予測結果は、 `_storage/default/operation_results/default/predict_result_JBIjqknXCIv5SNm2.csv` に入っており、
 予測結果がcsvフォーマットで保存されています。ただし、ファイル名のランダム文字列部分はpredict実行時に生成されます。
 
 ```
-$ head -10 _storage/default/operation_results/latest/predict_result_JBIjqknXCIv5SNm2.csv 
+$ head -10 _storage/default/operation_results/default/predict_result_JBIjqknXCIv5SNm2.csv 
 
 ### 以下、実行結果
 sepal_length,sepal_width,petal_length,petal_width,predicted

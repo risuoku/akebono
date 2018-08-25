@@ -40,6 +40,9 @@ Preprocessor
 .. autoclass:: akebono.preprocessor.ApplyStandardScaler
     :inherited-members:
 
+.. autoclass:: akebono.preprocessor.ApplyPca
+    :inherited-members:
+
 Model
 -----------
 
@@ -59,6 +62,8 @@ Settings
 -----------
 
 .. autofunction:: akebono.settings.apply
+
+.. autofunction:: akebono.settings.reset
 
 .. autofunction:: akebono.settings.get_train_configs
 

@@ -473,6 +473,68 @@
 
 </dd></dl>
 
+<dl class="class">
+<dt id="akebono.preprocessor.ApplyPca">
+<em class="property">class </em><code class="descclassname">akebono.preprocessor.</code><code class="descname">ApplyPca</code><span class="sig-paren">(</span><em>init_kwargs={}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/preprocessor/statefulmodels.html#ApplyPca"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.preprocessor.ApplyPca" title="Permalink to this definition">¶</a></dt>
+<dd><p>入力データにPCAをかけるPreprocessor</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>init_kwargs</strong> – 前処理実体の初期化パラメータ</td>
+</tr>
+</tbody>
+</table>
+<p>:type dict</p>
+<dl class="method">
+<dt id="akebono.preprocessor.ApplyPca.process">
+<code class="descname">process</code><span class="sig-paren">(</span><em>df_train</em>, <em>df_test</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/preprocessor/statefulmodels.html#ApplyPca.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.preprocessor.ApplyPca.process" title="Permalink to this definition">¶</a></dt>
+<dd><p>前処理を実行するためのメソッド</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>df_train</strong> (<em>pandas.DataFrame</em>) – 訓練データセットが持つ説明変数</li>
+<li><strong>df_test</strong> (<em>pandas.DataFrame</em><em> or </em><em>None</em>) – テストデータセットが持つ説明変数</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">tuple(pandas.DataFrame, pandas.DataFrame) object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="akebono.preprocessor.ApplyPca.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/preprocessor/statefulmodels.html#ApplyPca.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.preprocessor.ApplyPca.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>前処理実体を初期化するメソッド</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="akebono.preprocessor.ApplyPca.set_operation_mode">
+<code class="descname">set_operation_mode</code><span class="sig-paren">(</span><em>mode</em><span class="sig-paren">)</span><a class="headerlink" href="#akebono.preprocessor.ApplyPca.set_operation_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>operation_modeを設定するメソッド</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>mode</strong> (<em>str</em>) – 設定可能な値は <cite>train</cite> or <cite>predict</cite></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="akebono.preprocessor.ApplyPca.value">
+<code class="descname">value</code><a class="headerlink" href="#akebono.preprocessor.ApplyPca.value" title="Permalink to this definition">¶</a></dt>
+<dd><p>前処理実体</p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="model">
 <h2>Model<a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h2>
@@ -700,7 +762,7 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>train_id</strong> (<em>str</em>) – シナリオ中における訓練実行の識別子</li>
-<li><strong>scenario_tag</strong> (<em>str</em><em> or </em><em>None</em>) – シナリオに付与されるlatest以外のタグ</li>
+<li><strong>scenario_tag</strong> (<em>str</em>) – シナリオに付与されるタグ</li>
 <li><strong>dataset_config</strong> (<em>dict</em>) – Datasetの設定。<a class="reference internal" href="#akebono.dataset.get_dataset" title="akebono.dataset.get_dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">akebono.dataset.get_dataset</span></code></a> の引数。</li>
 <li><strong>model_config</strong> (<em>dict</em>) – Modelの設定。<a class="reference internal" href="#akebono.model.get_model" title="akebono.model.get_model"><code class="xref py py-class docutils literal notranslate"><span class="pre">akebono.model.get_model</span></code></a> の引数。</li>
 <li><strong>preprocessor_config</strong> (<em>dict</em>) – Preprocessorの設定。<a class="reference internal" href="#akebono.preprocessor.get_preprocessor" title="akebono.preprocessor.get_preprocessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">akebono.preprocessor.get_preprocessor</span></code></a> の引数。</li>
@@ -724,7 +786,7 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>predict_id</strong> (<em>str</em>) – シナリオ中における予測実行の識別子</li>
-<li><strong>scenario_tag</strong> (<em>str</em><em> or </em><em>None</em>) – シナリオに付与されるlatest以外のタグ</li>
+<li><strong>scenario_tag</strong> (<em>str</em>) – シナリオに付与されるタグ</li>
 <li><strong>method_type</strong> (<em>str</em>) – 予測のタイプ。設定可能なタイプは <cite>predict</cite> or <cite>predict_proba</cite></li>
 <li><strong>dataset_config</strong> (<em>dict</em>) – Datasetの設定。<a class="reference internal" href="#akebono.dataset.get_dataset" title="akebono.dataset.get_dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">akebono.dataset.get_dataset</span></code></a> の引数。</li>
 <li><strong>train_id</strong> (<em>str</em>) – 予測で使うモデルのtrain_id</li>
@@ -755,6 +817,11 @@
 </tbody>
 </table>
 </dd></dl>
+
+<dl class="function">
+<dt id="akebono.settings.reset">
+<code class="descclassname">akebono.settings.</code><code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/akebono/settings.html#reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#akebono.settings.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="function">
 <dt id="akebono.settings.get_train_configs">

@@ -16,7 +16,7 @@ def load_sklearn_model(model, dirpath, model_name):
     return model
 
 
-def load_train_results(scenario_tag='latest', train_ids='all'):
+def load_train_results(scenario_tag='default', train_ids='all'):
     dirpath = pathjoin(settings.operation_results_dir, scenario_tag)
     file_paths = list_directory(dirpath)
     result_paths = [
@@ -42,7 +42,7 @@ def load_train_results(scenario_tag='latest', train_ids='all'):
     return results
 
 
-def get_train_result(scenario_tag='latest', train_id=0):
+def get_train_result(scenario_tag='default', train_id=0):
     rlist = load_train_results(scenario_tag=scenario_tag, train_ids=[train_id])
     if len(rlist) == 0:
         return None
