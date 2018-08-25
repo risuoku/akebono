@@ -33,10 +33,11 @@ def dump_train_result(train_id, scenario_tag, result):
             preprocessor.dump_with_operation_rule(dirpath, train_id)
 
 
-def dump_predicted_result(predict_id, scenario_tag, dump_result_format, df, meta):
+def dump_predicted_result(predict_id, scenario_tag, dumper_config, df, meta):
     dirpath = pathjoin(settings.operation_results_dir, scenario_tag)
     fname_meta = 'predict_result_meta_{}'.format(predict_id)
     fname = 'predict_result_{}'.format(predict_id)
+    dump_result_format = dumper_config['name']
     if dump_result_format == 'csv':
         pd_to_csv(df, pathjoin(dirpath, fname + '.csv'), index=False)
     elif dump_result_format == 'pickle':

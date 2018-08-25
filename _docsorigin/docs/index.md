@@ -131,7 +131,9 @@ predict_config = {
     },
     'train_id': '0',
     'dump_result_enabled': True,
-    'dump_result_format': 'csv',
+    'dumper_config': {
+        'name': 'csv',
+    }
     'result_target_columns': 'all',
 }
 ```

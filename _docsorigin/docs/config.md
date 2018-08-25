@@ -97,6 +97,6 @@ config.pyは、python処理系から見るとpythonモジュールで、各プ�
 |method_type|string|`predict`|required:`false`|予測のタイプ。`predict`or`predict_proba`。|
 |train_id|int or string|`0`|required:`false`|予測で使うモデルのtrain_id。|
 |dump_result_enabled|bool|`False`|required:`false`|predictオペレーションの結果をストレージに保存するかどうかのフラグ。|
-|dump_result_format|string|`csv`|required:`false`|predictオペレーションの結果をストレージに保存する際のフォーマット。|
+|dumper_config|dict|`{}`|required:`false`|predictオペレーションの結果をストレージに保存する際の設定。|
 |result_target_columns|string or list|`all`|required:`false`|predictの結果に含める説明変数のカラム名のリスト。`all`の場合は全て含める。|
 |result_predict_column|string|`predicted`|required:`false`|predictの結果を表すカラム名。|

@@ -106,7 +106,7 @@ def predict(predict_id, scenario_tag,
     dataset_config=None,
     train_id='0',
     dump_result_enabled=False,
-    dump_result_format='csv',
+    dumper_config={},
     result_target_columns='all',
     result_predict_column='predicted'
     ):
@@ -125,8 +125,8 @@ def predict(predict_id, scenario_tag,
         :type train_id: str
         :param dump_result_enabled: 予測結果の永続化を実行するかのフラグ
         :type dump_result_enabled: bool
-        :param dump_result_format: 予測結果のフォーマット。設定可能なフォーマットは `csv` or `pickle`
-        :type dump_result_format: str
+        :param dumper_config: 予測結果の設定。
+        :type dumper_config: dict
         :param result_target_columns: 予測結果に含めるべき説明変数のカラム名のリスト。全ての場合は'all'とする
         :type result_target_columns: str or list(str)
         :param result_predict_column: 予測結果が格納されるカラム名
@@ -134,6 +134,9 @@ def predict(predict_id, scenario_tag,
         """
         if dataset_config is None:
             raise ValueError('dataset_config must be set.')
+
+        if dump_result_enabled and 'name' not in dumper_config:
+            raise ValueError('`name` key must be contained in dumper_config.')
 
         train_id = str(train_id)
         model_config = {}
@@ -143,7 +146,7 @@ def predict(predict_id, scenario_tag,
             'dataset_config': dataset_config,
             'train_id': train_id,
             'dump_result_enabled': dump_result_enabled,
-            'dump_result_format': dump_result_format,
+            'dumper_config': dumper_config,
             'result_target_columns': result_target_columns,
             'result_predict_column': result_predict_column,
         }
@@ -185,7 +188,7 @@ def predict(predict_id, scenario_tag,
 
         if dump_result_enabled:
             logger.debug('dump_predicted_result start.')
-            dump_predicted_result(predict_id, scenario_tag, dump_result_format, predict_result, ret)
+            dump_predicted_result(predict_id, scenario_tag, dumper_config, predict_result, ret)
             logger.debug('dump_predicted_result done.')
 
         ret['predict_result'] = predict_result
