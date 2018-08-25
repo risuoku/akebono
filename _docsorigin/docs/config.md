@@ -56,8 +56,8 @@ config.pyは、python処理系から見るとpythonモジュールで、各プ�
 |dataset_config.target_column|string|`target`|required:`false`|目的変数のカラム名|
 |dataset_config.cache_enabled|bool|`False`|required:`false`|データセットのキャッシュを作成するかどうかのフラグ|
 |dataset_config.loader_config|dict|無し|required:`true`|Dataset loaderの設定|
-|dataset_config.loader_config.func|string|無し|required:`true`|loaderが実行する関数。@記法で書かれる。|
-|dataset_config.loader_config.func_kwargs|dict|`{}`|required:`false`|loaderが実行する関数に渡されるキーワード引数。|
+|dataset_config.loader_config.name|string|無し|required:`true`|loaderが実行する関数。@記法で書かれる。|
+|dataset_config.loader_config.kwargs|dict|`{}`|required:`false`|loaderが実行する関数に渡されるキーワード引数。|
 |dataset_config.loader_config.param|dict|`{}`|required:`false`|loaderの振る舞いを決定するパラメータ。|
 |dataset_config.preprocess_func|string|`identify@akebono.dataset.preprocessors`|required:`false`|Datasetの前処理を実行する関数。@記法で書かれる。|
 |dataset_config.preprocess_func_kwargs|dict|`{}`|required:`false`|Datasetの前処理を実行する関数に渡されるキーワード引数。|
@@ -89,8 +89,8 @@ config.pyは、python処理系から見るとpythonモジュールで、各プ�
 |dataset_config.name|string|無し|dataset_config.cache_enabledが`true`の場合はrequired:`true`, そうでなければrequired:`false`|Datasetの名前|
 |dataset_config.cache_enabled|bool|`False`|required:`false`|データセットのキャッシュを作成するかどうかのフラグ|
 |dataset_config.loader_config|dict|無し|required:`true`|Dataset loaderの設定|
-|dataset_config.loader_config.func|string|無し|required:`true`|loaderが実行する関数。@記法で書かれる。|
-|dataset_config.loader_config.func_kwargs|dict|`{}`|required:`false`|loaderが実行する関数に渡されるキーワード引数。|
+|dataset_config.loader_config.name|string|無し|required:`true`|loaderが実行する関数。@記法で書かれる。|
+|dataset_config.loader_config.kwargs|dict|`{}`|required:`false`|loaderが実行する関数に渡されるキーワード引数。|
 |dataset_config.loader_config.param|dict|`{}`|required:`false`|loaderの振る舞いを決定するパラメータ。|
 |dataset_config.preprocess_func|string|`identify@akebono.dataset.preprocessors`|required:`false`|Datasetの前処理を実行する関数。@記法で書かれる。|
 |dataset_config.preprocess_func_kwargs|dict|`{}`|required:`false`|Datasetの前処理を実行する関数に渡されるキーワード引数。|

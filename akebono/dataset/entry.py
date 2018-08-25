@@ -26,8 +26,8 @@ def get_dataset(dataset_config):
         >>> from akebono.dataset import get_dataset
         >>> dataset_config = {
                 'loader_config': {
-                    'func': 'make_regression@akebono.dataset.generator.sklearn',
-                    'func_kwargs': {
+                    'name': 'make_regression@akebono.dataset.generator.sklearn',
+                    'kwargs': {
                         'n_features': 1,
                         'noise': 30.0,
                         'random_state': 0,
@@ -47,11 +47,11 @@ def get_dataset(dataset_config):
     loader_config = dataset_config.get('loader_config')
     if not isinstance(loader_config, dict):
         raise Exception('loader_config must be specified and this type is dict.')
-    load_func = loader_config.get('func')
+    load_func = loader_config.get('name')
     if load_func is None:
-        raise Exception('loader_config.func must be specified.')
+        raise Exception('loader_config.name must be specified.')
     load_func = load_object_by_str(load_func)
-    load_func_kwargs = Param(loader_config.get('func_kwargs', {}))
+    load_func_kwargs = Param(loader_config.get('kwargs', {}))
     loader_param = loader_config.get('param', {})
     _reserved_params = ('dataset_name', 'target_column',)
     for rp in _reserved_params:
