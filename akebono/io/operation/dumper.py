@@ -42,6 +42,14 @@ def dump_predicted_result(predict_id, scenario_tag, dumper_config, df, meta):
         pd_to_csv(df, pathjoin(dirpath, fname + '.csv'), index=False)
     elif dump_result_format == 'pickle':
         to_pickle(pathjoin(dirpath, fname + '.pkl'), df)
+    elif dump_result_format == 'bigquery':
+        import pandas_gbq
+        destination_table = dumper_config.get('destination_table')
+        if destination_table is None:
+            raise ValueError('destination_table must be set for bigquery dumper.')
+        if dumper_config.get('add_predict_id_enabled', True):
+            destination_table += ('_' + predict_id)
+        pandas_gbq.to_gbq(df, destination_table, **dumper_config.get('kwargs', {}))
     else:
         raise Exception('invalid format')
     to_pickle(pathjoin(dirpath, fname_meta + '.pkl'), meta)
