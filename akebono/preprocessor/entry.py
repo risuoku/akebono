@@ -1,27 +1,26 @@
-from akebono.utils import snake2camel
-from .statelessmodels import (
-    Identify,
-    SelectColumns,
-    ExcludeColumns,
-)
-from .statefulmodels import (
-    ApplyStandardScaler,
-    ApplyPca,
+from akebono.utils import (
+    snake2camel,
+    load_object_by_str,
 )
 from .pipeline import PreprocessorPipeline
-import sys
 
 
-self = sys.modules[__name__]
+_preprocessor_name_alias = {
+    'Identify': 'Identify@akebono.preprocessor.statelessmodels',
+    'SelectColumns': 'SelectColumns@akebono.preprocessor.statelessmodels',
+    'ExcludeColumns': 'ExcludeColumns@akebono.preprocessor.statelessmodels',
+
+    'ApplyStandardScaler': 'ApplyStandardScaler@akebono.preprocessor.statefulmodels',
+    'ApplyPca': 'ApplyPca@akebono.preprocessor.statefulmodels',
+}
 
 
 def _get_preprocessor_strict(config):
     name = config.get('name')
     if name is None:
         raise Exception('preprocessor_config.name must be set.')
-    ppcls = getattr(self, snake2camel(name), None)
-    if ppcls is None:
-        raise Exception('unsuppoorted preprocessor .. name: {}'.format(name))
+    cameledname = snake2camel(name)
+    ppcls = load_object_by_str(_preprocessor_name_alias.get(cameledname, name))
     return ppcls(**config.get('kwargs', {}))
 
 

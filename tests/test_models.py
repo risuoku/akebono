@@ -25,8 +25,8 @@ def test_model_regressor(pd_assert_equal):
     ]
     dataset_config = {
         'loader_config': {
-            'func': 'make_regression@akebono.dataset.generator.sklearn',
-            'func_kwargs': {
+            'name': 'make_regression@akebono.dataset.generator.sklearn',
+            'kwargs': {
                 'random_state': 0,
             },
         },

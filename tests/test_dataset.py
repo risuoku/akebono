@@ -6,8 +6,8 @@ import pandas as pd
 def test_generator_make_regression(pd_assert_equal):
     dataset_config = {
         'loader_config': {
-            'func': 'make_regression@akebono.dataset.generator.sklearn',
-            'func_kwargs': {
+            'name': 'regression_sample',
+            'kwargs': {
                 'random_state': 0,
                 'coef': False,
             },
@@ -16,7 +16,7 @@ def test_generator_make_regression(pd_assert_equal):
     }
     r = get_dataset(dataset_config)
     X, y = r.get_predictor_target()
-    r_raw = skl_datasets.make_regression(**dataset_config['loader_config']['func_kwargs'])
+    r_raw = skl_datasets.make_regression(**dataset_config['loader_config']['kwargs'])
     X_raw, y_raw = r_raw
     pd_assert_equal(y, pd.Series(y_raw))
     pd_assert_equal(X, pd.DataFrame(X_raw, columns=X.columns))
@@ -25,14 +25,14 @@ def test_generator_make_regression(pd_assert_equal):
 def test_generator_load_iris(pd_assert_equal):
     dataset_config = {
         'loader_config': {
-            'func': 'load_iris@akebono.dataset.generator.sklearn',
-            'func_kwargs': {},
+            'name': 'iris',
+            'kwargs': {},
         },
         'target_column': 'target',
     }
     r = get_dataset(dataset_config)
     X, y = r.get_predictor_target()
-    r_raw = skl_datasets.load_iris(**dataset_config['loader_config']['func_kwargs'])
+    r_raw = skl_datasets.load_iris(**dataset_config['loader_config']['kwargs'])
     X_raw, y_raw = r_raw.data, r_raw.target
     pd_assert_equal(y, pd.Series(y_raw))
     pd_assert_equal(X, pd.DataFrame(X_raw, columns=X.columns))
@@ -41,8 +41,8 @@ def test_generator_load_iris(pd_assert_equal):
 def test_generator_make_moons(pd_assert_equal):
     dataset_config = {
         'loader_config': {
-            'func': 'make_moons@akebono.dataset.generator.sklearn',
-            'func_kwargs': {
+            'name': 'binary_classifier_sample_moon',
+            'kwargs': {
                 'random_state': 0,
             },
         },
@@ -50,7 +50,7 @@ def test_generator_make_moons(pd_assert_equal):
     }
     r = get_dataset(dataset_config)
     X, y = r.get_predictor_target()
-    r_raw = skl_datasets.make_moons(**dataset_config['loader_config']['func_kwargs'])
+    r_raw = skl_datasets.make_moons(**dataset_config['loader_config']['kwargs'])
     X_raw, y_raw = r_raw
     pd_assert_equal(y, pd.Series(y_raw))
     pd_assert_equal(X, pd.DataFrame(X_raw, columns=X.columns))

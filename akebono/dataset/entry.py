@@ -14,6 +14,15 @@ import copy
 logger = getLogger(__name__)
 
 
+_loader_name_alias = {
+    'bigquery': 'load@akebono.dataset.bigquery',
+    'csv': 'load@akebono.dataset.csv',
+    'iris': 'load_iris@akebono.dataset.generator.sklearn',
+    'regression_sample': 'make_regression@akebono.dataset.generator.sklearn',
+    'binary_classifier_sample_moon': 'make_moons@akebono.dataset.generator.sklearn',
+}
+
+
 def get_dataset(dataset_config):
     """
     Datasetを生成するための関数
@@ -48,6 +57,7 @@ def get_dataset(dataset_config):
     if not isinstance(loader_config, dict):
         raise Exception('loader_config must be specified and this type is dict.')
     load_func = loader_config.get('name')
+    load_func = _loader_name_alias.get(load_func, load_func) # エイリアスがあったらそれを使う
     if load_func is None:
         raise Exception('loader_config.name must be specified.')
     load_func = load_object_by_str(load_func)

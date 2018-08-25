@@ -32,29 +32,29 @@
           <div class="body" role="main">
             
   <h1>Source code for akebono.preprocessor.entry</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">akebono.utils</span> <span class="k">import</span> <span class="n">snake2camel</span>
-<span class="kn">from</span> <span class="nn">.statelessmodels</span> <span class="k">import</span> <span class="p">(</span>
-    <span class="n">Identify</span><span class="p">,</span>
-    <span class="n">SelectColumns</span><span class="p">,</span>
-    <span class="n">ExcludeColumns</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span> <span class="nn">.statefulmodels</span> <span class="k">import</span> <span class="p">(</span>
-    <span class="n">ApplyStandardScaler</span><span class="p">,</span>
+<span></span><span class="kn">from</span> <span class="nn">akebono.utils</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">snake2camel</span><span class="p">,</span>
+    <span class="n">load_object_by_str</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">.pipeline</span> <span class="k">import</span> <span class="n">PreprocessorPipeline</span>
-<span class="kn">import</span> <span class="nn">sys</span>
 
 
-<span class="bp">self</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="vm">__name__</span><span class="p">]</span>
+<span class="n">_preprocessor_name_alias</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Identify&#39;</span><span class="p">:</span> <span class="s1">&#39;Identify@akebono.preprocessor.statelessmodels&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;SelectColumns&#39;</span><span class="p">:</span> <span class="s1">&#39;SelectColumns@akebono.preprocessor.statelessmodels&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ExcludeColumns&#39;</span><span class="p">:</span> <span class="s1">&#39;ExcludeColumns@akebono.preprocessor.statelessmodels&#39;</span><span class="p">,</span>
+
+    <span class="s1">&#39;ApplyStandardScaler&#39;</span><span class="p">:</span> <span class="s1">&#39;ApplyStandardScaler@akebono.preprocessor.statefulmodels&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ApplyPca&#39;</span><span class="p">:</span> <span class="s1">&#39;ApplyPca@akebono.preprocessor.statefulmodels&#39;</span><span class="p">,</span>
+<span class="p">}</span>
 
 
 <span class="k">def</span> <span class="nf">_get_preprocessor_strict</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
     <span class="n">name</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;preprocessor_config.name must be set.&#39;</span><span class="p">)</span>
-    <span class="n">ppcls</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">snake2camel</span><span class="p">(</span><span class="n">name</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">ppcls</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;unsuppoorted preprocessor .. name: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+    <span class="n">cameledname</span> <span class="o">=</span> <span class="n">snake2camel</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">ppcls</span> <span class="o">=</span> <span class="n">load_object_by_str</span><span class="p">(</span><span class="n">_preprocessor_name_alias</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cameledname</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">ppcls</span><span class="p">(</span><span class="o">**</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;kwargs&#39;</span><span class="p">,</span> <span class="p">{}))</span>
 
 

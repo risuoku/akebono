@@ -70,7 +70,7 @@ akebonoを使って上記を実行する手順を説明します。
 train_config = {
     'dataset_config': {
         'loader_config': {
-            'name': 'load_iris@akebono.dataset.generator.sklearn',
+            'name': 'iris',
         },
     },
     'model_config': {
@@ -126,7 +126,7 @@ predict_config = {
     'method_type': 'predict',
     'dataset_config': {
         'loader_config': {
-            'func': 'load_iris@akebono.dataset.generator.sklearn',
+            'func': 'iris',
         },  
     },
     'train_id': '0',
