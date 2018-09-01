@@ -124,17 +124,6 @@ def rename_directory(src, dst):
         raise ValueError('invalid storage_type')
 
 
-def isdir(dirpath):
-    if settings.storage_type == 'local':
-        return os.path.isdir(dirpath)
-    elif settings.storage_type == 'gcs':
-        bkt = _get_gcs_bucket(settings.storage_option['bucket_name'])
-        target_blob = bkt.get_blob(dirpath)
-        return target_blob is not None
-    else:
-        raise ValueError('invalid storage_type')
-
-
 def list_directory(dirpath, mode='path'):
     if settings.storage_type == 'local':
         filenames = os.listdir(dirpath)
@@ -155,6 +144,16 @@ def list_directory(dirpath, mode='path'):
             return [f[1:] if f[0] == '/' else f for f in r1]
         else:
             raise ValueError('invalid mode.')
+    else:
+        raise ValueError('invalid storage_type')
+
+
+def isdir(dirpath):
+    if settings.storage_type == 'local':
+        return os.path.isdir(dirpath)
+    elif settings.storage_type == 'gcs':
+        flist = list_directory(dirpath, mode='path')
+        return len(flist) > 0
     else:
         raise ValueError('invalid storage_type')
 
