@@ -13,6 +13,7 @@ from akebono.preprocessor import (
 from akebono.utils import pathjoin
 import akebono.settings as settings
 import os
+import pandas as pd
 import gc
 
 
@@ -106,6 +107,7 @@ def predict(predict_id, scenario_tag,
     dataset_config=None,
     train_id='0',
     dump_result_enabled=False,
+    append_evacuated_columns_enabled=False,
     dumper_config={},
     result_target_columns='all',
     result_predict_column='predicted'
@@ -125,6 +127,8 @@ def predict(predict_id, scenario_tag,
         :type train_id: str
         :param dump_result_enabled: 予測結果の永続化を実行するかのフラグ
         :type dump_result_enabled: bool
+        :param append_evacuated_columns_enabled: Dataset中で退避したカラムをpredictの結果に加えるかを決めるフラグ
+        :type append_evacuated_columns_enabled: bool
         :param dumper_config: 予測結果の設定。
         :type dumper_config: dict
         :param result_target_columns: 予測結果に含めるべき説明変数のカラム名のリスト。全ての場合は'all'とする
@@ -166,7 +170,7 @@ def predict(predict_id, scenario_tag,
         dirpath = pathjoin(settings.operation_results_dir, scenario_tag)
         preprocessor.load_with_operation_rule(dirpath, train_id)
 
-        X = dataset.value
+        X = dataset.get_predictor()
         fX, _ = preprocessor.process(X, None)
         gc.collect()
         
@@ -183,8 +187,11 @@ def predict(predict_id, scenario_tag,
         if not result_target_columns == 'all':
             if not isinstance(result_target_columns, list):
                 raise TypeError('result_target_columns must be list.')
-            predict_result = fX[result_target_columns]
+            predict_result = predict_result[result_target_columns]
         predict_result.loc[:,result_predict_column] = rawresult
+
+        if append_evacuated_columns_enabled:
+            predict_result = pd.concat([dataset.get_evacuated(), predict_result], axis=1)
 
         if dump_result_enabled:
             logger.debug('dump_predicted_result start.')

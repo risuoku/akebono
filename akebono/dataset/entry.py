@@ -53,6 +53,9 @@ def get_dataset(dataset_config):
     dataset_name = dataset_config.get('name')
     target_column = dataset_config.get('target_column', 'target')
     cache_enabled = dataset_config.get('cache_enabled', False)
+    evacuated_columns = dataset_config.get('evacuated_columns', [])
+    if not isinstance(evacuated_columns, list):
+        raise TypeError('evacuated_columns must be list.')
     loader_config = dataset_config.get('loader_config')
     if not isinstance(loader_config, dict):
         raise Exception('loader_config must be specified and this type is dict.')
@@ -94,4 +97,4 @@ def get_dataset(dataset_config):
         else:
             raise Exception('dataset_config.cache_enabled is True, but dataset_config.name is None')
 
-    return Dataset(_core_func(), target_column)
+    return Dataset(_core_func(), target_column, evacuated_columns)

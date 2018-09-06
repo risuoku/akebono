@@ -6,11 +6,12 @@ class Dataset:
     Dataset class
     """
 
-    def __init__(self, value, target_column):
+    def __init__(self, value, target_column, evacuated_columns):
         if not isinstance(value, pd.DataFrame):
             raise TypeError('value must be pandas.DataFrame')
         self._value = value
         self._target_column = target_column
+        self._evacuated_columns = evacuated_columns
     
     def get_predictor_target(self):
         """
@@ -23,10 +24,20 @@ class Dataset:
         if self._target_column is None:
             raise Exception('target done not exist.')
         y = self._value[self._target_column]
-        columns = list(self._value.columns.copy())
-        columns.remove(self._target_column)
-        X = self._value[columns]
+        X = self.get_predictor()
         return X, y
+
+    def get_predictor(self):
+        columns = list(self._value.columns.copy())
+        if self._target_column is not None:
+            columns.remove(self._target_column)
+        for c in self._evacuated_columns:
+            if c in columns:
+                columns.remove(c)
+        return self._value[columns]
+
+    def get_evacuated(self):
+        return self._value[self._evacuated_columns]
     
     @property
     def value(self):
