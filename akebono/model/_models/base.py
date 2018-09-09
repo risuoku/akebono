@@ -120,7 +120,7 @@ class WrappedModel:
         """
         return self._value
 
-    def evaluate(self, X, y, preprocessor):
+    def evaluate(self, X, y, preprocessor, format_func_for_predictor, format_func_for_target):
         """
         モデルを評価するためのメソッド
 
@@ -130,7 +130,11 @@ class WrappedModel:
         :type y: numpy array-like
         :param preprocessor: Preprocessor object
         :type preprocessor: StatefulPreprocessor or StatelessPreprocessor
+        :param format_func_for_predictor: 説明変数を整形するための関数
+        :type format_func_for_predictor: function
+        :param format_func_for_target: 目的変数を整形するための関数
+        :type format_func_for_target: function
 
         :return: list
         """
-        return evaluate(self, X, y, preprocessor, **self._evaluate_kwargs)
+        return evaluate(self, X, y, preprocessor, format_func_for_predictor, format_func_for_target, **self._evaluate_kwargs)

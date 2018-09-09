@@ -305,6 +305,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#formatter" title="Formatter" class="md-nav__link">
+    Formatter
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#model" title="Model" class="md-nav__link">
     Model
   </a>
@@ -462,6 +469,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#formatter" title="Formatter" class="md-nav__link">
+    Formatter
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#model" title="Model" class="md-nav__link">
     Model
   </a>
@@ -554,6 +568,10 @@
 <p>1,2に対して、後述の<code>Operator</code>経由で実行する場合は自動で配慮されます（チュートリアルで使っているコマンド経由でも同様です）。</p>
 <p>また、<code>Preprocessor</code>には<code>Pipeline</code>という仕組みがあり、これは複数の<code>Preprocessor</code>連結を１つの<code>Preprocessor</code>として扱う抽象化機構です。
 <code>Operator</code>は<code>Pipeline</code>として<code>Preprocessor</code>を扱うため、<code>config.py</code>には複数の<code>Preprocessor</code>を記述することが可能です。</p>
+<h2 id="formatter">Formatter<a class="headerlink" href="#formatter" title="Permanent link">&para;</a></h2>
+<p><code>Formatter</code>は、データ整形の役割を担うコンポーネントです。<code>Preprocessor</code>が説明変数の前処理に使われ、その結果モデルを変えてしまうほどの意味を持っているのに対し、 
+<code>Formatter</code>はあくまでデータフォーマットを整えるためのみに使われます。例えば、モデルが受け付ける目的変数のフォーマットが手法や使われるフレームワークによって異なる
+ケースで、差分を吸収するために使います（クラス分類の目的変数として、scikit-learnが(n_samples,)型なのに対しKerasでは(n_samples, n_classes)のone-hot型です）。</p>
 <h2 id="model">Model<a class="headerlink" href="#model" title="Permanent link">&para;</a></h2>
 <p><code>Model</code>は、教師あり学習用モデルのインタフェースと共通実装を扱うコンポーネントです。
 <code>scikit-learn</code>のモデルに似たインタフェースを持っていますがakebono独自の部分もあります。

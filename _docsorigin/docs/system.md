@@ -63,6 +63,13 @@ akebonoの内部コンポーネントは、大きく分けて `Settings`,`Datase
 `Operator`は`Pipeline`として`Preprocessor`を扱うため、`config.py`には複数の`Preprocessor`を記述することが可能です。
 
 
+## Formatter
+
+`Formatter`は、データ整形の役割を担うコンポーネントです。`Preprocessor`が説明変数の前処理に使われ、その結果モデルを変えてしまうほどの意味を持っているのに対し、 
+`Formatter`はあくまでデータフォーマットを整えるためのみに使われます。例えば、モデルが受け付ける目的変数のフォーマットが手法や使われるフレームワークによって異なる
+ケースで、差分を吸収するために使います（クラス分類の目的変数として、scikit-learnが(n_samples,)型なのに対しKerasでは(n_samples, n_classes)のone-hot型です）。
+
+
 ## Model
 
 `Model`は、教師あり学習用モデルのインタフェースと共通実装を扱うコンポーネントです。

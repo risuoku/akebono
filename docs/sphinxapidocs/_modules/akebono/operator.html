@@ -42,11 +42,12 @@
 <span class="kn">from</span> <span class="nn">akebono.model</span> <span class="k">import</span> <span class="n">get_model</span>
 <span class="kn">from</span> <span class="nn">akebono.preprocessor</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">get_preprocessor</span><span class="p">,</span>
-    <span class="n">StatefulPreprocessor</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">akebono.utils</span> <span class="k">import</span> <span class="n">pathjoin</span>
+<span class="kn">from</span> <span class="nn">akebono.utils</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">load_object_by_str</span><span class="p">,</span>
+    <span class="n">pathjoin</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">import</span> <span class="nn">akebono.settings</span> <span class="k">as</span> <span class="nn">settings</span>
-<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">gc</span>
 
@@ -58,6 +59,8 @@
     <span class="n">dataset_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">model_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">preprocessor_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">formatter_config_for_predictor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">formatter_config_for_target</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">evaluate_enabled</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">fit_model_enabled</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">dump_result_enabled</span><span class="o">=</span><span class="kc">False</span>
@@ -75,6 +78,10 @@
 <span class="sd">        :type model_config: dict</span>
 <span class="sd">        :param preprocessor_config: Preprocessorの設定。:class:`akebono.preprocessor.get_preprocessor` の引数。</span>
 <span class="sd">        :type preprocessor_config: dict</span>
+<span class="sd">        :param formatter_config_for_predictor: 特徴用Formatterの設定。</span>
+<span class="sd">        :type formatter_config_for_predictor: dict</span>
+<span class="sd">        :param formatter_config_for_target: 目標用Formatterの設定。</span>
+<span class="sd">        :type formatter_config_for_target: dict</span>
 <span class="sd">        :param evaluate_enabled: モデルの評価を実行するかのフラグ</span>
 <span class="sd">        :type evaluate_enabled: bool</span>
 <span class="sd">        :param fit_model_enabled: モデルの訓練を実行するかのフラグ</span>
@@ -91,6 +98,14 @@
                 <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;identify&#39;</span><span class="p">,</span>
                 <span class="s1">&#39;kwargs&#39;</span><span class="p">:</span> <span class="p">{},</span>
             <span class="p">}</span>
+        <span class="k">if</span> <span class="n">formatter_config_for_predictor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">formatter_config_for_predictor</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;get_values@akebono.formatter&#39;</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="k">if</span> <span class="n">formatter_config_for_target</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">formatter_config_for_target</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;get_values@akebono.formatter&#39;</span><span class="p">,</span>
+            <span class="p">}</span>
 
         <span class="n">ret</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;train&#39;</span><span class="p">,</span>
@@ -98,6 +113,8 @@
             <span class="s1">&#39;dataset_config&#39;</span><span class="p">:</span> <span class="n">dataset_config</span><span class="p">,</span>
             <span class="s1">&#39;model_config&#39;</span><span class="p">:</span> <span class="n">model_config</span><span class="p">,</span>
             <span class="s1">&#39;preprocessor_config&#39;</span><span class="p">:</span> <span class="n">preprocessor_config</span><span class="p">,</span>
+            <span class="s1">&#39;formatter_config_for_predictor&#39;</span><span class="p">:</span> <span class="n">formatter_config_for_predictor</span><span class="p">,</span>
+            <span class="s1">&#39;formatter_config_for_target&#39;</span><span class="p">:</span> <span class="n">formatter_config_for_target</span><span class="p">,</span>
             <span class="s1">&#39;evaluate_enabled&#39;</span><span class="p">:</span> <span class="n">evaluate_enabled</span><span class="p">,</span>
             <span class="s1">&#39;fit_model_enabled&#39;</span><span class="p">:</span> <span class="n">fit_model_enabled</span><span class="p">,</span>
             <span class="s1">&#39;dump_result_enabled&#39;</span><span class="p">:</span> <span class="n">dump_result_enabled</span>
@@ -113,17 +130,21 @@
         
         <span class="n">model_config</span><span class="p">[</span><span class="s1">&#39;is_rebuild&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">model</span> <span class="o">=</span> <span class="n">get_model</span><span class="p">(</span><span class="n">model_config</span><span class="p">)</span>
-        
+
+        <span class="n">format_func_for_predictor</span> <span class="o">=</span> <span class="n">load_object_by_str</span><span class="p">(</span><span class="n">formatter_config_for_predictor</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>
+        <span class="n">format_func_for_target</span> <span class="o">=</span> <span class="n">load_object_by_str</span><span class="p">(</span><span class="n">formatter_config_for_target</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>
+
         <span class="k">if</span> <span class="n">evaluate_enabled</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;evaluate start.&#39;</span><span class="p">)</span>
-            <span class="n">rep</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">preprocessor</span><span class="p">)</span>
+            <span class="n">rep</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">preprocessor</span><span class="p">,</span> <span class="n">format_func_for_predictor</span><span class="p">,</span> <span class="n">format_func_for_target</span><span class="p">)</span>
             <span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;evaluate done.&#39;</span><span class="p">)</span>
             <span class="n">ret</span><span class="p">[</span><span class="s1">&#39;evaluate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rep</span>
         <span class="k">if</span> <span class="n">fit_model_enabled</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;fit start.&#39;</span><span class="p">)</span>
-            <span class="n">fX</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">preprocessor</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-            <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">fX</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+            <span class="n">fX_p</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">preprocessor</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">fX</span> <span class="o">=</span> <span class="n">format_func_for_predictor</span><span class="p">(</span><span class="n">fX_p</span><span class="p">)</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">fX</span><span class="p">,</span> <span class="n">format_func_for_target</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
             <span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;fit done.&#39;</span><span class="p">)</span>
             <span class="n">ret</span><span class="p">[</span><span class="s1">&#39;model&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span>
@@ -222,7 +243,10 @@
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result_target_columns</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;result_target_columns must be list.&#39;</span><span class="p">)</span>
             <span class="n">predict_result</span> <span class="o">=</span> <span class="n">predict_result</span><span class="p">[</span><span class="n">result_target_columns</span><span class="p">]</span>
-        <span class="n">predict_result</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span><span class="n">result_predict_column</span><span class="p">]</span> <span class="o">=</span> <span class="n">rawresult</span>
+
+        <span class="c1"># len(rawresult.shape) &gt; 1でもpredict_resultのdfに格納できるようにするためlistにしている</span>
+        <span class="c1"># そもそもpredict_resultを１つのdfにするべきなのかは考え直しても良いと思う</span>
+        <span class="n">predict_result</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span><span class="n">result_predict_column</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">rawresult</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">append_evacuated_columns_enabled</span><span class="p">:</span>
             <span class="n">predict_result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">dataset</span><span class="o">.</span><span class="n">get_evacuated</span><span class="p">(),</span> <span class="n">predict_result</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>

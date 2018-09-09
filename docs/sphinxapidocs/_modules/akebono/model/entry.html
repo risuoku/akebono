@@ -97,7 +97,7 @@
     <span class="k">if</span> <span class="n">model</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;unexpedted.&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">model_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">model</span><span class="o">.</span><span class="n">set_model_type</span><span class="p">(</span><span class="n">model_type</span><span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">set_model_type</span><span class="p">(</span><span class="n">model_type</span><span class="o">=</span><span class="n">model_type</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">is_rebuild</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">scenario_tag</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">train_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>

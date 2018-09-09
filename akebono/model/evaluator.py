@@ -1,6 +1,9 @@
 import sklearn.metrics as skl_metrics
-from akebono.utils import load_object_by_str
+from akebono.utils import (
+    load_object_by_str,
+)
 from akebono.logging import getLogger
+import numpy as np
 
 
 logger = getLogger(__name__)
@@ -104,7 +107,7 @@ def _fit_and_predict(X_train, X_test, y_train, model):
         except NotImplementedError:
             # ignore exception
             pass
-    
+
     return model, y_pred, y_pred_proba
 
 
@@ -113,6 +116,13 @@ def _get_evaluated_result(y_pred, y_pred_proba, y_test, metrics):
 
     if metrics['predict_type'] == 'predict':
         if y_pred is not None:
+            if not y_test.shape == y_pred.shape:
+                raise ValueError('y_test.shape and y_pred.shape must be same.')
+            if not len(y_test.shape) == 1:
+                # convert one-hot format target to 1-d array
+                # one-hot 以外のtargetにも対応できるように抽象化する必要があるか？
+                y_test = np.argmax(y_test, axis=1)
+                y_pred = np.argmax(y_pred, axis=1)
             return {
                 'name': metrics['name'],
                 'value': metrics['func'](y_test, y_pred),
@@ -144,7 +154,7 @@ def _sklearn_cross_val_iter2train_test_iter(X, y, cross_val_iter, cross_val_iter
 
 
 def evaluate(model,
-    X, y, preprocessor,
+    X, y, preprocessor, format_func_for_predictor, format_func_for_target,
     train_test_split_func='train_test_split@sklearn.model_selection',
     train_test_split_func_kwargs={},
     cross_val_iterator=None,
@@ -176,9 +186,12 @@ def evaluate(model,
         train_test_iterator = _sklearn_cross_val_iter2train_test_iter(X, y, cross_val_iterator, cross_val_iterator_kwargs)
         result['cv'] = True
 
-    for Xraw_train, Xraw_test, y_train, y_test in train_test_iterator:
+    for X_train_raw, X_test_raw, y_train_raw, y_test_raw in train_test_iterator:
+        y_train, y_test = format_func_for_target(y_train_raw), format_func_for_target(y_test_raw)
+
         preprocessor.reset()
-        X_train, X_test = preprocessor.process(Xraw_train, Xraw_test)
+        X_train_p, X_test_p = preprocessor.process(X_train_raw, X_test_raw)
+        X_train, X_test = format_func_for_predictor(X_train_p), format_func_for_predictor(X_test_p)
         one_result = []
         model, y_pred, y_pred_proba = _fit_and_predict(X_train, X_test, y_train, model)
         if metrics == 'all':

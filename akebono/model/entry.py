@@ -63,7 +63,7 @@ def get_model(model_config):
     if model is None:
         raise Exception('unexpedted.')
     if model_type is not None:
-        model.set_model_type(model_type)
+        model.set_model_type(model_type=model_type)
 
     if is_rebuild:
         if scenario_tag is None or train_id is None:

@@ -8,11 +8,12 @@ from akebono.dataset import get_dataset
 from akebono.model import get_model
 from akebono.preprocessor import (
     get_preprocessor,
-    StatefulPreprocessor,
 )
-from akebono.utils import pathjoin
+from akebono.utils import (
+    load_object_by_str,
+    pathjoin,
+)
 import akebono.settings as settings
-import os
 import pandas as pd
 import gc
 
@@ -24,6 +25,8 @@ def train(train_id, scenario_tag,
     dataset_config=None,
     model_config=None,
     preprocessor_config=None,
+    formatter_config_for_predictor=None,
+    formatter_config_for_target=None,
     evaluate_enabled=False,
     fit_model_enabled=False,
     dump_result_enabled=False
@@ -41,6 +44,10 @@ def train(train_id, scenario_tag,
         :type model_config: dict
         :param preprocessor_config: Preprocessorの設定。:class:`akebono.preprocessor.get_preprocessor` の引数。
         :type preprocessor_config: dict
+        :param formatter_config_for_predictor: 特徴用Formatterの設定。
+        :type formatter_config_for_predictor: dict
+        :param formatter_config_for_target: 目標用Formatterの設定。
+        :type formatter_config_for_target: dict
         :param evaluate_enabled: モデルの評価を実行するかのフラグ
         :type evaluate_enabled: bool
         :param fit_model_enabled: モデルの訓練を実行するかのフラグ
@@ -57,6 +64,14 @@ def train(train_id, scenario_tag,
                 'name': 'identify',
                 'kwargs': {},
             }
+        if formatter_config_for_predictor is None:
+            formatter_config_for_predictor = {
+                'name': 'get_values@akebono.formatter',
+            }
+        if formatter_config_for_target is None:
+            formatter_config_for_target = {
+                'name': 'get_values@akebono.formatter',
+            }
 
         ret = {
             'type': 'train',
@@ -64,6 +79,8 @@ def train(train_id, scenario_tag,
             'dataset_config': dataset_config,
             'model_config': model_config,
             'preprocessor_config': preprocessor_config,
+            'formatter_config_for_predictor': formatter_config_for_predictor,
+            'formatter_config_for_target': formatter_config_for_target,
             'evaluate_enabled': evaluate_enabled,
             'fit_model_enabled': fit_model_enabled,
             'dump_result_enabled': dump_result_enabled
@@ -79,17 +96,21 @@ def train(train_id, scenario_tag,
         
         model_config['is_rebuild'] = False
         model = get_model(model_config)
-        
+
+        format_func_for_predictor = load_object_by_str(formatter_config_for_predictor['name'])
+        format_func_for_target = load_object_by_str(formatter_config_for_target['name'])
+
         if evaluate_enabled:
             logger.debug('evaluate start.')
-            rep = model.evaluate(X, y, preprocessor)
+            rep = model.evaluate(X, y, preprocessor, format_func_for_predictor, format_func_for_target)
             gc.collect()
             logger.debug('evaluate done.')
             ret['evaluate'] = rep
         if fit_model_enabled:
             logger.debug('fit start.')
-            fX, _ = preprocessor.process(X, None)
-            model.fit(fX, y)
+            fX_p, _ = preprocessor.process(X, None)
+            fX = format_func_for_predictor(fX_p)
+            model.fit(fX, format_func_for_target(y))
             gc.collect()
             logger.debug('fit done.')
             ret['model'] = model
@@ -188,7 +209,10 @@ def predict(predict_id, scenario_tag,
             if not isinstance(result_target_columns, list):
                 raise TypeError('result_target_columns must be list.')
             predict_result = predict_result[result_target_columns]
-        predict_result.loc[:,result_predict_column] = rawresult
+
+        # len(rawresult.shape) > 1でもpredict_resultのdfに格納できるようにするためlistにしている
+        # そもそもpredict_resultを１つのdfにするべきなのかは考え直しても良いと思う
+        predict_result.loc[:,result_predict_column] = list(rawresult)
 
         if append_evacuated_columns_enabled:
             predict_result = pd.concat([dataset.get_evacuated(), predict_result], axis=1)

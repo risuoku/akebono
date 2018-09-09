@@ -74,6 +74,8 @@ config.pyは、python処理系から見るとpythonモジュールで、各プ�
 |preprocessor_config|dict or list|`{'name':'identify','kwargs':{}}`|required:`false`|前処理の設定|
 |preprocessor_config.name|string|`identify`|required:`false`|前処理の名前|
 |preprocessor_config.kwargs|dict|`{}`|required:`false`|前処理に渡すキーワード引数|
+|formatter_config_for_predictor|dict|`{'name': 'get_values@akebono.formatter'}`|required:`false`|説明変数用のFormatter|
+|formatter_config_for_target|dict|`{'name': 'get_values@akebono.formatter'}`|required:`false`|目的変数用のFormatter|
 |evaluate_enabled|bool|`False`|required:`false`|モデルの評価を実行するかのフラグ。|
 |fit_model_enabled|bool|`False`|required:`false`|モデルの訓練を実行するかのフラグ。|
 |dump_result_enabled|bool|`False`|required:`false`|trainオペレーションの結果や訓練済みモデルをストレージに保存するかどうかのフラグ。|
