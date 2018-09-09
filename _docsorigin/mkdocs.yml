@@ -17,4 +17,5 @@ nav:
   - '二値分類器を作る': 'tutorials/2.md'
   - 'データの前処理を追加する': 'tutorials/3.md'
   - 'BigQuery loaderを使う': 'tutorials/4.md'
+  - 'カスタムモデルを実装する': 'tutorials/5.md'
 - 'APIリファレンス': 'sphinxapidocs/index.html'
