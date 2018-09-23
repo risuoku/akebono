@@ -2,6 +2,7 @@ import copy
 import re
 from ._models import (
     WrappedLGBMClassifier,
+    WrappedXGBClassifier,
     get_wrapped_sklearn_model,
 )
 import akebono.settings as settings
@@ -56,6 +57,8 @@ def get_model(model_config):
         model = get_wrapped_sklearn_model(model_name)(**mcc)
     elif model_name == 'LGBMClassifier':
         model = WrappedLGBMClassifier(**mcc)
+    elif model_name == 'XGBClassifier':
+        model = WrappedXGBClassifier(**mcc)
     else:
         model_cls = load_object_by_str(model_name)
         model = model_cls(**mcc)
