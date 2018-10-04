@@ -33,13 +33,15 @@ def load(load_func_kwargs, param):
     sql = param.get('sql')
     sql_template_dir = param.get('sql_template_dir', os.path.join(settings.project_root_dir, '_dataset/bq_sql_templates'))
     client_read_config = param.get('client_read_config', {
-        'query': {
-            'useLegacySql': False,
-            'useQueryCache': False,
+        'configuration': {
+            'query': {
+                'useLegacySql': False,
+                'useQueryCache': False,
+            },
+            'jobTimeoutMs': 3600 * 1000,
         },
-        'jobTimeoutMs': 3600 * 1000,
     })
     if sql is not None and not isinstance(sql, str):
         raise TypeError('sql must be str.')
     _rendered_sql = render_sql(param['dataset_name'], load_func_kwargs, sql_template_dir, sql=sql)
-    return pd.read_gbq(_rendered_sql, configuration=client_read_config)
+    return pd.read_gbq(_rendered_sql, **client_read_config)
