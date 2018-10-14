@@ -13,6 +13,7 @@ from akebono.utils import (
     load_object_by_str,
     pathjoin,
 )
+from akebono.exceptions import EmptyDatasetError
 import akebono.settings as settings
 import pandas as pd
 import gc
@@ -92,6 +93,10 @@ def train(train_id, scenario_tag,
         preprocessor.set_operation_mode('train')
         logger.debug('load dataset start.')
         X, y = dataset.get_predictor_target()
+
+        if X.index.size == 0:
+            raise EmptyDatasetError('empty record')
+
         logger.debug('load dataset done.')
         
         model_config['is_rebuild'] = False
@@ -192,6 +197,10 @@ def predict(predict_id, scenario_tag,
         preprocessor.load_with_operation_rule(dirpath, train_id)
 
         X = dataset.get_predictor()
+
+        if X.index.size == 0:
+            raise EmptyDatasetError('empty record')
+
         fX, _ = preprocessor.process(X, None)
         gc.collect()
         
