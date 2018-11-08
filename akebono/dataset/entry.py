@@ -91,7 +91,7 @@ def get_dataset(dataset_config):
         preprocess_func_hash[:24],
         preprocess_func_kwargs.get_hashed_id(length=24)
     )
-    dataset_loading_cache_enabled = dataset_config.get('dataset_loading_cache_enabled', False)
+    dataset_loading_cache_enabled = dataset_config.get('dataset_loading_cache_enabled', True)
     if dataset_loading_cache_enabled:
         ds = datasetholder.get(fname)
         if ds is not None:
