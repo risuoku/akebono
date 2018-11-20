@@ -7,6 +7,7 @@ from akebono.utils import (
 )
 import akebono.settings as settings
 from .model import Dataset
+from .state import datasetholder
 from akebono.logging import getLogger
 import copy
 
@@ -84,17 +85,30 @@ def get_dataset(dataset_config):
             **copy.copy(preprocess_func_kwargs.value)
         )
 
+    fname = '{}_{}_{}_{}'.format(
+        dataset_name,
+        load_func_kwargs.get_hashed_id(length=24),
+        preprocess_func_hash[:24],
+        preprocess_func_kwargs.get_hashed_id(length=24)
+    )
+    dataset_loading_cache_enabled = dataset_config.get('dataset_loading_cache_enabled', True)
+    if dataset_loading_cache_enabled:
+        ds = datasetholder.get(fname)
+        if ds is not None:
+            logger.debug('dataset_loading_cache enabled .. {} get done.'.format(ds.name))
+            return ds
+
+    pkl_fname = fname + '.pkl'
     if cache_enabled:
         if dataset_name is not None:
             logger.info('dataset cache enabled')
-            fname = '{}_{}_{}_{}.pkl'.format(
-                dataset_name,
-                load_func_kwargs.get_hashed_id(length=24),
-                preprocess_func_hash[:24],
-                preprocess_func_kwargs.get_hashed_id(length=24)
-            )
-            _core_func = cache_located_at(pathjoin(settings.cache_dir, fname))(_core_func)
+            _core_func = cache_located_at(pathjoin(settings.cache_dir, pkl_fname))(_core_func)
         else:
             raise Exception('dataset_config.cache_enabled is True, but dataset_config.name is None')
 
-    return Dataset(_core_func(), target_column, evacuated_columns)
+    ds = Dataset(fname, _core_func(), target_column, evacuated_columns)
+
+    if dataset_loading_cache_enabled:
+        datasetholder.set(ds)
+        logger.debug('dataset_loading_cache enabled .. {} set done.'.format(ds.name))
+    return ds

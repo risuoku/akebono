@@ -36,6 +36,7 @@
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">from</span> <span class="nn">._models</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">WrappedLGBMClassifier</span><span class="p">,</span>
+    <span class="n">WrappedXGBClassifier</span><span class="p">,</span>
     <span class="n">get_wrapped_sklearn_model</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">import</span> <span class="nn">akebono.settings</span> <span class="k">as</span> <span class="nn">settings</span>
@@ -90,6 +91,8 @@
         <span class="n">model</span> <span class="o">=</span> <span class="n">get_wrapped_sklearn_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">)(</span><span class="o">**</span><span class="n">mcc</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">model_name</span> <span class="o">==</span> <span class="s1">&#39;LGBMClassifier&#39;</span><span class="p">:</span>
         <span class="n">model</span> <span class="o">=</span> <span class="n">WrappedLGBMClassifier</span><span class="p">(</span><span class="o">**</span><span class="n">mcc</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">model_name</span> <span class="o">==</span> <span class="s1">&#39;XGBClassifier&#39;</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">WrappedXGBClassifier</span><span class="p">(</span><span class="o">**</span><span class="n">mcc</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">model_cls</span> <span class="o">=</span> <span class="n">load_object_by_str</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
         <span class="n">model</span> <span class="o">=</span> <span class="n">model_cls</span><span class="p">(</span><span class="o">**</span><span class="n">mcc</span><span class="p">)</span>

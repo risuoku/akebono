@@ -6,9 +6,10 @@ class Dataset:
     Dataset class
     """
 
-    def __init__(self, value, target_column, evacuated_columns):
+    def __init__(self, fname, value, target_column, evacuated_columns):
         if not isinstance(value, pd.DataFrame):
             raise TypeError('value must be pandas.DataFrame')
+        self._fname = fname
         self._value = value
         self._target_column = target_column
         self._evacuated_columns = evacuated_columns
@@ -35,6 +36,10 @@ class Dataset:
             if c in columns:
                 columns.remove(c)
         return self._value[columns]
+
+    @property
+    def name(self):
+        return self._fname
 
     def get_evacuated(self):
         return self._value[self._evacuated_columns]

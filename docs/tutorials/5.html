@@ -456,7 +456,7 @@
                   <h1>カスタムモデルを実装する</h1>
                 
                 <h2 id="1">隠れ層１層の多層パーセプトロンを実装する<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
-<p>カスタムモデルの例として、多層パーセプトロン(MLP)をKerasで実装してみます。
+<p>カスタムモデルの例として、多層パーセプトロン(MLP)をKerasで実装してみます。(以下にある実装は、tensorflow 1.10.0で動作確認しています)
 タスクとしては非線形モデルでないと分離できないmoonの分類をやります。
 カスタムモデルを実装するには、最低でも<a href="/sphinxapidocs/index.html#akebono.model.WrappedModel">akebono.model.WrappedModel</a> をベースにしたモデルが実装されている必要があります。</p>
 <p>まず、カスタマイズされたモジュールを置く名前空間を<code>customized</code>として以下のような<code>model.py</code> を作成します。</p>
@@ -498,6 +498,7 @@
 
     <span class="k">def</span> <span class="nf">dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dirpath</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">pathjoin</span><span class="p">(</span><span class="n">dirpath</span><span class="p">,</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;.h5&#39;</span><span class="p">))</span>
+        <span class="n">kr</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">clear_session</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span>
 
     <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dirpath</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
