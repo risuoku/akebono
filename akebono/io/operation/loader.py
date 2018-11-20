@@ -7,6 +7,10 @@ from akebono.utils import (
 )
 import akebono.settings as settings
 import pandas as pd
+from akebono.logging import getLogger
+
+
+logger = getLogger(__name__)
 
 
 def load_sklearn_model(model, dirpath, model_name):
@@ -18,6 +22,7 @@ def load_sklearn_model(model, dirpath, model_name):
 
 def load_train_results(scenario_tag='default', train_ids='all'):
     dirpath = pathjoin(settings.operation_results_dir, scenario_tag)
+    logger.debug('dirpath: {}'.format(dirpath))
     file_paths = list_directory(dirpath)
     result_paths = [
         fp for fp in file_paths
