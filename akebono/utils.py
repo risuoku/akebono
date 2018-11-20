@@ -21,10 +21,16 @@ _bkt = None
 
 
 def _get_gcs_bucket(bucket_name):
-    if self._bkt is None:
-        from google.cloud import storage as gstorage
-        _c = gstorage.Client()
-        self._bkt = _c.get_bucket(bucket_name)
+    #if self._bkt is None:
+    #    from google.cloud import storage as gstorage
+    #    _c = gstorage.Client()
+    #    self._bkt = _c.get_bucket(bucket_name)
+    
+    # 一時的に、バケットのキャッシュ機能外す
+    # 現状、config上でバケットの切り替え設定ができないため
+    from google.cloud import storage as gstorage
+    _c = gstorage.Client()
+    self._bkt = _c.get_bucket(bucket_name)
     return self._bkt
 
 
