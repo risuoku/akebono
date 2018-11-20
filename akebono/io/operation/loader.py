@@ -32,10 +32,12 @@ def load_train_results(scenario_tag='default', train_ids='all'):
         from_pickle(rp)
         for rp in result_paths
     ]
+    logger.debug('results1: {}'.format(results))
     if not (isinstance(train_ids, list) or train_ids == 'all'):
         raise ValueError('train_ids must be list type or str "all"')
     if not train_ids == 'all':
         results = [r for r in results if r['id'] in train_ids]
+    logger.debug('results2: {}'.format(results))
 
     # convert evaluate result to pandas.DataFrame
     for idx, r in enumerate(results):
