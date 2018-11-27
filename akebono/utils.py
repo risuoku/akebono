@@ -47,13 +47,13 @@ def try_decode_bytes_and_get(bt):
     return None
 
 
-def pd_to_csv(df, path, **kwargs):
+def pd_to_csv(df, path, storage_class=None **kwargs):
     if settings.storage_type == 'local':
         df.to_csv(path, **kwargs)
     elif settings.storage_type == 'gcs':
         buf = df.to_csv(None, encoding='utf-8', **kwargs)
         bkt = _get_gcs_bucket(settings.storage_option['bucket_name'])
-        bkt.blob(path, chunk_size=1048576000).upload_from_string(buf, content_type='text/csv')
+        bkt.blob(path, storage_class=storage_class, chunk_size=1048576000).upload_from_string(buf, content_type='text/csv')
     else:
         raise ValueError('invalid storage_type')
 
