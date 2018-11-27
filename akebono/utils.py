@@ -47,7 +47,7 @@ def try_decode_bytes_and_get(bt):
     return None
 
 
-def pd_to_csv(df, path, storage_class=None **kwargs):
+def pd_to_csv(df, path, storage_class=None, **kwargs):
     if settings.storage_type == 'local':
         df.to_csv(path, **kwargs)
     elif settings.storage_type == 'gcs':
