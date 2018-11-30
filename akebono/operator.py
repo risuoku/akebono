@@ -207,6 +207,7 @@ def predict(predict_id, scenario_tag,
         model_config.update(tr['model_config'])
         model_config['is_rebuild'] = True
         model = get_model(model_config)
+        ret['model_config'] = model_config
 
         predict_func = getattr(model, method_type, None)
         if predict_func is None:
