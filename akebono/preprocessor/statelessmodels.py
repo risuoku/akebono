@@ -65,6 +65,7 @@ class ExcludeColumns(StatelessPreprocessor):
         self._columns = columns
 
     def process(self, df_train, df_test):
+        logger.debug('ExcludeColumns#process invoked.')
         if not isinstance(df_train, pd.DataFrame):
             raise TypeError('df_train must be pandas.DataFrame')
         s_columns = list(df_train.columns)
