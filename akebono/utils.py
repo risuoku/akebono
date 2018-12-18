@@ -139,6 +139,8 @@ def list_directory(dirpath, mode='path'):
             raise ValueError('invalid mode.')
     elif settings.storage_type == 'gcs':
         bkt = _get_gcs_bucket(settings.storage_option['bucket_name'])
+        if not dirpath[-1] == '/':
+            dirpath += '/'
         blob_list = [blob for blob in bkt.list_blobs() if re.search(dirpath, blob.name) is not None]
         pathlist = [blob.name for blob in blob_list if not blob.name == dirpath]
         if mode == 'path':
