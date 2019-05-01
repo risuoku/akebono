@@ -3,11 +3,13 @@ from akebono.io.operation.dumper import (
     dump_train_result,
     dump_predicted_result,
 )
-from akebono.io.operation.loader import get_train_result 
+from akebono.io.operation.loader import get_train_result
+from akebono.model.loader import get_trained_model
 from akebono.dataset import get_dataset
 from akebono.model import get_model
 from akebono.preprocessor import (
     get_preprocessor,
+    get_preprocessor_for_prediction,
 )
 from akebono.utils import (
     load_object_by_str,
@@ -169,7 +171,9 @@ def predict(predict_id, scenario_tag,
             raise ValueError('`name` key must be contained in dumper_config.')
 
         train_id = str(train_id)
-        model_config = {}
+        tr = get_train_result(scenario_tag=scenario_tag, train_id=train_id)
+        model, model_config, _ = get_trained_model(scenario_tag, train_id, train_result=tr)
+
         ret = {
             'type': 'predict',
             'method_type': method_type,
@@ -179,22 +183,14 @@ def predict(predict_id, scenario_tag,
             'dumper_config': dumper_config,
             'result_target_columns': result_target_columns,
             'result_predict_column': result_predict_column,
+            'train_result': tr,
+            'model_config': model_config,
         }
-
-        model_config['train_id'] = train_id
-        model_config['scenario_tag'] = scenario_tag
-
-        tr = get_train_result(scenario_tag=scenario_tag, train_id=train_id)
-        if tr is None:
-            raise Exception('target result not found.')
-        ret['train_result'] = tr
 
         dataset_config['target_column'] = None # target_columnがNoneだと、predict用のDatasetが返ってくる
         dataset = get_dataset(dataset_config)
-        preprocessor = get_preprocessor(tr['preprocessor_config'])
-        preprocessor.set_operation_mode('predict')
         dirpath = pathjoin(settings.operation_results_dir, scenario_tag)
-        preprocessor.load_with_operation_rule(dirpath, train_id)
+        preprocessor = get_preprocessor_for_prediction(scenario_tag, train_id, tr['preprocessor_config'], dirpath=dirpath)
 
         X = dataset.get_predictor()
 
@@ -203,11 +199,6 @@ def predict(predict_id, scenario_tag,
 
         fX, _ = preprocessor.process(X, None)
         gc.collect()
-        
-        model_config.update(tr['model_config'])
-        model_config['is_rebuild'] = True
-        model = get_model(model_config)
-        ret['model_config'] = model_config
 
         predict_func = getattr(model, method_type, None)
         if predict_func is None:

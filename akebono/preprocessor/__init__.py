@@ -10,4 +10,7 @@ from .statefulmodels import (
     ApplyPca,
 )
 from .pipeline import PreprocessorPipeline
-from .entry import get_preprocessor
+from .entry import (
+    get_preprocessor,
+    get_preprocessor_for_prediction,
+)
