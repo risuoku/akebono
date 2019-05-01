@@ -10,7 +10,7 @@ class Dataset:
         if not isinstance(value, pd.DataFrame):
             raise TypeError('value must be pandas.DataFrame')
         self._fname = fname
-        self._value = value
+        self._value = value.reset_index(drop=True)
         self._target_column = target_column
         self._evacuated_columns = evacuated_columns
     
