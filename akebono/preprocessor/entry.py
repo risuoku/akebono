@@ -1,8 +1,10 @@
 from akebono.utils import (
     snake2camel,
     load_object_by_str,
+    pathjoin,
 )
 from .pipeline import PreprocessorPipeline
+import akebono.settings as settings
 
 
 _preprocessor_name_alias = {
@@ -52,3 +54,12 @@ def get_preprocessor(preprocessor_config, pipeline_enabled=True):
         if not isinstance(preprocessor_config, dict):
             raise TypeError('preprocessor_config must be dict if pipeline_enabled is False')
         return _get_preprocessor_strict(preprocessor_config)
+
+
+def get_preprocessor_for_prediction(scenario_tag, train_id, preprocessor_config, dirpath=None):
+    preprocessor = get_preprocessor(preprocessor_config)
+    preprocessor.set_operation_mode('predict')
+    if dirpath is None:
+        dirpath = pathjoin(settings.operation_results_dir, scenario_tag)
+    preprocessor.load_with_operation_rule(dirpath, train_id)
+    return preprocessor

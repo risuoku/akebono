@@ -9,6 +9,7 @@ from akebono.dataset import get_dataset
 from akebono.model import get_model
 from akebono.preprocessor import (
     get_preprocessor,
+    get_preprocessor_for_prediction,
 )
 from akebono.utils import (
     load_object_by_str,
@@ -188,10 +189,8 @@ def predict(predict_id, scenario_tag,
 
         dataset_config['target_column'] = None # target_columnがNoneだと、predict用のDatasetが返ってくる
         dataset = get_dataset(dataset_config)
-        preprocessor = get_preprocessor(tr['preprocessor_config'])
-        preprocessor.set_operation_mode('predict')
         dirpath = pathjoin(settings.operation_results_dir, scenario_tag)
-        preprocessor.load_with_operation_rule(dirpath, train_id)
+        preprocessor = get_preprocessor_for_prediction(scenario_tag, train_id, tr['preprocessor_config'], dirpath=dirpath)
 
         X = dataset.get_predictor()
 
