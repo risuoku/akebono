@@ -171,7 +171,7 @@ def predict(predict_id, scenario_tag,
 
         train_id = str(train_id)
         tr = get_train_result(scenario_tag=scenario_tag, train_id=train_id)
-        model, model_config = get_trained_model(scenario_tag, train_id, train_result=tr)
+        model, model_config, _ = get_trained_model(scenario_tag, train_id, train_result=tr)
 
         ret = {
             'type': 'predict',
