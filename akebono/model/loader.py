@@ -24,4 +24,4 @@ def get_trained_model(scenario_tag, train_id, train_result=None):
     model_config['is_rebuild'] = True
     model = get_model(model_config)
 
-    return model, model_config, train_result
+    return model, model_config

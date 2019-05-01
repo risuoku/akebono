@@ -172,7 +172,7 @@ def predict(predict_id, scenario_tag,
 
         train_id = str(train_id)
         tr = get_train_result(scenario_tag=scenario_tag, train_id=train_id)
-        model, model_config, _ = get_trained_model(scenario_tag, train_id, train_result=tr)
+        model, model_config = get_trained_model(scenario_tag, train_id, train_result=tr)
 
         ret = {
             'type': 'predict',
@@ -190,7 +190,7 @@ def predict(predict_id, scenario_tag,
         dataset_config['target_column'] = None # target_columnがNoneだと、predict用のDatasetが返ってくる
         dataset = get_dataset(dataset_config)
         dirpath = pathjoin(settings.operation_results_dir, scenario_tag)
-        preprocessor = get_preprocessor_for_prediction(scenario_tag, train_id, tr['preprocessor_config'], dirpath=dirpath)
+        preprocessor = get_preprocessor_for_prediction(scenario_tag, train_id, train_result=tr, dirpath=dirpath)
 
         X = dataset.get_predictor()
 
