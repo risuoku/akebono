@@ -99,6 +99,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_columns</span> <span class="o">=</span> <span class="n">columns</span>
 
 <div class="viewcode-block" id="ExcludeColumns.process"><a class="viewcode-back" href="../../../index.html#akebono.preprocessor.ExcludeColumns.process">[docs]</a>    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df_train</span><span class="p">,</span> <span class="n">df_test</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;ExcludeColumns#process invoked.&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df_train</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;df_train must be pandas.DataFrame&#39;</span><span class="p">)</span>
         <span class="n">s_columns</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df_train</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>

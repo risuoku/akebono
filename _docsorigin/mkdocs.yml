@@ -18,4 +18,5 @@ nav:
   - 'データの前処理を追加する': 'tutorials/3.md'
   - 'BigQuery loaderを使う': 'tutorials/4.md'
   - 'カスタムモデルを実装する': 'tutorials/5.md'
+  - '予測器を実装する': 'notebooks/prediction.html'
 - 'APIリファレンス': 'sphinxapidocs/index.html'

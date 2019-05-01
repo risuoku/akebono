@@ -35,8 +35,15 @@
 <span></span><span class="kn">from</span> <span class="nn">akebono.utils</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">snake2camel</span><span class="p">,</span>
     <span class="n">load_object_by_str</span><span class="p">,</span>
+    <span class="n">pathjoin</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">.pipeline</span> <span class="k">import</span> <span class="n">PreprocessorPipeline</span>
+<span class="kn">import</span> <span class="nn">akebono.settings</span> <span class="k">as</span> <span class="nn">settings</span>
+<span class="kn">from</span> <span class="nn">akebono.io.operation.loader</span> <span class="k">import</span> <span class="n">get_train_result</span>
+<span class="kn">from</span> <span class="nn">akebono.logging</span> <span class="k">import</span> <span class="n">getLogger</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
 <span class="n">_preprocessor_name_alias</span> <span class="o">=</span> <span class="p">{</span>
@@ -86,6 +93,18 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">preprocessor_config</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;preprocessor_config must be dict if pipeline_enabled is False&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">_get_preprocessor_strict</span><span class="p">(</span><span class="n">preprocessor_config</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">get_preprocessor_for_prediction</span><span class="p">(</span><span class="n">scenario_tag</span><span class="p">,</span> <span class="n">train_id</span><span class="p">,</span> <span class="n">train_result</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dirpath</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">train_result</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;train_result is None .. load from scenario_tag: </span><span class="si">{}</span><span class="s1">, train_id: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">scenario_tag</span><span class="p">,</span> <span class="n">train_id</span><span class="p">))</span>
+        <span class="n">train_result</span> <span class="o">=</span> <span class="n">get_train_result</span><span class="p">(</span><span class="n">scenario_tag</span><span class="o">=</span><span class="n">scenario_tag</span><span class="p">,</span> <span class="n">train_id</span><span class="o">=</span><span class="n">train_id</span><span class="p">)</span>
+    <span class="n">preprocessor</span> <span class="o">=</span> <span class="n">get_preprocessor</span><span class="p">(</span><span class="n">train_result</span><span class="p">[</span><span class="s1">&#39;preprocessor_config&#39;</span><span class="p">])</span>
+    <span class="n">preprocessor</span><span class="o">.</span><span class="n">set_operation_mode</span><span class="p">(</span><span class="s1">&#39;predict&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">dirpath</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">dirpath</span> <span class="o">=</span> <span class="n">pathjoin</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">operation_results_dir</span><span class="p">,</span> <span class="n">scenario_tag</span><span class="p">)</span>
+    <span class="n">preprocessor</span><span class="o">.</span><span class="n">load_with_operation_rule</span><span class="p">(</span><span class="n">dirpath</span><span class="p">,</span> <span class="n">train_id</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">preprocessor</span>
 </pre></div>
 
           </div>

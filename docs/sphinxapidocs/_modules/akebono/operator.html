@@ -37,16 +37,19 @@
     <span class="n">dump_train_result</span><span class="p">,</span>
     <span class="n">dump_predicted_result</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">akebono.io.operation.loader</span> <span class="k">import</span> <span class="n">get_train_result</span> 
+<span class="kn">from</span> <span class="nn">akebono.io.operation.loader</span> <span class="k">import</span> <span class="n">get_train_result</span>
+<span class="kn">from</span> <span class="nn">akebono.model.loader</span> <span class="k">import</span> <span class="n">get_trained_model</span>
 <span class="kn">from</span> <span class="nn">akebono.dataset</span> <span class="k">import</span> <span class="n">get_dataset</span>
 <span class="kn">from</span> <span class="nn">akebono.model</span> <span class="k">import</span> <span class="n">get_model</span>
 <span class="kn">from</span> <span class="nn">akebono.preprocessor</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">get_preprocessor</span><span class="p">,</span>
+    <span class="n">get_preprocessor_for_prediction</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">akebono.utils</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">load_object_by_str</span><span class="p">,</span>
     <span class="n">pathjoin</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="kn">from</span> <span class="nn">akebono.exceptions</span> <span class="k">import</span> <span class="n">EmptyDatasetError</span>
 <span class="kn">import</span> <span class="nn">akebono.settings</span> <span class="k">as</span> <span class="nn">settings</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">gc</span>
@@ -126,6 +129,10 @@
         <span class="n">preprocessor</span><span class="o">.</span><span class="n">set_operation_mode</span><span class="p">(</span><span class="s1">&#39;train&#39;</span><span class="p">)</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;load dataset start.&#39;</span><span class="p">)</span>
         <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">get_predictor_target</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">X</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">EmptyDatasetError</span><span class="p">(</span><span class="s1">&#39;empty record&#39;</span><span class="p">)</span>
+
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;load dataset done.&#39;</span><span class="p">)</span>
         
         <span class="n">model_config</span><span class="p">[</span><span class="s1">&#39;is_rebuild&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
@@ -198,7 +205,9 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;`name` key must be contained in dumper_config.&#39;</span><span class="p">)</span>
 
         <span class="n">train_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">train_id</span><span class="p">)</span>
-        <span class="n">model_config</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">tr</span> <span class="o">=</span> <span class="n">get_train_result</span><span class="p">(</span><span class="n">scenario_tag</span><span class="o">=</span><span class="n">scenario_tag</span><span class="p">,</span> <span class="n">train_id</span><span class="o">=</span><span class="n">train_id</span><span class="p">)</span>
+        <span class="n">model</span><span class="p">,</span> <span class="n">model_config</span> <span class="o">=</span> <span class="n">get_trained_model</span><span class="p">(</span><span class="n">scenario_tag</span><span class="p">,</span> <span class="n">train_id</span><span class="p">,</span> <span class="n">train_result</span><span class="o">=</span><span class="n">tr</span><span class="p">)</span>
+
         <span class="n">ret</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;predict&#39;</span><span class="p">,</span>
             <span class="s1">&#39;method_type&#39;</span><span class="p">:</span> <span class="n">method_type</span><span class="p">,</span>
@@ -208,30 +217,22 @@
             <span class="s1">&#39;dumper_config&#39;</span><span class="p">:</span> <span class="n">dumper_config</span><span class="p">,</span>
             <span class="s1">&#39;result_target_columns&#39;</span><span class="p">:</span> <span class="n">result_target_columns</span><span class="p">,</span>
             <span class="s1">&#39;result_predict_column&#39;</span><span class="p">:</span> <span class="n">result_predict_column</span><span class="p">,</span>
+            <span class="s1">&#39;train_result&#39;</span><span class="p">:</span> <span class="n">tr</span><span class="p">,</span>
+            <span class="s1">&#39;model_config&#39;</span><span class="p">:</span> <span class="n">model_config</span><span class="p">,</span>
         <span class="p">}</span>
-
-        <span class="n">model_config</span><span class="p">[</span><span class="s1">&#39;train_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">train_id</span>
-        <span class="n">model_config</span><span class="p">[</span><span class="s1">&#39;scenario_tag&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">scenario_tag</span>
-
-        <span class="n">tr</span> <span class="o">=</span> <span class="n">get_train_result</span><span class="p">(</span><span class="n">scenario_tag</span><span class="o">=</span><span class="n">scenario_tag</span><span class="p">,</span> <span class="n">train_id</span><span class="o">=</span><span class="n">train_id</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">tr</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;target result not found.&#39;</span><span class="p">)</span>
-        <span class="n">ret</span><span class="p">[</span><span class="s1">&#39;train_result&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tr</span>
 
         <span class="n">dataset_config</span><span class="p">[</span><span class="s1">&#39;target_column&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># target_columnがNoneだと、predict用のDatasetが返ってくる</span>
         <span class="n">dataset</span> <span class="o">=</span> <span class="n">get_dataset</span><span class="p">(</span><span class="n">dataset_config</span><span class="p">)</span>
-        <span class="n">preprocessor</span> <span class="o">=</span> <span class="n">get_preprocessor</span><span class="p">(</span><span class="n">tr</span><span class="p">[</span><span class="s1">&#39;preprocessor_config&#39;</span><span class="p">])</span>
-        <span class="n">preprocessor</span><span class="o">.</span><span class="n">set_operation_mode</span><span class="p">(</span><span class="s1">&#39;predict&#39;</span><span class="p">)</span>
         <span class="n">dirpath</span> <span class="o">=</span> <span class="n">pathjoin</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">operation_results_dir</span><span class="p">,</span> <span class="n">scenario_tag</span><span class="p">)</span>
-        <span class="n">preprocessor</span><span class="o">.</span><span class="n">load_with_operation_rule</span><span class="p">(</span><span class="n">dirpath</span><span class="p">,</span> <span class="n">train_id</span><span class="p">)</span>
+        <span class="n">preprocessor</span> <span class="o">=</span> <span class="n">get_preprocessor_for_prediction</span><span class="p">(</span><span class="n">scenario_tag</span><span class="p">,</span> <span class="n">train_id</span><span class="p">,</span> <span class="n">train_result</span><span class="o">=</span><span class="n">tr</span><span class="p">,</span> <span class="n">dirpath</span><span class="o">=</span><span class="n">dirpath</span><span class="p">)</span>
 
         <span class="n">X</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">get_predictor</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">X</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">EmptyDatasetError</span><span class="p">(</span><span class="s1">&#39;empty record&#39;</span><span class="p">)</span>
+
         <span class="n">fX</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">preprocessor</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
-        
-        <span class="n">model_config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">tr</span><span class="p">[</span><span class="s1">&#39;model_config&#39;</span><span class="p">])</span>
-        <span class="n">model_config</span><span class="p">[</span><span class="s1">&#39;is_rebuild&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="n">model</span> <span class="o">=</span> <span class="n">get_model</span><span class="p">(</span><span class="n">model_config</span><span class="p">)</span>
 
         <span class="n">predict_func</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">method_type</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">predict_func</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>

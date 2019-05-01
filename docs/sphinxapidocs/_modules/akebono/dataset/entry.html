@@ -41,6 +41,7 @@
 <span class="p">)</span>
 <span class="kn">import</span> <span class="nn">akebono.settings</span> <span class="k">as</span> <span class="nn">settings</span>
 <span class="kn">from</span> <span class="nn">.model</span> <span class="k">import</span> <span class="n">Dataset</span>
+<span class="kn">from</span> <span class="nn">.state</span> <span class="k">import</span> <span class="n">datasetholder</span>
 <span class="kn">from</span> <span class="nn">akebono.logging</span> <span class="k">import</span> <span class="n">getLogger</span>
 <span class="kn">import</span> <span class="nn">copy</span>
 
@@ -118,20 +119,33 @@
             <span class="o">**</span><span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">preprocess_func_kwargs</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
         <span class="p">)</span>
 
+    <span class="n">fname</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">_</span><span class="si">{}</span><span class="s1">_</span><span class="si">{}</span><span class="s1">_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">dataset_name</span><span class="p">,</span>
+        <span class="n">load_func_kwargs</span><span class="o">.</span><span class="n">get_hashed_id</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">24</span><span class="p">),</span>
+        <span class="n">preprocess_func_hash</span><span class="p">[:</span><span class="mi">24</span><span class="p">],</span>
+        <span class="n">preprocess_func_kwargs</span><span class="o">.</span><span class="n">get_hashed_id</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">dataset_loading_cache_enabled</span> <span class="o">=</span> <span class="n">dataset_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;dataset_loading_cache_enabled&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">dataset_loading_cache_enabled</span><span class="p">:</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="n">datasetholder</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ds</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;dataset_loading_cache enabled .. </span><span class="si">{}</span><span class="s1"> get done.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">ds</span>
+
+    <span class="n">pkl_fname</span> <span class="o">=</span> <span class="n">fname</span> <span class="o">+</span> <span class="s1">&#39;.pkl&#39;</span>
     <span class="k">if</span> <span class="n">cache_enabled</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">dataset_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;dataset cache enabled&#39;</span><span class="p">)</span>
-            <span class="n">fname</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">_</span><span class="si">{}</span><span class="s1">_</span><span class="si">{}</span><span class="s1">_</span><span class="si">{}</span><span class="s1">.pkl&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">dataset_name</span><span class="p">,</span>
-                <span class="n">load_func_kwargs</span><span class="o">.</span><span class="n">get_hashed_id</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">24</span><span class="p">),</span>
-                <span class="n">preprocess_func_hash</span><span class="p">[:</span><span class="mi">24</span><span class="p">],</span>
-                <span class="n">preprocess_func_kwargs</span><span class="o">.</span><span class="n">get_hashed_id</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
-            <span class="p">)</span>
-            <span class="n">_core_func</span> <span class="o">=</span> <span class="n">cache_located_at</span><span class="p">(</span><span class="n">pathjoin</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">cache_dir</span><span class="p">,</span> <span class="n">fname</span><span class="p">))(</span><span class="n">_core_func</span><span class="p">)</span>
+            <span class="n">_core_func</span> <span class="o">=</span> <span class="n">cache_located_at</span><span class="p">(</span><span class="n">pathjoin</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">cache_dir</span><span class="p">,</span> <span class="n">pkl_fname</span><span class="p">))(</span><span class="n">_core_func</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;dataset_config.cache_enabled is True, but dataset_config.name is None&#39;</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">_core_func</span><span class="p">(),</span> <span class="n">target_column</span><span class="p">,</span> <span class="n">evacuated_columns</span><span class="p">)</span></div>
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">_core_func</span><span class="p">(),</span> <span class="n">target_column</span><span class="p">,</span> <span class="n">evacuated_columns</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">dataset_loading_cache_enabled</span><span class="p">:</span>
+        <span class="n">datasetholder</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;dataset_loading_cache enabled .. </span><span class="si">{}</span><span class="s1"> set done.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">ds</span></div>
 </pre></div>
 
           </div>

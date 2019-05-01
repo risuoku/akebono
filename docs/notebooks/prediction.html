@@ -1,0 +1,712 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.0.3, mkdocs-material-3.0.3">
+    
+    
+      
+        <title>Prediction - akebono documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/application.451f80e5.css">
+      
+      
+    
+    
+      <script src="../assets/javascripts/modernizr.1aa3b519.js"></script>
+    
+    
+      <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+      
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../assets/fonts/material-icons.css">
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448"
+    viewBox="0 0 416 448" id="__github">
+  <path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19-18.125
+        8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19 18.125-8.5
+        18.125 8.5 10.75 19 3.125 20.5zM320 304q0 10-3.125 20.5t-10.75
+        19-18.125 8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19
+        18.125-8.5 18.125 8.5 10.75 19 3.125 20.5zM360
+        304q0-30-17.25-51t-46.75-21q-10.25 0-48.75 5.25-17.75 2.75-39.25
+        2.75t-39.25-2.75q-38-5.25-48.75-5.25-29.5 0-46.75 21t-17.25 51q0 22 8
+        38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0
+        37.25-1.75t35-7.375 30.5-15 20.25-25.75 8-38.375zM416 260q0 51.75-15.25
+        82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5-41.75
+        1.125q-19.5 0-35.5-0.75t-36.875-3.125-38.125-7.5-34.25-12.875-30.25-20.25-21.5-28.75q-15.5-30.75-15.5-82.75
+        0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25
+        30.875q36.75-8.75 77.25-8.75 37 0 70 8 26.25-20.5
+        46.75-30.25t47.25-9.75q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34
+        99.5z" />
+</svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="../index.html" title="akebono documentation" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            
+              <span class="md-header-nav__topic">
+                akebono documentation
+              </span>
+              <span class="md-header-nav__topic">
+                Prediction
+              </span>
+            
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          
+            <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+            
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+          
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+
+  <a href="https://github.com/risuoku/akebono/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#__github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="../index.html" title="akebono documentation" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    akebono documentation
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+
+  <a href="https://github.com/risuoku/akebono/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#__github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../index.html" title="akebonoをはじめる" class="md-nav__link">
+      akebonoをはじめる
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../config.html" title="akebonoの設定" class="md-nav__link">
+      akebonoの設定
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../system.html" title="akebonoの構成" class="md-nav__link">
+      akebonoの構成
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      チュートリアル
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        チュートリアル
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../tutorials/1.html" title="２つ以上の設定を一度に実行する" class="md-nav__link">
+      ２つ以上の設定を一度に実行する
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../tutorials/2.html" title="二値分類器を作る" class="md-nav__link">
+      二値分類器を作る
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../tutorials/3.html" title="データの前処理を追加する" class="md-nav__link">
+      データの前処理を追加する
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../tutorials/4.html" title="BigQuery loaderを使う" class="md-nav__link">
+      BigQuery loaderを使う
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../tutorials/5.html" title="カスタムモデルを実装する" class="md-nav__link">
+      カスタムモデルを実装する
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="prediction.html" title="予測器を実装する" class="md-nav__link">
+      予測器を実装する
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../sphinxapidocs/index.html" title="APIリファレンス" class="md-nav__link">
+      APIリファレンス
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/risuoku/akebono/blob/master/_docsorigin/docs/notebooks/prediction.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                  <h1>Prediction</h1>
+                
+                <div class="codehilite"><pre><span></span><span class="c1"># パッケージの読み込み</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;AKEBONO_DEBUG&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;true&#39;</span>
+
+<span class="kn">from</span> <span class="nn">akebono.dataset</span> <span class="kn">import</span> <span class="n">get_dataset</span>
+<span class="kn">from</span> <span class="nn">akebono.model.loader</span> <span class="kn">import</span> <span class="n">get_trained_model</span>
+<span class="kn">from</span> <span class="nn">akebono.preprocessor</span> <span class="kn">import</span> <span class="n">get_preprocessor_for_prediction</span>
+
+<span class="kn">import</span> <span class="nn">config</span>
+<span class="kn">import</span> <span class="nn">akebono.settings</span> <span class="kn">as</span> <span class="nn">asettings</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span><span class="c1"># 設定の適用</span>
+<span class="n">asettings</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span><span class="c1"># train_configの確認</span>
+<span class="n">config</span><span class="o">.</span><span class="n">train_config</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>[{&#39;dataset_config&#39;: {&#39;dataset_loading_cache_enabled&#39;: True,
+   &#39;loader_config&#39;: {&#39;name&#39;: &#39;iris&#39;}},
+  &#39;dump_result_enabled&#39;: True,
+  &#39;evaluate_enabled&#39;: True,
+  &#39;fit_model_enabled&#39;: True,
+  &#39;model_config&#39;: {&#39;evaluate_kwargs&#39;: {&#39;cross_val_iterator&#39;: &#39;KFold@sklearn.model_selection&#39;,
+    &#39;cross_val_iterator_kwargs&#39;: {&#39;n_splits&#39;: 10,
+     &#39;random_state&#39;: 0,
+     &#39;shuffle&#39;: True}},
+   &#39;model_type&#39;: &#39;multiple_classifier&#39;,
+   &#39;name&#39;: &#39;SklearnLogisticRegression&#39;},
+  &#39;preprocessor_config&#39;: {&#39;name&#39;: &#39;apply_standard_scaler&#39;}},
+ {&#39;dataset_config&#39;: {&#39;dataset_loading_cache_enabled&#39;: True,
+   &#39;loader_config&#39;: {&#39;name&#39;: &#39;iris&#39;}},
+  &#39;dump_result_enabled&#39;: True,
+  &#39;evaluate_enabled&#39;: True,
+  &#39;fit_model_enabled&#39;: True,
+  &#39;model_config&#39;: {&#39;evaluate_kwargs&#39;: {&#39;cross_val_iterator&#39;: &#39;KFold@sklearn.model_selection&#39;,
+    &#39;cross_val_iterator_kwargs&#39;: {&#39;n_splits&#39;: 10,
+     &#39;random_state&#39;: 0,
+     &#39;shuffle&#39;: True}},
+   &#39;model_type&#39;: &#39;multiple_classifier&#39;,
+   &#39;name&#39;: &#39;SklearnLogisticRegression&#39;}}]
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span><span class="c1"># 訓練の実行</span>
+<span class="err">!</span><span class="n">akebono</span> <span class="n">train</span> <span class="o">-</span><span class="n">t</span> <span class="n">tmp1</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>[INFO] 2019-05-01 06:00:18,647 ===== train start .. config: config ===== akebono.commands.models.train
+[INFO] 2019-05-01 06:00:18,647 training .. id: 0 akebono.commands.models.train
+[DEBUG] 2019-05-01 06:00:18,659 sklearn load_iris loader invoked. akebono.dataset.generator.sklearn
+[DEBUG] 2019-05-01 06:00:18,662 dataset_loading_cache enabled .. None_e3b0c44298fc1c149afbf4c8_055aa78309b36ea9aeaf1e89_e3b0c44298fc1c149afbf4c8 set done. akebono.dataset.entry
+[DEBUG] 2019-05-01 06:00:18,662 load dataset start. akebono.operator
+[DEBUG] 2019-05-01 06:00:18,663 load dataset done. akebono.operator
+[DEBUG] 2019-05-01 06:00:18,664 model_cls_str: LogisticRegression .. created. akebono.model._models.sklearn
+[DEBUG] 2019-05-01 06:00:18,664 get_model done in train mode. akebono.model.entry
+[DEBUG] 2019-05-01 06:00:18,664 evaluate start. akebono.operator
+[DEBUG] 2019-05-01 06:00:18,665 processing .. operation_mode: train akebono.preprocessor.pipeline
+[DEBUG] 2019-05-01 06:00:18,666 ApplyStandardScaler#process invoked akebono.preprocessor.statefulmodels
+/usr/local/lib/python3.5/dist-packages/sklearn/linear_model/logistic.py:432: FutureWarning: Default solver will be changed to &#39;lbfgs&#39; in 0.22. Specify a solver to silence this warning.
+  FutureWarning)
+/usr/local/lib/python3.5/dist-packages/sklearn/linear_model/logistic.py:459: FutureWarning: Default multi_class will be changed to &#39;auto&#39; in 0.22. Specify the multi_class option to silence this warning.
+  &quot;this warning.&quot;, FutureWarning)
+[DEBUG] 2019-05-01 06:00:18,670 processing .. operation_mode: train akebono.preprocessor.pipeline
+[DEBUG] 2019-05-01 06:00:18,670 ApplyStandardScaler#process invoked akebono.preprocessor.statefulmodels
+/usr/local/lib/python3.5/dist-packages/sklearn/linear_model/logistic.py:432: FutureWarning: Default solver will be changed to &#39;lbfgs&#39; in 0.22. Specify a solver to silence this warning.
+  FutureWarning)
+/usr/local/lib/python3.5/dist-packages/sklearn/linear_model/logistic.py:459: FutureWarning: Default multi_class will be changed to &#39;auto&#39; in 0.22. Specify the multi_class option to silence this warning.
+  &quot;this warning.&quot;, FutureWarning)
+[DEBUG] 2019-05-01 06:00:18,673 processing .. operation_mode: train akebono.preprocessor.pipeline
+[DEBUG] 2019-05-01 06:00:18,674 ApplyStandardScaler#process invoked akebono.preprocessor.statefulmodels
+/usr/local/lib/python3.5/dist-packages/sklearn/linear_model/logistic.py:432: FutureWarning: Default solver will be changed to &#39;lbfgs&#39; in 0.22. Specify a solver to silence this warning.
+  FutureWarning)
+/usr/local/lib/python3.5/dist-packages/sklearn/linear_model/logistic.py:459: FutureWarning: Default multi_class will be changed to &#39;auto&#39; in 0.22. Specify the multi_class option to silence this warning.
+  &quot;this warning.&quot;, FutureWarning)
+[DEBUG] 2019-05-01 06:00:18,677 processing .. operation_mode: train akebono.preprocessor.pipeline
+[DEBUG] 2019-05-01 06:00:18,677 ApplyStandardScaler#process invoked akebono.preprocessor.statefulmodels
+/usr/local/lib/python3.5/dist-packages/sklearn/linear_model/logistic.py:432: FutureWarning: Default solver will be changed to &#39;lbfgs&#39; in 0.22. Specify a solver to silence this warning.
+  FutureWarning)
+/usr/local/lib/python3.5/dist-packages/sklearn/linear_model/logistic.py:459: FutureWarning: Default multi_class will be changed to &#39;auto&#39; in 0.22. Specify the multi_class option to silence this warning.
+  &quot;this warning.&quot;, FutureWarning)
+[DEBUG] 2019-05-01 06:00:18,680 processing .. operation_mode: train akebono.preprocessor.pipeline
+[DEBUG] 2019-05-01 06:00:18,680 ApplyStandardScaler#process invoked akebono.preprocessor.statefulmodels
+/usr/local/lib/python3.5/dist-packages/sklearn/linear_model/logistic.py:432: FutureWarning: Default solver will be changed to &#39;lbfgs&#39; in 0.22. Specify a solver to silence this warning.
+  FutureWarning)
+/usr/local/lib/python3.5/dist-packages/sklearn/linear_model/logistic.py:459: FutureWarning: Default multi_class will be changed to &#39;auto&#39; in 0.22. Specify the multi_class option to silence this warning.
+  &quot;this warning.&quot;, FutureWarning)
+[DEBUG] 2019-05-01 06:00:18,683 processing .. operation_mode: train akebono.preprocessor.pipeline
+[DEBUG] 2019-05-01 06:00:18,683 ApplyStandardScaler#process invoked akebono.preprocessor.statefulmodels
+/usr/local/lib/python3.5/dist-packages/sklearn/linear_model/logistic.py:432: FutureWarning: Default solver will be changed to &#39;lbfgs&#39; in 0.22. Specify a solver to silence this warning.
+  FutureWarning)
+/usr/local/lib/python3.5/dist-packages/sklearn/linear_model/logistic.py:459: FutureWarning: Default multi_class will be changed to &#39;auto&#39; in 0.22. Specify the multi_class option to silence this warning.
+  &quot;this warning.&quot;, FutureWarning)
+[DEBUG] 2019-05-01 06:00:18,686 processing .. operation_mode: train akebono.preprocessor.pipeline
+[DEBUG] 2019-05-01 06:00:18,686 ApplyStandardScaler#process invoked akebono.preprocessor.statefulmodels
+/usr/local/lib/python3.5/dist-packages/sklearn/linear_model/logistic.py:432: FutureWarning: Default solver will be changed to &#39;lbfgs&#39; in 0.22. Specify a solver to silence this warning.
+  FutureWarning)
+/usr/local/lib/python3.5/dist-packages/sklearn/linear_model/logistic.py:459: FutureWarning: Default multi_class will be changed to &#39;auto&#39; in 0.22. Specify the multi_class option to silence this warning.
+  &quot;this warning.&quot;, FutureWarning)
+[DEBUG] 2019-05-01 06:00:18,689 processing .. operation_mode: train akebono.preprocessor.pipeline
+[DEBUG] 2019-05-01 06:00:18,689 ApplyStandardScaler#process invoked akebono.preprocessor.statefulmodels
+/usr/local/lib/python3.5/dist-packages/sklearn/linear_model/logistic.py:432: FutureWarning: Default solver will be changed to &#39;lbfgs&#39; in 0.22. Specify a solver to silence this warning.
+  FutureWarning)
+/usr/local/lib/python3.5/dist-packages/sklearn/linear_model/logistic.py:459: FutureWarning: Default multi_class will be changed to &#39;auto&#39; in 0.22. Specify the multi_class option to silence this warning.
+  &quot;this warning.&quot;, FutureWarning)
+[DEBUG] 2019-05-01 06:00:18,692 processing .. operation_mode: train akebono.preprocessor.pipeline
+[DEBUG] 2019-05-01 06:00:18,692 ApplyStandardScaler#process invoked akebono.preprocessor.statefulmodels
+/usr/local/lib/python3.5/dist-packages/sklearn/linear_model/logistic.py:432: FutureWarning: Default solver will be changed to &#39;lbfgs&#39; in 0.22. Specify a solver to silence this warning.
+  FutureWarning)
+/usr/local/lib/python3.5/dist-packages/sklearn/linear_model/logistic.py:459: FutureWarning: Default multi_class will be changed to &#39;auto&#39; in 0.22. Specify the multi_class option to silence this warning.
+  &quot;this warning.&quot;, FutureWarning)
+[DEBUG] 2019-05-01 06:00:18,695 processing .. operation_mode: train akebono.preprocessor.pipeline
+[DEBUG] 2019-05-01 06:00:18,695 ApplyStandardScaler#process invoked akebono.preprocessor.statefulmodels
+/usr/local/lib/python3.5/dist-packages/sklearn/linear_model/logistic.py:432: FutureWarning: Default solver will be changed to &#39;lbfgs&#39; in 0.22. Specify a solver to silence this warning.
+  FutureWarning)
+/usr/local/lib/python3.5/dist-packages/sklearn/linear_model/logistic.py:459: FutureWarning: Default multi_class will be changed to &#39;auto&#39; in 0.22. Specify the multi_class option to silence this warning.
+  &quot;this warning.&quot;, FutureWarning)
+[DEBUG] 2019-05-01 06:00:18,715 evaluate done. akebono.operator
+[DEBUG] 2019-05-01 06:00:18,715 fit start. akebono.operator
+[DEBUG] 2019-05-01 06:00:18,715 processing .. operation_mode: train akebono.preprocessor.pipeline
+[DEBUG] 2019-05-01 06:00:18,716 ApplyStandardScaler#process invoked akebono.preprocessor.statefulmodels
+/usr/local/lib/python3.5/dist-packages/sklearn/linear_model/logistic.py:432: FutureWarning: Default solver will be changed to &#39;lbfgs&#39; in 0.22. Specify a solver to silence this warning.
+  FutureWarning)
+/usr/local/lib/python3.5/dist-packages/sklearn/linear_model/logistic.py:459: FutureWarning: Default multi_class will be changed to &#39;auto&#39; in 0.22. Specify the multi_class option to silence this warning.
+  &quot;this warning.&quot;, FutureWarning)
+[DEBUG] 2019-05-01 06:00:18,735 fit done. akebono.operator
+[DEBUG] 2019-05-01 06:00:18,735 dump_train_result start. akebono.operator
+[DEBUG] 2019-05-01 06:00:18,735 dump_with_operation_rule invoked. akebono.preprocessor.pipeline
+[DEBUG] 2019-05-01 06:00:18,735 dump_train_result done. akebono.operator
+[INFO] 2019-05-01 06:00:18,751 training .. id: 1 akebono.commands.models.train
+[DEBUG] 2019-05-01 06:00:18,752 dataset_loading_cache enabled .. None_e3b0c44298fc1c149afbf4c8_055aa78309b36ea9aeaf1e89_e3b0c44298fc1c149afbf4c8 get done. akebono.dataset.entry
+[DEBUG] 2019-05-01 06:00:18,752 load dataset start. akebono.operator
+[DEBUG] 2019-05-01 06:00:18,752 load dataset done. akebono.operator
+[DEBUG] 2019-05-01 06:00:18,752 model_cls_str: LogisticRegression .. created. akebono.model._models.sklearn
+[DEBUG] 2019-05-01 06:00:18,752 get_model done in train mode. akebono.model.entry
+[DEBUG] 2019-05-01 06:00:18,752 evaluate start. akebono.operator
+[DEBUG] 2019-05-01 06:00:18,753 processing .. operation_mode: train akebono.preprocessor.pipeline
+[DEBUG] 2019-05-01 06:00:18,753 Identify#process invoked. akebono.preprocessor.statelessmodels
+/usr/local/lib/python3.5/dist-packages/sklearn/linear_model/logistic.py:432: FutureWarning: Default solver will be changed to &#39;lbfgs&#39; in 0.22. Specify a solver to silence this warning.
+  FutureWarning)
+/usr/local/lib/python3.5/dist-packages/sklearn/linear_model/logistic.py:459: FutureWarning: Default multi_class will be changed to &#39;auto&#39; in 0.22. Specify the multi_class option to silence this warning.
+  &quot;this warning.&quot;, FutureWarning)
+[DEBUG] 2019-05-01 06:00:18,755 processing .. operation_mode: train akebono.preprocessor.pipeline
+[DEBUG] 2019-05-01 06:00:18,755 Identify#process invoked. akebono.preprocessor.statelessmodels
+/usr/local/lib/python3.5/dist-packages/sklearn/linear_model/logistic.py:432: FutureWarning: Default solver will be changed to &#39;lbfgs&#39; in 0.22. Specify a solver to silence this warning.
+  FutureWarning)
+/usr/local/lib/python3.5/dist-packages/sklearn/linear_model/logistic.py:459: FutureWarning: Default multi_class will be changed to &#39;auto&#39; in 0.22. Specify the multi_class option to silence this warning.
+  &quot;this warning.&quot;, FutureWarning)
+[DEBUG] 2019-05-01 06:00:18,756 processing .. operation_mode: train akebono.preprocessor.pipeline
+[DEBUG] 2019-05-01 06:00:18,757 Identify#process invoked. akebono.preprocessor.statelessmodels
+/usr/local/lib/python3.5/dist-packages/sklearn/linear_model/logistic.py:432: FutureWarning: Default solver will be changed to &#39;lbfgs&#39; in 0.22. Specify a solver to silence this warning.
+  FutureWarning)
+/usr/local/lib/python3.5/dist-packages/sklearn/linear_model/logistic.py:459: FutureWarning: Default multi_class will be changed to &#39;auto&#39; in 0.22. Specify the multi_class option to silence this warning.
+  &quot;this warning.&quot;, FutureWarning)
+[DEBUG] 2019-05-01 06:00:18,758 processing .. operation_mode: train akebono.preprocessor.pipeline
+[DEBUG] 2019-05-01 06:00:18,758 Identify#process invoked. akebono.preprocessor.statelessmodels
+/usr/local/lib/python3.5/dist-packages/sklearn/linear_model/logistic.py:432: FutureWarning: Default solver will be changed to &#39;lbfgs&#39; in 0.22. Specify a solver to silence this warning.
+  FutureWarning)
+/usr/local/lib/python3.5/dist-packages/sklearn/linear_model/logistic.py:459: FutureWarning: Default multi_class will be changed to &#39;auto&#39; in 0.22. Specify the multi_class option to silence this warning.
+  &quot;this warning.&quot;, FutureWarning)
+[DEBUG] 2019-05-01 06:00:18,760 processing .. operation_mode: train akebono.preprocessor.pipeline
+[DEBUG] 2019-05-01 06:00:18,760 Identify#process invoked. akebono.preprocessor.statelessmodels
+/usr/local/lib/python3.5/dist-packages/sklearn/linear_model/logistic.py:432: FutureWarning: Default solver will be changed to &#39;lbfgs&#39; in 0.22. Specify a solver to silence this warning.
+  FutureWarning)
+/usr/local/lib/python3.5/dist-packages/sklearn/linear_model/logistic.py:459: FutureWarning: Default multi_class will be changed to &#39;auto&#39; in 0.22. Specify the multi_class option to silence this warning.
+  &quot;this warning.&quot;, FutureWarning)
+[DEBUG] 2019-05-01 06:00:18,761 processing .. operation_mode: train akebono.preprocessor.pipeline
+[DEBUG] 2019-05-01 06:00:18,761 Identify#process invoked. akebono.preprocessor.statelessmodels
+/usr/local/lib/python3.5/dist-packages/sklearn/linear_model/logistic.py:432: FutureWarning: Default solver will be changed to &#39;lbfgs&#39; in 0.22. Specify a solver to silence this warning.
+  FutureWarning)
+/usr/local/lib/python3.5/dist-packages/sklearn/linear_model/logistic.py:459: FutureWarning: Default multi_class will be changed to &#39;auto&#39; in 0.22. Specify the multi_class option to silence this warning.
+  &quot;this warning.&quot;, FutureWarning)
+[DEBUG] 2019-05-01 06:00:18,763 processing .. operation_mode: train akebono.preprocessor.pipeline
+[DEBUG] 2019-05-01 06:00:18,763 Identify#process invoked. akebono.preprocessor.statelessmodels
+/usr/local/lib/python3.5/dist-packages/sklearn/linear_model/logistic.py:432: FutureWarning: Default solver will be changed to &#39;lbfgs&#39; in 0.22. Specify a solver to silence this warning.
+  FutureWarning)
+/usr/local/lib/python3.5/dist-packages/sklearn/linear_model/logistic.py:459: FutureWarning: Default multi_class will be changed to &#39;auto&#39; in 0.22. Specify the multi_class option to silence this warning.
+  &quot;this warning.&quot;, FutureWarning)
+[DEBUG] 2019-05-01 06:00:18,764 processing .. operation_mode: train akebono.preprocessor.pipeline
+[DEBUG] 2019-05-01 06:00:18,765 Identify#process invoked. akebono.preprocessor.statelessmodels
+/usr/local/lib/python3.5/dist-packages/sklearn/linear_model/logistic.py:432: FutureWarning: Default solver will be changed to &#39;lbfgs&#39; in 0.22. Specify a solver to silence this warning.
+  FutureWarning)
+/usr/local/lib/python3.5/dist-packages/sklearn/linear_model/logistic.py:459: FutureWarning: Default multi_class will be changed to &#39;auto&#39; in 0.22. Specify the multi_class option to silence this warning.
+  &quot;this warning.&quot;, FutureWarning)
+[DEBUG] 2019-05-01 06:00:18,766 processing .. operation_mode: train akebono.preprocessor.pipeline
+[DEBUG] 2019-05-01 06:00:18,766 Identify#process invoked. akebono.preprocessor.statelessmodels
+/usr/local/lib/python3.5/dist-packages/sklearn/linear_model/logistic.py:432: FutureWarning: Default solver will be changed to &#39;lbfgs&#39; in 0.22. Specify a solver to silence this warning.
+  FutureWarning)
+/usr/local/lib/python3.5/dist-packages/sklearn/linear_model/logistic.py:459: FutureWarning: Default multi_class will be changed to &#39;auto&#39; in 0.22. Specify the multi_class option to silence this warning.
+  &quot;this warning.&quot;, FutureWarning)
+[DEBUG] 2019-05-01 06:00:18,768 processing .. operation_mode: train akebono.preprocessor.pipeline
+[DEBUG] 2019-05-01 06:00:18,768 Identify#process invoked. akebono.preprocessor.statelessmodels
+/usr/local/lib/python3.5/dist-packages/sklearn/linear_model/logistic.py:432: FutureWarning: Default solver will be changed to &#39;lbfgs&#39; in 0.22. Specify a solver to silence this warning.
+  FutureWarning)
+/usr/local/lib/python3.5/dist-packages/sklearn/linear_model/logistic.py:459: FutureWarning: Default multi_class will be changed to &#39;auto&#39; in 0.22. Specify the multi_class option to silence this warning.
+  &quot;this warning.&quot;, FutureWarning)
+[DEBUG] 2019-05-01 06:00:18,786 evaluate done. akebono.operator
+[DEBUG] 2019-05-01 06:00:18,786 fit start. akebono.operator
+[DEBUG] 2019-05-01 06:00:18,786 processing .. operation_mode: train akebono.preprocessor.pipeline
+[DEBUG] 2019-05-01 06:00:18,786 Identify#process invoked. akebono.preprocessor.statelessmodels
+/usr/local/lib/python3.5/dist-packages/sklearn/linear_model/logistic.py:432: FutureWarning: Default solver will be changed to &#39;lbfgs&#39; in 0.22. Specify a solver to silence this warning.
+  FutureWarning)
+/usr/local/lib/python3.5/dist-packages/sklearn/linear_model/logistic.py:459: FutureWarning: Default multi_class will be changed to &#39;auto&#39; in 0.22. Specify the multi_class option to silence this warning.
+  &quot;this warning.&quot;, FutureWarning)
+[DEBUG] 2019-05-01 06:00:18,805 fit done. akebono.operator
+[DEBUG] 2019-05-01 06:00:18,805 dump_train_result start. akebono.operator
+[DEBUG] 2019-05-01 06:00:18,805 dump_with_operation_rule invoked. akebono.preprocessor.pipeline
+[DEBUG] 2019-05-01 06:00:18,805 dump_train_result done. akebono.operator
+[INFO] 2019-05-01 06:00:18,822 ===== train done ===== akebono.commands.models.train
+[DEBUG] 2019-05-01 06:00:18,822 train normally completed. __main__
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span><span class="c1"># 予測用データセットのconfig</span>
+<span class="n">dataset_config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;loader_config&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;iris&#39;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;target_column&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span> <span class="c1"># 予測の際は、target_columnをNoneにする</span>
+<span class="p">}</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">get_dataset</span><span class="p">(</span><span class="n">dataset_config</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>[DEBUG] 2019-05-01 06:00:45,129 sklearn load_iris loader invoked. akebono.dataset.generator.sklearn
+[DEBUG] 2019-05-01 06:00:45,132 dataset_loading_cache enabled .. None_e3b0c44298fc1c149afbf4c8_055aa78309b36ea9aeaf1e89_e3b0c44298fc1c149afbf4c8 set done. akebono.dataset.entry
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span><span class="c1"># 予測で使うモデルの指定</span>
+<span class="n">scenario_tag</span> <span class="o">=</span> <span class="s1">&#39;tmp1&#39;</span>
+<span class="n">train_id</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span>
+
+<span class="c1"># モデルと、前処理モジュールの読み込み</span>
+<span class="n">model</span><span class="p">,</span> <span class="n">model_config</span> <span class="o">=</span> <span class="n">get_trained_model</span><span class="p">(</span><span class="n">scenario_tag</span><span class="p">,</span> <span class="n">train_id</span><span class="p">)</span>
+<span class="n">preprocessor</span> <span class="o">=</span> <span class="n">get_preprocessor_for_prediction</span><span class="p">(</span><span class="n">scenario_tag</span><span class="p">,</span> <span class="n">train_id</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>[DEBUG] 2019-05-01 06:00:54,146 train_result is None .. load from scenario_tag: tmp1, train_id: 0 akebono.model.loader
+[DEBUG] 2019-05-01 06:00:54,147 dirpath: _storage/default/operation_results/tmp1 akebono.io.operation.loader
+[DEBUG] 2019-05-01 06:00:54,149 model_cls_str: LogisticRegression .. created. akebono.model._models.sklearn
+[DEBUG] 2019-05-01 06:00:54,150 get_model done in predict mode. akebono.model.entry
+[DEBUG] 2019-05-01 06:00:54,151 train_result is None .. load from scenario_tag: tmp1, train_id: 0 akebono.preprocessor.entry
+[DEBUG] 2019-05-01 06:00:54,152 dirpath: _storage/default/operation_results/tmp1 akebono.io.operation.loader
+[DEBUG] 2019-05-01 06:00:54,153 load_with_operation_rule invoked. akebono.preprocessor.pipeline
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span><span class="c1"># datasetから予測用した入力を取得し、前処理を実行</span>
+<span class="c1"># fXが前処理後のデータで、モデルへの入力となる</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">get_predictor</span><span class="p">()</span>
+<span class="n">fX</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">preprocessor</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>[DEBUG] 2019-05-01 06:01:03,369 processing .. operation_mode: predict akebono.preprocessor.pipeline
+[DEBUG] 2019-05-01 06:01:03,373 ApplyStandardScaler#process invoked akebono.preprocessor.statefulmodels
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span><span class="c1"># 予測の実行</span>
+<span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">fX</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+       0, 0, 0, 0, 0, 0, 1, 2, 2, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+       1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1,
+       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2,
+       2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+       2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2])
+</pre></div>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+        
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/application.583bbe55.js"></script>
+      
+      <script>app.initialize({version:"1.0.3",url:{base:".."}})</script>
+      
+    
+    
+      
+    
+  </body>
+</html>
