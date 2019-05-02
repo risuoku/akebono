@@ -23,6 +23,7 @@ def _update_associated_attrs():
     self.storage_project_root_dir = pathjoin(storage_root_dir, project_name)
     self.cache_dir = pathjoin(storage_project_root_dir, 'cache')
     self.operation_results_dir = pathjoin(storage_project_root_dir, 'operation_results')
+    self.datasource_dir = pathjoin(storage_project_root_dir, 'datasource')
 
 
 def init():
@@ -93,7 +94,6 @@ def reset():
     self.project_root_dir = os.getcwd()
     self.train_config = []
     self.predict_config = []
-    self.datasource_dir = pathjoin(storage_root_dir, project_name, 'datasource')
     _update_associated_attrs()
 
 
