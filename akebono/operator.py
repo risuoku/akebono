@@ -86,7 +86,8 @@ def train(train_id, scenario_tag,
             'formatter_config_for_target': formatter_config_for_target,
             'evaluate_enabled': evaluate_enabled,
             'fit_model_enabled': fit_model_enabled,
-            'dump_result_enabled': dump_result_enabled
+            'dump_result_enabled': dump_result_enabled,
+            "dataset_columns" : [] # 訓練用データセットのカラム
         }
 
         dataset = get_dataset(dataset_config)
@@ -98,7 +99,7 @@ def train(train_id, scenario_tag,
 
         if X.index.size == 0:
             raise EmptyDatasetError('empty record')
-
+        ret["dataset_columns"] = X.columns
         logger.debug('load dataset done.')
         
         model_config['is_rebuild'] = False
